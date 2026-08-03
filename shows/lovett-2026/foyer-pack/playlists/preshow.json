@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "phase": "preshow",
+  "show_id": "lovett-2026",
+  "policy": {
+    "min_dwell_seconds": 9,
+    "max_dwell_seconds": 15,
+    "max_words_per_screen": 60,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 210,
+    "audio_allowed": false,
+    "group_rotation": [
+      "production",
+      "history",
+      "theatre"
+    ]
+  },
+  "_notes": "Power-up (about 18:30) to curtain at 19:30 - roughly 45-60 minutes, so about 15 cycles of a ~210s loop. Anchors carry the production; wildcards rotate through three groups so a Lovett slide, a penny-dreadful fact and a Criterion message each recur in turn rather than three adverts in a row. Every trivia slide carries its own item.content - see docs/cascade-prompts/2026-08-per-item-slide-content.md. ALL COPY IS DRAFT pending Boondog approval: docs/lovett-copy-for-approval.md.",
+  "items": [
+    {
+      "kind": "anchor",
+      "id": "welcome",
+      "template": "welcome",
+      "every_n": 4,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "anchor",
+      "id": "about-play",
+      "template": "about-play",
+      "every_n": 5,
+      "dwell_seconds": 14
+    },
+    {
+      "kind": "one-shot",
+      "id": "housekeeping",
+      "template": "show-info",
+      "trigger": "start",
+      "dwell_seconds": 13
+    },
+    {
+      "kind": "one-shot",
+      "id": "content-advisory-1",
+      "template": "warning-full",
+      "trigger": "house-open",
+      "dwell_seconds": 13,
+      "content": {
+        "eyebrow": "Full content advisory",
+        "headline": "BEFORE YOU COME IN",
+        "warning_ids": [
+          "strong-language",
+          "violence-and-death",
+          "bereavement",
+          "opening-darkness"
+        ]
+      },
+      "_note": "House-open one-shot, slide 1 of 2 - the fuller advisory for people arriving and deciding. The rolling warning-top3 anchor carries the headline three all evening. Matches the Popcorn pattern (P05 split)."
+    },
+    {
+      "kind": "one-shot",
+      "id": "content-advisory-2",
+      "template": "warning-full",
+      "trigger": "house-open",
+      "dwell_seconds": 13,
+      "content": {
+        "eyebrow": "Full content advisory",
+        "headline": "AND ALSO",
+        "warning_ids": [
+          "poverty",
+          "sex-work",
+          "religious-content",
+          "age-guidance",
+          "no-interval"
+        ]
+      },
+      "_note": "Slide 2 of 2. Ends on no-interval, which is the practical one people act on."
+    },
+    {
+      "kind": "wildcard",
+      "id": "lucy-roslyn",
+      "template": "about-ben",
+      "tag": "production",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "_note": "about-ben is the generic 'about the writer' template despite its Popcorn-era name - it reads show.foyer_content.writer. Lucy wrote and performs Lovett, so this is the right slide. The `cast` template is a two-column role/actor table, which is a thin slide for a one-woman show."
+    },
+    {
+      "kind": "wildcard",
+      "id": "director-quote",
+      "template": "director-quote",
+      "tag": "production",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "_status": "DRAFT quote - must not run at the theatre until Jamie Firth approves or replaces it."
+    },
+    {
+      "kind": "wildcard",
+      "id": "quote-broadway-baby",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 13,
+      "source": "assets/derived/photo-lean-wide.jpg",
+      "content": {
+        "eyebrow": "Praise for Lovett",
+        "headline": "An extraordinarily powerful hour",
+        "body": "\"One of the most relentless, compelling pieces of work at the Fringe...\"",
+        "footline": "Broadway Baby"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "quote-binge-fringe",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 13,
+      "source": "assets/derived/photo-red-wide.jpg",
+      "content": {
+        "eyebrow": "Praise for Lovett",
+        "headline": "Precise, committed and unflinching",
+        "body": "\"An entirely disarming performance... This production is one that you can really sink your teeth into.\"",
+        "footline": "Binge Fringe"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "quote-radio-exe",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 13,
+      "source": "assets/derived/photo-hands-wide.jpg",
+      "content": {
+        "eyebrow": "Praise for Lovett",
+        "headline": "It had me mesmerised",
+        "body": "\"This brilliant script, paired with even more powerful acting... as exciting and captivating as the biggest of productions.\"",
+        "footline": "Radio Exe"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "content-warning",
+      "template": "warning-top3",
+      "tag": "production",
+      "weight": 2,
+      "dwell_seconds": 12,
+      "_status": "DRAFT wording - replace with Boondog's own before the 14th."
+    },
+    {
+      "kind": "wildcard",
+      "id": "safety",
+      "template": "safety",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 10
+    },
+    {
+      "kind": "wildcard",
+      "id": "penny-dreadful",
+      "template": "feature",
+      "tag": "history",
+      "weight": 2,
+      "dwell_seconds": 15,
+      "source": "assets/plates/penny-dreadful-cover.jpg",
+      "content": {
+        "headline": "Born in a penny dreadful",
+        "body": "Sweeney Todd and Mrs Lovett first appeared in <i>The String of Pearls</i> (1846-47) - a serialised \"penny dreadful\", lurid fiction sold at a penny an issue."
+      },
+      "_note": "The plate's masthead and cartouche are typeset in Rye and IM Fell English, so this one wants the large feature treatment rather than a poster frame."
+    },
+    {
+      "kind": "wildcard",
+      "id": "whalers-daughter",
+      "template": "did-you-know",
+      "tag": "history",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "A whaler's daughter",
+        "body": "A whaler father, a courtesan mother, a butcher husband. Everything Eleanor knows how to do, she learned from someone else's trade.",
+        "image_local": "assets/plates/whaling-ship.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "the-whetstone",
+      "template": "did-you-know",
+      "tag": "history",
+      "weight": 2,
+      "dwell_seconds": 12,
+      "content": {
+        "headline": "It opens in darkness",
+        "body": "The first thing you will hear tonight is a knife being drawn across a whetstone.",
+        "image_local": "assets/plates/whetstone.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "why-pies",
+      "template": "did-you-know",
+      "tag": "history",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "Why pies?",
+        "body": "Victorians had good reason to fear a cheap pie. Food adulteration was rife in 1840s London and \"mystery meat\" was a genuine public scandal. The legend fed on a real fear.",
+        "image_local": "assets/plates/pie-shop.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "the-name",
+      "template": "did-you-know",
+      "tag": "history",
+      "weight": 1,
+      "dwell_seconds": 11,
+      "content": {
+        "headline": "Nellie is short for Eleanor",
+        "body": "Sondheim called her Nellie Lovett. Tonight's Eleanor is the woman before the legend.",
+        "image_local": "assets/derived/artwork-square.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "coventry-connection",
+      "template": "did-you-know-criterion",
+      "tag": "theatre",
+      "weight": 2,
+      "dwell_seconds": 12,
+      "content": {
+        "headline": "She's been here before",
+        "body": "<i>Lovett</i> previewed at the Belgrade, just down the road, in July 2025 - before its Edinburgh premiere. Tonight she's back in Coventry.",
+        "image_local": "assets/derived/photo-red-portrait.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-story",
+      "template": "did-you-know-criterion",
+      "tag": "theatre",
+      "weight": 2,
+      "dwell_seconds": 11
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-gag",
+      "template": "bar-spotlight",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 11
+    },
+    {
+      "kind": "wildcard",
+      "id": "walk-ins",
+      "template": "did-you-know-criterion",
+      "tag": "theatre",
+      "weight": 2,
+      "dwell_seconds": 11,
+      "content": {
+        "headline": "Not booked? Ask at the desk",
+        "body": "Tickets are usually available on the door right up to curtain-up. Front-of-house will tell you what's left."
+      },
+      "_note": "Replaces the tickets-walkins template, which hard-codes Popcorn magenta and Anton INLINE in slide-templates.js and assumes the Criterion's member/non-member/under-25 price bands - neither of which fits a visiting production. See docs/backlog/foyer-templates-popcorn-hardcoding.md."
+    },
+    {
+      "kind": "wildcard",
+      "id": "volunteer-preshow",
+      "template": "volunteer",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 11,
+      "_note": "Popcorn ran the volunteer call in preshow as well as postshow; Lovett had it only in postshow. A visiting-company night brings in people who have never been to the Criterion before, so preshow is arguably where it matters most."
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production",
+      "template": "next-production",
+      "tag": "theatre",
+      "weight": 1,
+      "production_id": "underdog-2026",
+      "production_ref": "next_productions.json#underdog-2026",
+      "dwell_seconds": 12
+    }
+  ]
+}

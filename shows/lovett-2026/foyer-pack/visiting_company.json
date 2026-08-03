@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "_purpose": "Drives the generic company-profile / company-productions / company-tour templates added by the visiting-company-templates task. Nothing here is Lovett-specific engine code - any future touring company ships the same shape.",
+  "_copy_status": "DRAFT pending Jamie Firth's approval. All facts are from boondogtheatre.com and the Criterion event page - Boondog's own published material.",
+
+  "name": "BoonDog Theatre",
+  "tagline": "Covertly political stories, hidden in the past.",
+  "founded": "2012",
+  "based": "The Midlands",
+
+  "body": "Founded in 2012 by <b>Lucy Roslyn</b> and <b>Jamie Firth</b>. Intimate, character-driven work - almost always darkly comic, always aiming for the heart, and what they describe as <b>\"covertly political\"</b>. Backed by a passion for detailed research.",
+  "footline": "Associate Artists of the Royal &amp; Derngate, Northampton",
+  "website": "boondogtheatre.com",
+
+  "logo_local": "assets/derived/boondog-logo.png",
+  "_logo_note": "RECOLOURED to parchment #E8DCC4 from the supplied alpha PNG, which is near-black ink and invisible on our ground. Geometry unaltered. Flag to Jamie for approval - see docs/asset-provenance.md.",
+
+  "image_local": "assets/derived/company-lucy-jamie.jpg",
+  "_image_note": "Lucy Roslyn and Jamie Firth. Supplied in the Drive folder as GFS03419.JPG.",
+
+  "productions": [
+    {
+      "title": "Orlando",
+      "note": "By Lucy Roslyn <span class=\"sep\">&#8226;</span> Directed by Josh Roche <span class=\"sep\">&#8226;</span> Critics' Choice, Brits Off Broadway, New York",
+      "image_local": "assets/company-productions/orlando.jpg"
+    },
+    {
+      "title": "The State Vs John Hayes",
+      "note": "Written by Lucy Roslyn",
+      "image_local": "assets/company-productions/the-state-vs-john-hayes.jpg"
+    },
+    {
+      "title": "Pennyroyal",
+      "note": "By Lucy Roslyn <span class=\"sep\">&#8226;</span> Directed by Josh Roche",
+      "image_local": "assets/company-productions/pennyroyal.jpg"
+    },
+    {
+      "title": "Piskie",
+      "note": "Written and performed by Lucy Roslyn <span class=\"sep\">&#8226;</span> Directed by Jamie Firth",
+      "image_local": "assets/company-productions/piskie.jpg"
+    },
+    {
+      "title": "Goody",
+      "note": "Written by Lucy Roslyn <span class=\"sep\">&#8226;</span> Directed by Jamie Firth",
+      "image_local": "assets/company-productions/goody.jpg"
+    },
+    {
+      "title": "Showmanship",
+      "note": "Written by Lucy Roslyn <span class=\"sep\">&#8226;</span> Directed by Jamie Firth",
+      "image_local": "assets/company-productions/showmanship.jpg"
+    }
+  ],
+  "_productions_note": "Six posters, deliberately ORDERED for a 2x3 split: items 0-2 (Orlando, State Vs John Hayes, Pennyroyal) are the awards/London-producer end of their work; items 3-5 (Piskie, Goody, Showmanship) are the Roslyn/Firth two-hander shows closest in shape to Lovett. Lovett itself is excluded - it is tonight's show. Credits transcribed from boondogtheatre.com. Posters are portrait (0.64-0.71) and the gallery frames use object-fit: contain, so nothing is cropped. The 2x3 SPLIT ITSELF needs item.offset/item.limit from docs/cascade-prompts/2026-08-gallery-templates-generic.md; until that lands the playlist shows one six-up gallery, which works but is small across a bar.",
+
+  "good_egg": {
+    "headline": "They also do this",
+    "body": "BoonDog run <b>Fringe Festival Support</b> - a chat show, backed by the Mental Health Foundation, helping Fringe performers and crew look after themselves through the most stressful month of their year."
+  },
+
+  "tour": {
+    "intro": "LOVETT continues",
+    "image_local": "assets/derived/tour-poster.jpg",
+    "_image_note": "BoonDog's own tour poster - approved artwork, no rights question, and it reads as official. Its printed text is far too small at foyer distance, which is why the dates below are re-typeset by the template. Use the poster as the side image, not as the information.",
+    "dates": [
+      { "venue": "Chester Storyhouse",   "when": "21 &amp; 22 August", "highlight": true },
+      { "venue": "Buxton Opera House",   "when": "29 August" },
+      { "venue": "Quay Sudbury",         "when": "2 September" },
+      { "venue": "Taunton Brewhouse",    "when": "19 September" },
+      { "venue": "Cheltenham Everyman",  "when": "30 September" },
+      { "venue": "Chichester Nest",      "when": "1 October" },
+      { "venue": "Exeter Phoenix",       "when": "8 October" }
+    ],
+    "footline": "Tell your friends in other towns. boondogtheatre.com",
+    "_dates_note": "Scraped from boondogtheatre.com/lovett on 2026-08-01. Chester is highlighted because it is the very next date after ours - the single cheapest way to make a visiting company feel looked after. Special London shows (TBA) and the tour's 2025 leg are deliberately omitted. Eight is the template cap; seven listed."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "name": "lovett-2026",
+  "label": "Lovett — Penny Dreadful",
+  "description": "Show theme for BoonDog Theatre's Lovett, 14-15 August 2026. A Victorian penny-dreadful palette: soot-black ground, aged-parchment text, oxblood as INK (rules, drop caps, the word LOVETT) and tarnished brass as the secondary. Oxblood is used sparingly and never as a field - it should read as printer's ink, not gore. Brass is deliberately close to the Criterion house gold so the display still reads as our foyer hosting a visiting company, rather than a Boondog takeover. Restrained overlay on the Criterion house theme: it retunes ground, accents, texture, watermark and type only. Grid, type scale, lockup geometry, QR card, CTA and next-strip placement stay engine-owned.",
+
+  "colours": {
+    "ground": "#140F0D",
+    "accent": "#A98B4F",
+    "secondary": "#7A1F1F",
+    "text": "#E8DCC4",
+    "muted_text": "#BFAF8E"
+  },
+  "_colour_notes": {
+    "ground": "Soot black, warm-shifted from the house ink so the parchment text reads warm rather than blue.",
+    "accent": "Tarnished brass. Carries the Criterion continuity - close to the house gold #E4C06B but aged.",
+    "secondary": "Oxblood. Deliberately the SECONDARY, not the accent: it appears on rules and emphasis, never as a large field or a background.",
+    "text": "Aged parchment / bone.",
+    "muted_text": "Foxed paper, for footlines and small print."
+  },
+
+  "fonts": {
+    "headline": "Rye",
+    "body": "IM Fell English"
+  },
+  "_font_notes": "Rye is an ornamented Victorian playbill slab; IM Fell English is a period letterpress serif with a true italic. Both are self-hosted alongside the existing five - see platform/obs-helper/assets/fonts/README.md. NOTE: until the visiting-company-templates task extends APPROVED_FONTS in theme-loader.js, fontToken() will reject these two and fall back to the house Oswald/Inter. That is a safe, legible fallback, not a fault - the display simply looks like dark Criterion rather than penny dreadful until that task lands.",
+
+  "watermark": {
+    "image": "lovett-cleaver-mark.svg",
+    "opacity": 0.1,
+    "position": "bottom-left"
+  },
+  "_watermark_notes": "An outline cleaver-and-whetstone mark, treated exactly like the Criterion roofline outline in _criterion-default. Deliberately NOT the Criterion roofline: the roofline is saved for the Criterion-owned slides so the two voices stay distinguishable. Position is bottom-left because the engine's corner lockup occupies bottom-right. ASSET NOT YET DRAWN - if missing, the engine falls back to the house watermark, which is acceptable.",
+
+  "texture": {
+    "image": "paper-grain.png",
+    "opacity": 0.07
+  },
+  "_texture_notes": "Subtle paper grain, low opacity. ASSET NOT YET DRAWN - absent, the ground renders flat, which is fine.",
+
+  "poster_frame": "mat",
+  "_poster_frame_notes": "Parchment mat suits the portrait show artwork better than the neon 'mount' Popcorn used.",
+
+  "phase_intensity": {
+    "preshow": 1.0,
+    "postshow": 0.6
+  },
+  "_phase_intensity_notes": "No interval key: Lovett runs straight through. Postshow is dimmed for a long, late-running loop in a thinning bar."
+}

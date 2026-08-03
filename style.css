@@ -1,0 +1,1553 @@
+/*
+  Springboard Festival 2026 — shared scene stylesheet.
+  Brand: dark teal/navy underwater photo background (#F3EFD2 cream
+  for all type), Oswald display headlines, Inter for any small body text.
+  Welcome scene uses SpringboardWelcome.jpg as a full-bleed image.
+  Other scenes lay content on top of background-springboard-water.jpg.
+*/
+
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/anton-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/bebas-neue-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('assets/fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('assets/fonts/oswald-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Rye';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/rye-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/im-fell-english-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/im-fell-english-italic-latin.woff2') format('woff2');
+}
+
+:root {
+  --colour-primary: #1D4D4F;
+  --colour-primary-text: #F3EFD2;
+  --colour-accent: #6BA5C4;
+  --colour-background: #02101e;
+  --colour-background-text: #F3EFD2;
+  --font-headline: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --watermark-image: none;
+  --watermark-opacity: 0.12;
+  --cream: #F3EFD2;            /* primary text colour, matches lockup */
+  --cream-dim: rgba(243,239,210,0.78);
+  --cream-faint: rgba(243,239,210,0.55);
+  --peacock: #6BA5C4;          /* eyebrow/subline blue from welcome image */
+  --peacock-soft: rgba(107,165,196,0.65);
+  --peacock-line: rgba(107,165,196,0.75);  /* thin vertical divider */
+  --water-overlay: rgba(4, 14, 32, 0.55);  /* darken backdrop where text sits */
+  --water-overlay-strong: rgba(4, 14, 32, 0.78);
+  --stage-main:  #c0392b;
+  --stage-ros:   #2980b9;
+  --stage-floor: #27ae60;
+  --stage-other: #7f8c8d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  background: #02101e;  /* deepest teal — visible behind images while loading */
+  font-family: 'Inter', sans-serif;
+  color: var(--cream);
+  overflow: hidden;
+}
+
+/* ---------- BACKDROP ---------- */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: url('assets/background-springboard-water.jpg') center/cover no-repeat #02101e;
+}
+
+/* Vignette to make text more legible on busy water areas. Sits on top of
+   the water image but underneath any hero overlay. */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--water-overlay-strong) 0%,
+    var(--water-overlay) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Welcome hero overlay. Sits on top of the water backdrop and fades in/out
+   on .active, giving us a smooth crossfade between hero and water rather
+   than the previous instant snap. When the hero is fully opaque it covers
+   the water and its vignette completely. */
+.backdrop-hero {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: url('assets/SpringboardLogo.jpg') center/cover no-repeat;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+  pointer-events: none;
+}
+.backdrop-hero.active { opacity: 1; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  padding: 60px 80px;
+}
+
+/* Vertical peacock divider removed at David's request (25 Apr).
+   Reinstate via the rule below if it's wanted again later.
+   .scene:not(.scene-welcome)::before { ... } */
+
+/* ---------- TYPOGRAPHY ---------- */
+
+.eyebrow {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 38px;
+  color: var(--peacock);
+}
+
+.headline {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 200px;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+}
+.headline.tight  { font-size: 150px; }
+.headline.medium { font-size: 110px; }
+.headline.small  { font-size:  78px; }
+
+.subline {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 38px;
+  color: var(--peacock);
+  margin-top: 30px;
+}
+
+/* ---------- LAYOUT ZONES ---------- */
+
+.left-zone {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 60px;
+}
+
+/* Bottom-right Criterion lockup. Uses David's CriLogo_Clean.png as a CSS
+   mask, with cream background-color showing through — that recolours the
+   pure-white PNG to brand cream without needing to re-export the image. */
+.lockup {
+  position: absolute;
+  right: 80px;
+  bottom: 50px;
+  width: 180px;
+  height: 180px;
+  z-index: 2;
+  background-color: var(--cream);
+  -webkit-mask: url('assets/criterion-logo.png') no-repeat center / contain;
+          mask: url('assets/criterion-logo.png') no-repeat center / contain;
+}
+/* The <img> inside is hidden — kept in markup for accessibility/alt-text. */
+.lockup img { display: none; }
+
+/* ---------- SCENE: WELCOME (full-bleed hero) ---------- */
+/* The JPG provides all the design.  The lockup overlay is shown on the
+   welcome scene too (when David supplies a logo-free hero image), so the
+   lockup position stays consistent across every scene in the rotation. */
+
+/* ---------- SCENE: TONIGHT ---------- */
+
+.scene-tonight {
+  flex-direction: column;
+  padding: 70px 100px 240px 100px;  /* extra bottom padding clears the 180px lockup */
+}
+.scene-tonight .top-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+.scene-tonight .top-bar .date-tag {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+.scene-tonight .running-order {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 80px;
+  align-content: start;
+}
+.scene-tonight .running-order .col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.scene-tonight .row {
+  display: grid;
+  grid-template-columns: 130px 100px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(243,239,210,0.15);
+  color: var(--cream);
+}
+.scene-tonight .row .time {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+}
+.scene-tonight .row .act {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.scene-tonight .row.is-interval { opacity: 0.55; font-style: italic; }
+.scene-tonight .row.is-closing  { opacity: 0.55; }
+
+/* Stage badge */
+.stage-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 5px 11px;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  background: var(--stage-other);
+  display: inline-block;
+  width: fit-content;
+}
+.stage-badge.stage-Main  { background: var(--stage-main); }
+.stage-badge.stage-Ros   { background: var(--stage-ros); }
+.stage-badge.stage-Side  { background: var(--stage-ros); }
+.stage-badge.stage-Floor { background: var(--stage-floor); }
+
+/* ---------- SCENE: NEXT UP ---------- */
+
+.scene-next .left-zone {
+  gap: 24px;
+  width: 55%;       /* leaves 45% for the image area on the right */
+  padding-right: 60px;
+}
+.scene-next .next-act-name {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 140px;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-top: 4px;
+}
+.scene-next .next-meta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 4px;
+}
+.scene-next .next-time {
+  font-family: 'Oswald', sans-serif;
+  font-size: 80px;             /* up from 60 — gives time a bit more weight */
+  font-weight: 600;
+  line-height: 1;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+}
+.scene-next .stage-badge {
+  font-size: 30px;
+  padding: 10px 22px;
+}
+.scene-next .blurb {
+  margin-top: 22px;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--cream);
+  max-width: 900px;
+}
+/* Byline (writer/director on plays) — kept deliberately quiet so it
+   doesn't visually compete with the act name above. */
+.scene-next .byline {
+  margin-top: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--peacock-soft);
+  opacity: 0.85;
+}
+
+/* Image area on the right of the Next-up scene.
+   object-fit: contain so portrait headshots and landscape film-stills both
+   show in full, without weird cropping. The dark navy fill shows through
+   as letterboxing — looks intentional against the water backdrop. */
+.scene-next .next-image-wrap {
+  position: absolute;
+  top: 90px;
+  right: 80px;
+  width: 700px;
+  height: 560px;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1;
+  background: rgba(2,14,32,0.65);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.scene-next .next-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Duo composite — for collaborations like Andrea/Lewis or Sharan + Juggy.
+   Two images side-by-side, each filling half the panel.  Uses cover so
+   each portrait fills its half cleanly; the seam in the middle reads
+   as a visual cue for "collaboration". */
+.scene-next .next-image-wrap.duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  background: rgba(2,14,32,0.85);  /* shows as a thin divider line */
+}
+.scene-next .next-image-wrap.duo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* ---------- SCENE: INTERVAL ---------- */
+
+.scene-interval .left-zone { gap: 24px; }
+.scene-interval .headline { font-size: 300px; letter-spacing: 0.01em; }
+.scene-interval .resume-time {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 50px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--peacock);
+  margin-top: 30px;
+}
+
+/* ---------- SCENE: COMING SOON ---------- */
+
+.scene-coming-soon {
+  flex-direction: column;
+  padding: 70px 100px 240px 100px;  /* extra bottom padding clears the 180px lockup */
+}
+.scene-coming-soon .top-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+.scene-coming-soon .top-bar .date-tag {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+.scene-coming-soon .cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  align-content: start;   /* cards size to content, sit at top of grid */
+}
+.scene-coming-soon .card {
+  background: rgba(4,14,32,0.55);
+  border: 1px solid rgba(243,239,210,0.18);
+  border-radius: 12px;
+  padding: 0;            /* image goes to the edge; body has its own padding */
+  display: flex;
+  flex-direction: column;
+  color: var(--cream);
+  overflow: hidden;
+}
+.scene-coming-soon .card .card-image {
+  width: 100%;
+  height: 240px;
+  background: rgba(4,14,32,0.7);
+}
+.scene-coming-soon .card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Night card panels (.scene-night-cards): use contain so portrait headshots
+   and logos show in full with dark letterboxing rather than being cropped.
+   Scoped to avoid changing the Coming Soon cards which use cover intentionally. */
+.scene-night-cards .card .card-image img {
+  object-fit: contain;
+}
+/* Duo card — two collaborators sharing one image slot (e.g. Andrea/Lewis).
+   Each half fills its column with cover so faces aren't pillarboxed. */
+.scene-night-cards .card .card-image.duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 2px;
+  background: rgba(4,14,32,0.85);
+  overflow: hidden;
+}
+.scene-night-cards .card .card-image.duo img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.scene-coming-soon .card .card-body {
+  padding: 24px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.card .card-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 52px;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+.card .card-subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  margin-top: -8px;
+  opacity: 0.85;
+}
+.card .card-meta {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+.card .card-writer {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  font-size: 22px;
+  color: var(--cream-dim);
+}
+.card .card-blurb {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+/* Old name kept for backward compatibility — same styling as card-meta. */
+.card .card-dates {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+
+/* ---------- ROTATION CONTAINER ----------
+   Crossfade timing: scene fades 1.6s, matching the backdrop-hero crossfade
+   so hero ↔ water and Welcome-lockup ↔ Tonight-content move together.
+   Both sides of the fade are visible simultaneously, so the eye never sees
+   an empty water frame between scenes. */
+.rotation > .scene { opacity: 0; transition: opacity 1.6s ease; }
+.rotation > .scene.active { opacity: 1; }
+
+body.nextgen-foyer,
+body.announcement-overlay-page {
+  width: 1920px;
+  height: 1080px;
+  /* Transparent: this page exists ONLY as an OBS Browser Source stacked over the
+     foyer scenes (see README). It was opaque ink+gradients until 2026-06-11, which
+     blacked out the underlying scene the first time the source was wired correctly. */
+  background: transparent;
+  color: var(--colour-background-text);
+  overflow: hidden;
+  --ink: #0A0612;
+  --ink-2: #1A0E2A;
+  --neon-magenta: #FF1A75;
+  --neon-cyan: #00E5FF;
+  --poster-yellow: #FFD434;
+  --cream: #F4E5C2;
+}
+
+.ng-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    linear-gradient(160deg, rgba(0,0,0,0.08), rgba(0,0,0,0.45)),
+    var(--colour-background);
+}
+
+.ng-watermark {
+  position: absolute;
+  inset: 0;
+  background-image: var(--watermark-image);
+  background-repeat: no-repeat;
+  background-position: bottom 48px left 48px;
+  background-size: 440px auto;
+  opacity: var(--watermark-opacity);
+  pointer-events: none;
+}
+
+html[data-watermark-position="bottom-left"] .ng-watermark { background-position: bottom 48px left 48px; }
+html[data-watermark-position="bottom-right"] .ng-watermark { background-position: bottom 48px right 48px; }
+html[data-watermark-position="top-right"] .ng-watermark { background-position: top 48px right 48px; }
+html[data-watermark-position="top-left"] .ng-watermark { background-position: top 48px left 48px; }
+
+.ng-topline {
+  position: absolute;
+  top: 48px;
+  left: 64px;
+  right: 64px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.ng-phase,
+.ng-show,
+.ng-caption,
+.announcement-overlay {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ng-phase {
+  font-family: var(--font-headline);
+  font-size: 34px;
+  color: var(--colour-accent);
+}
+
+.ng-show {
+  font-family: var(--font-headline);
+  font-size: 34px;
+  color: var(--colour-primary-text);
+}
+
+.ng-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.ng-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.ng-caption {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  bottom: 48px;
+  z-index: 2;
+  font-family: var(--font-headline);
+  font-size: 28px;
+  color: var(--colour-accent);
+}
+
+.announcement-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 0 64px 40px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+.announcement-overlay-page[data-pos="top"] .announcement-overlay {
+  top: 0;
+  bottom: auto;
+  padding: 40px 64px 0;
+  transform: translateY(-28px);
+}
+
+.announcement-overlay.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.announcement-band {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1500px;
+  min-height: 96px;
+  max-height: 156px;
+  padding: 22px 34px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  overflow: hidden;
+  background: rgba(10, 6, 18, 0.92);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ink, #0A0612) 92%, transparent),
+    color-mix(in srgb, var(--ink-2, #1A0E2A) 92%, transparent)
+  );
+  border: 2px solid var(--neon-magenta, #FF1A75);
+  border-left: 8px solid var(--neon-cyan, #00E5FF);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.announcement-overlay-page[data-kind="nudge"] .announcement-band {
+  border-color: var(--poster-yellow, #FFD434);
+  border-left-color: var(--poster-yellow, #FFD434);
+}
+
+.announcement-kicker {
+  flex: 0 0 auto;
+  padding-right: 26px;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: var(--font-headline);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+  color: var(--neon-cyan, #00E5FF);
+}
+
+.announcement-overlay-page[data-kind="nudge"] .announcement-kicker {
+  color: var(--poster-yellow, #FFD434);
+}
+
+.announcement-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--cream-2, var(--colour-primary-text, #F4E5C2));
+  font-family: var(--font-headline);
+  font-size: clamp(26px, 3.1vw, 40px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.announcement-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--neon-cyan, #00E5FF);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.announcement-overlay-page[data-kind="nudge"] .announcement-progress {
+  background: var(--poster-yellow, #FFD434);
+}
+
+.announcement-overlay-page[data-pos="top"] .announcement-progress {
+  top: 0;
+  bottom: auto;
+}
+
+/* Criterion house foyer engine. Show packs supply tokens, never layout. */
+
+body.nextgen-foyer {
+  /* core ink */
+  --ink:           #02101E;
+  --ink-2:         #07323A;
+  --ink-3:         #0A2233;
+  /* neon signals */
+  --neon-magenta:  #C7A45A;
+  --neon-cyan:     #6BA5C4;
+  --neon-violet:   #7E9BB0;
+  /* poster-tied accents */
+  --poster-yellow: #C7A45A;
+  --poster-red:    #B11D2E;
+  /* type */
+  --cream:         #F3EFD2;
+  --cream-2:       #C7BE9E;
+  --lavender:      #B9C6CE;
+  --white:         #FFFFFF;
+  --dim:           #6A5E7E;
+  --glow-magenta:  0 2px 10px rgba(199, 164, 90, 0.18);
+  --glow-cyan:     0 2px 10px rgba(107, 165, 196, 0.16);
+  --glow-yellow:   0 2px 8px rgba(199, 164, 90, 0.14);
+
+  background:
+    radial-gradient(ellipse 85% 68% at 18% 12%, rgba(107, 165, 196, 0.16), transparent 72%),
+    radial-gradient(ellipse 75% 75% at 85% 100%, rgba(199, 164, 90, 0.08), transparent 75%),
+    linear-gradient(145deg, var(--ink) 0%, var(--ink-2) 58%, var(--ink-3) 100%);
+  color: var(--cream);
+}
+
+/* ---- ambient layers ---- */
+.nextgen-foyer .ng-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--phase-intensity-preshow, 1);
+}
+body.nextgen-foyer[data-phase="interval"] .ng-ambient { opacity: var(--phase-intensity-interval, 0.9); }
+body.nextgen-foyer[data-phase="postshow"] .ng-ambient { opacity: var(--phase-intensity-postshow, 0.65); }
+.nextgen-foyer .ng-ambient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.38) 100%);
+}
+.nextgen-foyer .ng-texture {
+  position: absolute;
+  inset: 0;
+  opacity: var(--texture-opacity, 0);
+  background-image: var(--texture-image, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* ON-AIR indicator (preshow/interval) */
+.nextgen-foyer .on-air {
+  position: absolute;
+  top: 48px;
+  right: 64px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace clock-style readout, not themed */
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: var(--cream-2);
+  z-index: 5;
+  opacity: 0.55;
+}
+.nextgen-foyer .on-air-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--neon-magenta);
+  box-shadow: var(--glow-magenta);
+  animation: ng-pulse 2.2s ease-in-out infinite;
+}
+@keyframes ng-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1.0; }
+}
+body.nextgen-foyer[data-phase="postshow"] .on-air { display: none; }
+
+/* Engine-owned corner mark. The verified roofline master is a CSS mask so
+   its colour follows the active theme rather than a raster's baked palette. */
+.nextgen-foyer .criterion-mark {
+  position: absolute;
+  bottom: 18px;
+  right: 28px;
+  width: 163px;
+  aspect-ratio: 434 / 262;
+  opacity: 0.8;
+  z-index: 4;
+  pointer-events: none;
+  color: var(--colour-primary-text);
+  background-color: currentColor;
+  -webkit-mask: url('assets/criterion-logo-lockup-outlined.svg') no-repeat center / contain;
+          mask: url('assets/criterion-logo-lockup-outlined.svg') no-repeat center / contain;
+}
+body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
+
+/* The slide stage sits above ambient layers. */
+.nextgen-foyer .ng-stage { z-index: 3; }
+
+/* ---- slide base ---- */
+.nextgen-foyer .slide {
+  position: absolute;
+  inset: 0;
+  padding: 9% 8% 10% 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  animation: ng-fade-in 700ms ease forwards;
+}
+.nextgen-foyer .slide.active { opacity: 1; }
+@keyframes ng-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.nextgen-foyer .eyebrow {
+  font-family: 'JetBrains Mono', monospace; /* fixed: house monospace kicker treatment, not themed */
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  margin: 0 0 22px 0;
+  text-shadow: var(--glow-cyan);
+}
+.nextgen-foyer .eyebrow.warn  { color: var(--poster-yellow); text-shadow: var(--glow-yellow); }
+.nextgen-foyer .eyebrow.alert { color: var(--poster-red); text-shadow: 0 0 6px rgba(177, 29, 46, 0.8), 0 0 16px rgba(177, 29, 46, 0.5); }
+.nextgen-foyer .eyebrow.calm  { color: var(--lavender); text-shadow: none; }
+
+.nextgen-foyer .headline {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-weight: 400;
+  font-size: 9vw;
+  line-height: 0.92;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin: 0 0 24px 0;
+  text-shadow: var(--glow-magenta);
+  text-transform: uppercase;
+}
+.nextgen-foyer .headline.small  { font-size: 6vw; }
+.nextgen-foyer .headline.medium { font-size: 7.5vw; }
+.nextgen-foyer .headline.outline {
+  color: rgba(244, 229, 194, 0.10);
+  -webkit-text-stroke: 1.6px var(--neon-magenta);
+  text-shadow: none;
+}
+.nextgen-foyer .headline.cyan { text-shadow: var(--glow-cyan); }
+.nextgen-foyer .headline.cyan.outline { -webkit-text-stroke-color: var(--neon-cyan); }
+
+.nextgen-foyer .subhead {
+  font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+  font-size: 3vw;
+  letter-spacing: 4px;
+  color: var(--cream);
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+}
+.nextgen-foyer .subhead.cyan { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
+
+.nextgen-foyer .body {
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(1.6vw, 2.3vh);
+  line-height: 1.5;
+  color: var(--cream);
+  max-width: 76%;
+  margin: 0 0 18px 0;
+}
+.nextgen-foyer .body.small { font-size: min(1.55vw, 2.25vh); max-width: 72%; }
+.nextgen-foyer .body.mono  { font-family: 'JetBrains Mono', monospace; /* fixed: monospace variant, not themed */ font-size: min(1.25vw, 1.8vh); letter-spacing: 1.5px; color: var(--lavender); }
+
+.nextgen-foyer .footline {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace metadata line (times, sources), not themed */
+  font-size: min(1.3vw, 1.8vh);
+  color: var(--cream-2);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 32px;
+}
+.nextgen-foyer .footline .sep,
+.nextgen-foyer .sep { color: var(--neon-magenta); margin: 0 12px; }
+
+.nextgen-foyer .author {
+  font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+}
+
+/* two-column lists (cast / warnings full) */
+.nextgen-foyer .two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6%;
+  row-gap: 12px;
+  margin-top: 12px;
+}
+.nextgen-foyer .cast-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(200, 185, 216, 0.15);
+  font-size: min(1.5vw, 2.2vh);
+}
+.nextgen-foyer .cast-role {
+  color: var(--lavender);
+  font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+  letter-spacing: 2px;
+}
+.nextgen-foyer .cast-actor {
+  color: var(--white);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* warning chips (top-3) */
+.nextgen-foyer .warning-list {
+  display: grid;
+  grid-template-columns: minmax(300px, 21vw) 1fr;
+  column-gap: 3%;
+  row-gap: 16px;
+  align-items: center;
+  max-width: 94%;
+  margin-top: 18px;
+}
+.nextgen-foyer .warning-tag {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 1.6vw;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--poster-yellow);
+  border: 1.5px solid var(--poster-yellow);
+  padding: 6px 14px;
+  border-radius: 3px;
+  box-shadow: var(--glow-yellow);
+  text-align: center;
+}
+.nextgen-foyer .warning-detail {
+  font-size: min(1.46vw, 2.05vh);
+  color: var(--cream);
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* pill (tbc markers) */
+.nextgen-foyer .pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 212, 52, 0.12);
+  color: var(--poster-yellow);
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace tbc marker, not themed */
+  font-size: 0.8vw;
+  letter-spacing: 1px;
+  margin-right: 6px;
+}
+
+/* posters */
+.nextgen-foyer .poster-frame {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 26, 117, 0.15), rgba(0, 229, 255, 0.10));
+  border: 1.5px solid var(--neon-magenta);
+  box-shadow:
+    0 0 0 1px rgba(255, 26, 117, 0.4),
+    0 0 24px rgba(255, 26, 117, 0.35),
+    0 14px 40px rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+}
+.nextgen-foyer .poster-frame.cyan {
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.4),
+    0 0 24px rgba(0, 229, 255, 0.35),
+    0 14px 40px rgba(0, 0, 0, 0.7);
+}
+.nextgen-foyer .poster-frame.muted {
+  border-color: rgba(200, 185, 216, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(200, 185, 216, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.nextgen-foyer .poster-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.nextgen-foyer .poster-frame.contain img {
+  object-fit: contain;
+  background: linear-gradient(135deg, #100822 0%, #1A0E2A 100%);
+}
+.nextgen-foyer .poster-frame .fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 18px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace placeholder caption, not themed */
+  font-size: 0.9vw;
+  color: var(--cream-2);
+  letter-spacing: 2px;
+}
+.nextgen-foyer .poster-frame .fallback strong {
+  display: block;
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 1.8vw;
+  letter-spacing: 3px;
+  color: var(--neon-magenta);
+  margin-bottom: 8px;
+}
+.nextgen-foyer .poster-frame.missing img { display: none; }
+.nextgen-foyer .poster-frame.missing .fallback { display: flex; }
+
+/* split layout: type left, poster right */
+.nextgen-foyer .split-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.85fr;
+  gap: 6%;
+  align-items: center;
+  height: 100%;
+}
+/* min-width:0 lets the grid columns shrink below their content size so a long
+   headline or poster can't force horizontal overflow that clips the corner
+   wordmark (.ng-topline). */
+.nextgen-foyer .split-text { min-width: 0; }
+.nextgen-foyer .split-layout .poster-frame {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  justify-self: end;
+  max-width: 460px;
+}
+.nextgen-foyer .split-text > * { margin-left: 0; }
+
+/* Lower-third (TV-news band) — ported from popcorn-foyer.html for parity.
+   Not yet wired to a template, kept here so the type tier matches the source. */
+.nextgen-foyer .lower-third {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12%;
+  padding: 0 8%;
+}
+.nextgen-foyer .lower-third-bar {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid var(--poster-yellow);
+  background: rgba(10, 6, 18, 0.85);
+  box-shadow: var(--glow-yellow);
+}
+.nextgen-foyer .lower-third-tag {
+  background: var(--poster-yellow);
+  color: var(--ink);
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 1.7vw;
+  letter-spacing: 3px;
+  padding: 16px 24px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+.nextgen-foyer .lower-third-body {
+  flex: 1;
+  padding: 16px 24px;
+  color: var(--cream);
+  font-size: min(1.38vw, 2vh);
+  align-self: center;
+}
+
+/* Photo-gallery grid — rehearsal (preshow) + cast montage (postshow).
+   Copied from popcorn-foyer.html .photo-grid. Each cell shows the neon
+   "photo pending" fallback until Chris's photos land in assets/photos/. */
+.nextgen-foyer .photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5%;
+  margin-top: 22px;
+  height: 54%;
+}
+.nextgen-foyer .photo-grid .poster-frame {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+/* Portrait-safe variant: a bounded cell height (like the base .photo-grid
+   above) taller than the landscape 54% to give 2:3 posters more headroom,
+   with object-fit: contain so each poster renders whole rather than being
+   cropped or, as height: auto previously did, sized from width alone and
+   overflowing the slide at 1920x1080. Landscape grids are untouched. */
+.nextgen-foyer .photo-grid.portrait-safe {
+  height: 62%;
+}
+.nextgen-foyer .photo-grid.portrait-safe .poster-frame {
+  width: 100%;
+  height: 100%;
+}
+.nextgen-foyer .photo-grid.portrait-safe .poster-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Interval countdown */
+.nextgen-foyer .countdown-display {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 13vw;
+  line-height: 0.9;
+  letter-spacing: 5px;
+  color: var(--white);
+  text-shadow: var(--glow-cyan);
+}
+.nextgen-foyer .countdown-display.is-label {
+  font-size: 6vw;
+}
+.nextgen-foyer .countdown-caption {
+  margin-top: 34px;
+  color: var(--cream-2);
+}
+
+/* Coming-up "scan to book" QR + ticket CTA */
+.nextgen-foyer .book-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 22px;
+}
+.nextgen-foyer .book-qr {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.nextgen-foyer .book-qr-frame {
+  width: 8vw;
+  max-width: 120px;
+  aspect-ratio: 1 / 1;
+  background: #FFFFFF;
+  border: 2px solid var(--neon-cyan);
+  border-radius: 6px;
+  box-shadow: var(--glow-cyan);
+  padding: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nextgen-foyer .book-qr-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.nextgen-foyer .book-qr-fallback {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  color: #111;
+  letter-spacing: 2px;
+}
+.nextgen-foyer .book-qr-caption {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace QR caption, not themed */
+  font-size: min(1.05vw, 1.5vh);
+  color: var(--neon-cyan);
+  letter-spacing: 2px;
+  margin-top: 9px;
+  text-transform: uppercase;
+}
+.nextgen-foyer .ticket-cta {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace URL/CTA run, not themed */
+  font-size: min(1.5vw, 2vh);
+  color: var(--neon-cyan);
+  letter-spacing: 1.5px;
+  text-transform: none;
+}
+.nextgen-foyer .tickets-pending {
+  margin-top: 22px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace status line, not themed */
+  font-size: min(1.3vw, 1.8vh);
+  color: var(--cream-2);
+  letter-spacing: 1px;
+  text-transform: none;
+  opacity: 0.85;
+}
+
+/* Postshow archive and coming-soon treatments. */
+.nextgen-foyer .poster-frame.muted {
+  border-color: rgba(200, 185, 216, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(200, 185, 216, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.nextgen-foyer .poster-frame.feature {
+  border-color: var(--poster-yellow);
+  box-shadow:
+    0 0 0 1px rgba(255, 212, 52, 0.5),
+    0 0 26px rgba(177, 29, 46, 0.45),
+    0 14px 40px rgba(0, 0, 0, 0.7);
+}
+.nextgen-foyer .archive-thumb-wrap {
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr;
+  gap: 5%;
+  align-items: center;
+  margin-top: 10px;
+}
+.nextgen-foyer .archive-thumb-wrap .poster-frame {
+  width: 100%;
+  max-width: 260px;
+  max-height: 320px;
+  aspect-ratio: 3 / 4;
+  justify-self: end;
+}
+.nextgen-foyer .archive-text .body { max-width: none; font-size: min(1.34vw, 2.1vh); }
+.nextgen-foyer .archive-attribution {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace attribution/date run, not themed */
+  font-size: min(1.08vw, 1.55vh);
+  color: var(--cream-2);
+  letter-spacing: 2px;
+  margin-top: 10px;
+}
+.nextgen-foyer .archive-attribution .attr-name { color: var(--neon-cyan); }
+.nextgen-foyer .review-quote {
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-style: italic;
+  font-size: min(1.45vw, 2.1vh);
+  line-height: 1.5;
+  color: var(--cream);
+  border-left: 2px solid var(--neon-cyan);
+  padding-left: 18px;
+  margin: 10px 0;
+  max-width: 90%;
+}
+.nextgen-foyer .review-quote .source {
+  display: block;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace source/URL, not themed */
+  font-size: min(1.08vw, 1.55vh);
+  color: var(--cream-2);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+/* Visiting-company templates. */
+.nextgen-foyer .tour-list {
+  list-style: none;
+  margin-top: 30px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 80%;
+}
+.nextgen-foyer .tour-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  font-family: var(--font-body);
+  font-size: min(1.4vw, 2vh);
+  color: var(--cream);
+}
+.nextgen-foyer .tour-list li.highlight {
+  font-family: var(--font-headline);
+  font-size: min(2.2vw, 3.2vh);
+  color: var(--colour-accent);
+}
+.nextgen-foyer .tour-list .tour-when {
+  flex: 0 0 auto;
+  min-width: 200px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace date/time run, not themed */
+  font-size: 0.85em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+}
+.nextgen-foyer .tour-list li.highlight .tour-when {
+  color: var(--colour-accent);
+}
+.nextgen-foyer .tour-list .tour-venue {
+  flex: 1 1 auto;
+}
+
+.nextgen-foyer .holding-slide {
+  text-align: center;
+}
+.nextgen-foyer .holding-slide .headline {
+  font-size: clamp(48px, 7vw, 120px);
+}
+.nextgen-foyer .holding-message {
+  margin-top: 28px;
+  font-family: var(--font-headline);
+  font-size: min(2.4vw, 3.4vh);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--colour-accent);
+}
+.nextgen-foyer .holding-sub {
+  margin-top: 14px;
+  font-family: var(--font-body);
+  font-size: min(1.3vw, 1.9vh);
+  color: var(--cream-2);
+}
+
+/* Phase tonal overrides, expressed entirely in theme tokens: ground comes from
+   --ink (== --colour-background), tints from --colour-primary/--colour-accent.
+   Tint strength is driven by the show's phase_intensity (theme-loader.js sets
+   --phase-intensity-interval/-postshow on :root) so a show can dim its late
+   phases, per Lovett's postshow: 0.6. Shape only (a soft radial lift over a
+   vertical ground gradient) is carried over from the original signed-off
+   design — the colour source and strength are now per-show, not Popcorn's. */
+body.nextgen-foyer[data-phase="interval"] .ng-shell {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 30%, color-mix(in srgb, var(--colour-primary) calc(var(--phase-intensity-interval, 0.9) * 18%), transparent), transparent 70%),
+    radial-gradient(ellipse 70% 70% at 25% 75%, color-mix(in srgb, var(--colour-accent) calc(var(--phase-intensity-interval, 0.9) * 10%), transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+body.nextgen-foyer[data-phase="interval"] .slide .headline { text-shadow: var(--glow-cyan); }
+body.nextgen-foyer[data-phase="interval"] .slide .eyebrow:not(.warn):not(.alert):not(.calm) {
+  color: var(--poster-yellow);
+  text-shadow: var(--glow-yellow);
+}
+body.nextgen-foyer[data-phase="interval"] .on-air-dot {
+  background: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+body.nextgen-foyer[data-phase="postshow"] .ng-shell {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 60%, color-mix(in srgb, var(--colour-accent) calc(var(--phase-intensity-postshow, 0.65) * 8%), transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+body.nextgen-foyer[data-phase="postshow"] .slide .headline {
+  text-shadow:
+    0 0 4px color-mix(in srgb, var(--white) 40%, transparent),
+    0 0 18px color-mix(in srgb, var(--lavender) 20%, transparent);
+}
+
+/* Authentic full-frame video: no ambient, labels, captions, or brand overlay. */
+body.nextgen-foyer.media-active .ng-ambient,
+body.nextgen-foyer.media-active .on-air,
+body.nextgen-foyer.media-active .ng-topline,
+body.nextgen-foyer.media-active .ng-caption,
+body.nextgen-foyer.media-active .criterion-mark {
+  display: none;
+}
+body.nextgen-foyer.media-active .ng-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+}
+body.nextgen-foyer.media-active .ng-media {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+/* unknown-template fallback card uses the alert eyebrow + standard body. */
+
+/* =====================================================================
+   ENGINE REVIEW BAR (?preview=1 only)
+   Calm/dark reviewer chrome, clearly "not part of the foyer". Built by
+   nextgen-foyer.html only when ?preview=1, so broadcast capture never
+   sees it. Mirrors the retired mockup's .preview-header look.
+   ===================================================================== */
+body.nextgen-foyer.ng-preview {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #050309;
+  --preview-scale: 1;
+  --preview-left: 0px;
+  --preview-top: 0px;
+}
+
+body.nextgen-foyer.ng-preview .ng-shell {
+  position: fixed;
+  top: var(--preview-top);
+  left: var(--preview-left);
+  width: 1920px;
+  height: 1080px;
+  transform: scale(var(--preview-scale));
+  transform-origin: top left;
+}
+
+.ng-preview-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 8px 16px;
+  background: var(--ink);
+  border-bottom: 1px solid var(--colour-primary);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+  font-family: 'JetBrains Mono', monospace; /* fixed: reviewer-only chrome, never broadcast, not themed */
+}
+.ng-preview-bar .ngp-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.ng-preview-bar .ngp-title {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--cream);
+}
+.ng-preview-bar .ngp-stamp {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--cream-2);
+}
+.ng-preview-bar .ngp-group {
+  display: flex;
+  background: var(--ink);
+  border: 1px solid var(--colour-primary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.ng-preview-bar .ngp-btn {
+  background: transparent;
+  color: var(--cream-2);
+  border: none;
+  padding: 7px 12px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: reviewer-only chrome, never broadcast, not themed */
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+}
+.ng-preview-bar .ngp-btn:hover {
+  background: var(--ink-2);
+  color: var(--cream);
+}
+.ng-preview-bar .ngp-btn.active {
+  background: var(--colour-accent);
+  color: var(--ink);
+  font-weight: 700;
+}
+.ng-preview-bar .ngp-btn[data-phase="interval"].active,
+.ng-preview-bar .ngp-btn[data-phase="postshow"].active { background: var(--colour-primary); }
+.ng-preview-bar .ngp-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+}
+.ng-preview-bar .ngp-select,
+.ng-preview-bar .ngp-input {
+  background: var(--ink);
+  color: var(--cream);
+  border: 1px solid var(--colour-primary);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: reviewer-only chrome, never broadcast, not themed */
+  font-size: 11px;
+}
+.ng-preview-bar .ngp-input { width: 58px; }
+.ng-preview-bar .ngp-select { max-width: 260px; }
+
+/* Feature slide — large image with caption, no portrait letterboxing. */
+.nextgen-foyer .feature-layout {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 28px;
+  height: 100%;
+  width: 100%;
+  align-items: end;
+}
+.nextgen-foyer .feature-hero {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nextgen-foyer .feature-hero .poster-frame {
+  width: 100%;
+  height: 100%;
+}
+.nextgen-foyer .feature-hero .poster-frame img {
+  object-fit: contain;
+}
+.nextgen-foyer .feature-caption { min-width: 0; }

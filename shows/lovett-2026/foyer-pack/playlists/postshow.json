@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "phase": "postshow",
+  "show_id": "lovett-2026",
+  "policy": {
+    "min_dwell_seconds": 9,
+    "max_dwell_seconds": 15,
+    "max_words_per_screen": 60,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 250,
+    "audio_allowed": false,
+    "group_rotation": [
+      "boondog",
+      "talking-point",
+      "criterion"
+    ]
+  },
+  "_notes": "About 20:45 until the Autopilot LATE step at 22:15, then a dimmed loop of the same phase runs to closedown at 23:15. The longest loop the theatre has run, so the pool is deep (19 items) and grouped: a Boondog slide, a talking point and a Criterion message each recur in turn. Block A leads with Boondog - David's decision: a visiting company's postshow should sell the visiting company, so the usual 'from the archives' rotation is replaced entirely. ALL COPY IS DRAFT pending Boondog approval.",
+  "items": [
+    {
+      "kind": "one-shot",
+      "id": "thank-you",
+      "template": "thank-you",
+      "trigger": "start",
+      "dwell_seconds": 15
+    },
+    {
+      "kind": "anchor",
+      "id": "boondog-profile",
+      "template": "company-profile",
+      "every_n": 4,
+      "dwell_seconds": 14
+    },
+    {
+      "kind": "anchor",
+      "id": "lovett-tour",
+      "template": "company-tour",
+      "every_n": 5,
+      "dwell_seconds": 15,
+      "_note": "Chester Storyhouse 21-22 August is highlighted - the week after us."
+    },
+    {
+      "kind": "wildcard",
+      "id": "boondog-productions-1",
+      "template": "company-productions",
+      "tag": "boondog",
+      "weight": 2,
+      "dwell_seconds": 14,
+      "offset": 0,
+      "limit": 3,
+      "portrait": true,
+      "content": {
+        "eyebrow": "Also by BoonDog Theatre"
+      },
+      "_note": "Page 1 of 2. Orlando, The State Vs John Hayes, Pennyroyal - the awards and London-producer end of their work. Three portrait posters per slide, not six: six in one grid is unreadable across a bar."
+    },
+    {
+      "kind": "wildcard",
+      "id": "boondog-productions-2",
+      "template": "company-productions",
+      "tag": "boondog",
+      "weight": 2,
+      "dwell_seconds": 14,
+      "offset": 3,
+      "limit": 3,
+      "portrait": true,
+      "content": {
+        "eyebrow": "More from BoonDog Theatre",
+        "footline": "boondogtheatre.com"
+      },
+      "_note": "Page 2 of 2. Piskie, Goody, Showmanship - the Roslyn/Firth two-handers closest in shape to Lovett. If visiting_company.json ever drops below four productions this slide self-suppresses rather than rendering an empty grid."
+    },
+    {
+      "kind": "wildcard",
+      "id": "fringe-festival-support",
+      "template": "did-you-know",
+      "tag": "boondog",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "They also do this",
+        "body": "BoonDog run <b>Fringe Festival Support</b> - a chat show, backed by the Mental Health Foundation, helping Fringe performers and crew look after themselves through the most stressful month of their year.",
+        "image_local": "assets/derived/company-lucy-jamie.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "tour-poster",
+      "template": "feature",
+      "tag": "boondog",
+      "weight": 1,
+      "dwell_seconds": 13,
+      "source": "assets/derived/tour-poster.jpg",
+      "content": {
+        "eyebrow": "On tour",
+        "headline": "Lovett, 2026",
+        "body": "BoonDog's own tour poster. The full list of dates is on the next slide - and at boondogtheatre.com."
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "credits",
+      "template": "feature",
+      "tag": "boondog",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/derived/photo-red-wide.jpg",
+      "content": {
+        "eyebrow": "Tonight's company",
+        "headline": "Lovett",
+        "body": "Written and performed by <b>Lucy Roslyn</b> <span class=\"sep\">&#8226;</span> Directed by <b>Jamie Firth</b> <span class=\"sep\">&#8226;</span> Sound design by <b>Annie May Fletcher</b> <span class=\"sep\">&#8226;</span> Artwork by <b>Madison Coby</b>",
+        "footline": "Production photographs by BoonDog Theatre - Andrew Perry and Clive Boursnell"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "talking-point",
+      "template": "did-you-know",
+      "tag": "talking-point",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "So - when did she become the Mrs Lovett you thought you knew?",
+        "body": "Discuss. The bar is open.",
+        "image_local": "assets/derived/photo-hands-portrait.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "lovett-family-tree",
+      "template": "did-you-know",
+      "tag": "talking-point",
+      "weight": 2,
+      "dwell_seconds": 15,
+      "content": {
+        "headline": "The long road to her own story",
+        "body": "<b>1846</b> a penny dreadful <span class=\"sep\">&#8226;</span> <b>1847</b> the stage melodrama <span class=\"sep\">&#8226;</span> <b>1936</b> the Tod Slaughter film <span class=\"sep\">&#8226;</span> <b>1979</b> Sondheim <span class=\"sep\">&#8226;</span> <b>2007</b> the Burton film <span class=\"sep\">&#8226;</span> <b>2025</b> <i>Lovett</i>, in which she finally tells it herself.",
+        "image_local": "assets/derived/artwork-square.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "fleet-street",
+      "template": "did-you-know",
+      "tag": "talking-point",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "186 Fleet Street",
+        "body": "The legend puts Todd's barber shop on Fleet Street and Mrs Lovett's pie shop around the corner in Bell Yard - with a conveniently placed tunnel between them. None of it is true. All of it is excellent.",
+        "image_local": "assets/plates/fleet-street.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "founded-on-fact",
+      "template": "did-you-know",
+      "tag": "talking-point",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "\"Founded on fact\"",
+        "body": "That is what Victorian readers were told. Historians have never found any evidence that Sweeney Todd - or his pie-making partner - existed at all.",
+        "image_local": "assets/plates/penny-dreadful-cover.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "and-god",
+      "template": "did-you-know",
+      "tag": "talking-point",
+      "weight": 2,
+      "dwell_seconds": 13,
+      "content": {
+        "headline": "And her relationship with God",
+        "body": "One Fringe critic ended their five-star review by recommending you pair this play with a long gulp of communion wine.",
+        "image_local": "assets/plates/communion-cup.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "the-staging",
+      "template": "did-you-know",
+      "tag": "talking-point",
+      "weight": 1,
+      "dwell_seconds": 12,
+      "content": {
+        "headline": "One performer",
+        "body": "A butcher's block, a whetstone, a knife, a cup, a hunk of bread. Everything else is Eleanor.",
+        "image_local": "assets/derived/photo-block-portrait.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-underdog",
+      "template": "next-production-postshow",
+      "tag": "criterion",
+      "weight": 2,
+      "production_id": "underdog-2026",
+      "production_ref": "next_productions.json#underdog-2026",
+      "dwell_seconds": 13
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-shakespeare",
+      "template": "next-production-2",
+      "tag": "criterion",
+      "weight": 1,
+      "production_id": "shakespeare-in-love-2026",
+      "production_ref": "next_productions.json#shakespeare-in-love-2026",
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "volunteer",
+      "template": "volunteer",
+      "tag": "criterion",
+      "weight": 2,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "big-build",
+      "template": "criterion-charity",
+      "tag": "criterion",
+      "weight": 2,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-story",
+      "template": "did-you-know-criterion",
+      "tag": "criterion",
+      "weight": 1,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-stays-open",
+      "template": "bar-stays-open",
+      "tag": "criterion",
+      "weight": 1,
+      "dwell_seconds": 11
+    }
+  ]
+}

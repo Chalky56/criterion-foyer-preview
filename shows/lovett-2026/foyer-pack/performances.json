@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "show_id": "lovett-2026",
+  "_source": "Criterion event page criteriontheatre.co.uk/event/10652 (14 Aug, 19:30-20:45) plus Jamie Firth by WhatsApp 2026-08-01: 70 minutes, no interval. Second night 15 Aug confirmed by David 2026-08-01; it is not yet on the public event page.",
+  "_bar_close_note": "bar_close 23:00 confirmed by David 2026-08-02. DELIBERATELY DIFFERENT from the Autopilot closedown at 23:15 in ../showday.json: the bar stops serving at 23:00, the AV stack keeps running for a further 15 minutes so the foyer screen is still up while the last people finish their drinks and leave. Do not 'correct' one to match the other. The engine shows 'open until <bar_close>' only when it matches HH:MM; any non-time value shows generic 'ask staff for last orders' copy and never a guessed time.",
+  "_no_interval_note": "interval_at_estimated and act_2_at_estimated are deliberately absent, not blank. Lovett runs straight through. The interval countdown must never start; the interval playlist is never routed.",
+
+  "performances": [
+    {
+      "id": "lovett-2026-night-1",
+      "date": "2026-08-14",
+      "weekday": "Friday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "20:45",
+      "bar_close": "23:00",
+      "press_night": false,
+      "matinee": false,
+      "notes": "First night. David on site to power up and arm; not present during the performance."
+    },
+    {
+      "id": "lovett-2026-night-2",
+      "date": "2026-08-15",
+      "weekday": "Saturday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "20:45",
+      "bar_close": "23:00",
+      "press_night": false,
+      "matinee": false,
+      "notes": "Second night. David in the audience."
+    }
+  ]
+}

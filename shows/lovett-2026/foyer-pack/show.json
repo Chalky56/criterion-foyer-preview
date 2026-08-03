@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "_generated": "2026-08-02",
+  "_purpose": "Lovett - BoonDog Theatre, visiting the Criterion 14-15 August 2026. A VISITING production: the Criterion is the host venue, not the producer. Company detail lives in visiting_company.json; this file carries the production itself.",
+  "_copy_status": "DRAFT pending Boondog approval. Every line of foyer copy is in shows/lovett-2026/docs/lovett-copy-for-approval.md, sent to Jamie Firth for editing. Do not treat director_quote or content_warnings as approved.",
+
+  "id": "lovett-2026",
+  "title": "Lovett",
+  "author": "Lucy Roslyn",
+  "director": "Jamie Firth",
+  "venue": "Criterion Theatre, Earlsdon, Coventry",
+  "tagline": "You may think you already know Mrs Lovett.",
+
+  "run_dates": {
+    "first": "2026-08-14",
+    "last": "2026-08-15"
+  },
+  "running_time_minutes": 70,
+  "interval_minutes": 0,
+  "_interval_note": "ZERO on purpose. Lovett runs straight through - confirmed by Jamie Firth, 2026-08-01. The interval playlist exists to satisfy the pack contract but is never routed.",
+  "house_opens_minutes_before_curtain": 30,
+
+  "image_local": "assets/derived/poster-portrait.jpg",
+  "_image_note": "Dark-ground show poster (artwork by Madison Coby). Portrait, for the engine's split-layout poster frame. There is deliberately no full-bleed 16:9 hero - see docs/asset-provenance.md.",
+
+  "tickets_url": "https://criteriontheatre.co.uk/event/10652",
+  "tickets_on_sale": true,
+
+  "synopsis": "Newly widowed, Mrs Lovett needs to find a way to survive. Using skills learned from a whaler father, a courtesan mother and a butcher husband, Eleanor \"recalibrates\" her life - and her relationship with God. An origin story set before her infamous partnership with Sweeney Todd.",
+
+  "cast": [
+    {
+      "actor": "Lucy Roslyn",
+      "name": "Lucy Roslyn",
+      "role": "Eleanor Lovett",
+      "image_local": "assets/derived/photo-lean-portrait.jpg",
+      "note": "Written and performed by. Co-founder and Creative Director of BoonDog Theatre."
+    }
+  ],
+  "_cast_note": "The `cast` template reads member.role and member.actor - NOT member.name. Both are set here so the slide renders and the data stays readable. A one-person cast list is a thin slide, so the preshow uses the writer template (about-ben, which reads foyer_content.writer) for Lucy instead; `cast` is kept correct in case anything else reads it.",
+
+  "_content_warnings_note": "STRUCTURE MATTERS: warning-top3 filters on tier == 'top' and reads .headline and .detail; warning-full selects by .id via item.content.warning_ids. A flat array of strings renders an EMPTY list - it was flat until 2026-08-03 and the slide was silently blank. Keep this shape.",
+  "_content_warnings_status": "ALL DRAFT - David's wording, drawn from reviews and the published synopsis, NOT from Boondog. Every entry is confidence: 'draft' until Jamie or Lucy confirm. Three alternative framings are offered in docs/lovett-copy-for-approval.md B10. Replace wholesale with the company's own wording if they have one.",
+  "content_warnings": [
+    {
+      "id": "strong-language",
+      "headline": "Strong language",
+      "detail": "Contains frequent strong language throughout.",
+      "tier": "top",
+      "confidence": "draft"
+    },
+    {
+      "id": "violence-and-death",
+      "headline": "Violence and death",
+      "detail": "References to violence, killing, butchery and the handling of human remains.",
+      "tier": "top",
+      "confidence": "draft"
+    },
+    {
+      "id": "age-guidance",
+      "headline": "Age guidance 14+",
+      "detail": "Recommended for ages 14 and above. The Criterion advises caution but does not enforce an age limit.",
+      "tier": "top",
+      "confidence": "draft"
+    },
+    {
+      "id": "bereavement",
+      "headline": "Bereavement and grief",
+      "detail": "The play opens on a recent widowhood and returns to loss throughout.",
+      "tier": "secondary",
+      "confidence": "draft"
+    },
+    {
+      "id": "poverty",
+      "headline": "Poverty and destitution",
+      "detail": "Sustained depiction of hunger, debt and the choices poverty forces.",
+      "tier": "secondary",
+      "confidence": "draft"
+    },
+    {
+      "id": "sex-work",
+      "headline": "References to sex work",
+      "detail": "Eleanor's mother was a courtesan; the play discusses sex work without depicting it.",
+      "tier": "secondary",
+      "confidence": "draft"
+    },
+    {
+      "id": "religious-content",
+      "headline": "Religious content",
+      "detail": "Eleanor's relationship with God is central, and is treated with irreverence as well as seriousness.",
+      "tier": "secondary",
+      "confidence": "draft"
+    },
+    {
+      "id": "opening-darkness",
+      "headline": "Opens in darkness",
+      "detail": "The performance begins in a full blackout, with sound only, for around a minute.",
+      "tier": "secondary",
+      "confidence": "draft",
+      "_note": "Not a content warning so much as a sensory one - useful for anxious patrons and for anyone arriving late. Jamie may prefer it cut so the opening lands cold; it is flagged as optional in the copy deck."
+    },
+    {
+      "id": "no-interval",
+      "headline": "No interval",
+      "detail": "The play runs straight through for approximately 70 minutes.",
+      "tier": "secondary",
+      "confidence": "high"
+    }
+  ],
+
+  "foyer_content": {
+    "writer": {
+      "body": "Co-founder and Creative Director of <b>BoonDog Theatre</b>. <i>Lovett</i> premiered at the Edinburgh Festival Fringe in 2025 and has toured the UK ever since - including a preview at the Belgrade, just down the road, in July 2025.",
+      "footline": "Written and performed by Lucy Roslyn",
+      "image_local": "assets/derived/photo-lean-portrait.jpg"
+    },
+    "director": {
+      "quote": "Everyone arrives thinking they know who Mrs Lovett is. The play happens in the gap between that and who she actually was.",
+      "attribution": "Jamie Firth, director",
+      "image_local": "assets/derived/photo-hands-portrait.jpg",
+      "_status": "DRAFT - written in Jamie's voice from Boondog's published material. NOT a real quotation. Two alternatives offered in the copy deck. Must not go on screen at the theatre until Jamie picks or replaces it."
+    },
+    "about_play": {
+      "headline": "Morality becomes a moveable feast",
+      "body": "You may think you already know Mrs Lovett, but this new play explores what made her: the brutal choices and disappointments of a life in poverty. When the difference is life or death, morality becomes a moveable feast - and Eleanor is getting hungry...",
+      "image_local": "assets/derived/photo-red-portrait.jpg"
+    },
+    "staging": {
+      "headline": "One performer",
+      "body": "A butcher's block, a whetstone, a knife, a cup, a hunk of bread. Everything else is Eleanor.",
+      "image_local": "assets/derived/photo-block-portrait.jpg"
+    },
+    "venue": {
+      "body": "The Criterion has staged <b>over 450 productions</b> since 1955, in a building that is <b>over 140 years old</b> - an 1884 Methodist chapel that became a theatre in 1960. It is run entirely by its members: <b>no paid employees</b>, on stage or off.",
+      "footline": "Registered charity 1161430 <span class=\"sep\">&#8226;</span> A volunteer-run theatre in Earlsdon, Coventry"
+    },
+    "volunteer": {
+      "body": "Actors, makers, technicians, front-of-house, bar and box office - every part of the Criterion is volunteer-run, and new members are always welcome. No experience needed to get involved on stage, backstage, or around the building.",
+      "footline": "Ask front-of-house, or visit criteriontheatre.co.uk/join"
+    }
+  },
+
+  "press_quotes": [
+    { "quote": "One of the most relentless, compelling pieces of work at the Fringe... An extraordinarily powerful hour.", "source": "Broadway Baby" },
+    { "quote": "An entirely disarming performance, precise, committed and unflinching... This production is one that you can really sink your teeth into.", "source": "Binge Fringe" },
+    { "quote": "This brilliant script, paired with even more powerful acting, had me mesmerised... As exciting and captivating as the biggest of productions.", "source": "Radio Exe" }
+  ],
+  "_press_quotes_note": "Exact wording lifted from the Criterion event page (criteriontheatre.co.uk/event/10652), where the venue is already using them - i.e. cleared for promotional use.",
+
+  "credits": {
+    "lines": [
+      "Written and performed by Lucy Roslyn",
+      "Directed by Jamie Firth",
+      "Sound design by Annie May Fletcher",
+      "Artwork by Madison Coby"
+    ],
+    "photo_credit": "Production photographs by BoonDog Theatre (Andrew Perry, Clive Boursnell)"
+  },
+
+  "phase_policy": {
+    "foh_allowed_phase_nudges": [],
+    "audio_allowed": false,
+    "silent_first": true,
+    "audio_allowed_note": "Silent by default, per house convention. An X32 route to feed RNID hearing-loop mic audio to the Samsung is being built by Dave C for the performance-phase camera scene only. If it is not ready, the camera runs silent and nothing else changes. No foyer SLIDE ever carries audio."
+  },
+
+  "branding_pack_ref": "../branding/theme.json",
+  "next_productions_ref": "next_productions.json",
+  "performances_ref": "performances.json",
+  "visiting_company_ref": "visiting_company.json",
+
+  "_archive_memories_note": "Deliberately absent. The postshow 'from the archives' rotation is replaced for this show by a BoonDog promotion block - David's decision, 2026-08-01. A visiting company's postshow should sell the visiting company.",
+
+  "_auth_comment": "No auth block. Lovett is a foyer-only show pack; the operator resolves auth from the active-show pack, so if lovett-2026 is made active the operator passcodes must be carried across from _criterion-default first. FLAG THIS AT DEPLOY - see the 2026-07-16 lifecycle-smoke Finding 1, which is exactly this failure."
+}

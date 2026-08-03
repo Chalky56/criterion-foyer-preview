@@ -22,7 +22,14 @@
       "id": "thank-you",
       "template": "thank-you",
       "trigger": "start",
-      "dwell_seconds": 15
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "From everyone at the Criterion",
+        "headline": "Thank you for coming",
+        "body": "For making the journey to Earlsdon, and for giving your evening to Eleanor Lovett. We hope you'll come back.",
+        "footline": "LOVETT <span class=\"sep\">&#8226;</span> BoonDog Theatre"
+      },
+      "_note": "First slide of postshow, so the first thing the audience sees coming out. Explicit content because the template's old default was Popcorn's June-heatwave apology and thanked people for 'supporting amateur theatre' - wrong on both counts for a visiting professional company in August."
     },
     {
       "kind": "anchor",

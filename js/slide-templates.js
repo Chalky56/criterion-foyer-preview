@@ -711,13 +711,21 @@ export const slideTemplates = {
   },
 
   // X02 — postshow thanks
-  "thank-you": (item, ctx) => `<p class="eyebrow calm">From everyone at ${ctx.show?.venue || "the theatre"}</p>
-      <h2 class="headline medium">THANK YOU</h2>
-      <p class="body">
-        For supporting amateur theatre in Coventry. For making the journey to Earlsdon.
-        For sitting in the stifling heat with us &mdash; we noticed, and we're sorry.
-        Coming soon to this auditorium: air-conditioning. Probably.
-      </p>`,
+  /* Per-item content wins, then the pack's own copy, then a neutral default.
+     The previous default was Popcorn's June-2026 heatwave apology, hard-coded
+     here: it rendered on every show's postshow regardless of season or company. */
+  "thank-you": (item, ctx) => {
+    const content = item.content || {};
+    const packCopy = ctx.show?.foyer_content?.thank_you || {};
+    const eyebrow = content.eyebrow || packCopy.eyebrow || `From everyone at ${ctx.show?.venue || "the theatre"}`;
+    const headline = content.headline || packCopy.headline || "THANK YOU";
+    const body = content.body || packCopy.body
+      || "For making the journey to Earlsdon, and for giving us your evening.";
+    const footline = content.footline || packCopy.footline || "";
+    return `<p class="eyebrow calm">${eyebrow}</p>
+      <h2 class="headline medium">${upper(headline)}</h2>
+      <p class="body">${body}</p>${footline ? `<p class="footline">${footline}</p>` : ""}`;
+  },
 
   "archive-intro": () => `<p class="eyebrow calm">From the theatre archive</p>
       <h2 class="headline medium outline">FROM THE ARCHIVES</h2>

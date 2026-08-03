@@ -344,8 +344,11 @@ export const slideTemplates = {
           <h2 class="headline medium">${upper(show.title)}</h2>
           <p class="subhead">A play by ${show.author || ""} &mdash; directed by ${show.director || ""}</p>
           <p class="body">
-            Running time approximately <b>${minutesToText(show.running_time_minutes)}</b> including one
-            <b>${show.interval_minutes || 0}-minute interval</b>${curtain ? `. Curtain at <b>${curtain}</b>` : ""}.
+            Running time approximately <b>${minutesToText(show.running_time_minutes)}</b>${
+              Number(show.interval_minutes) > 0
+                ? ` including one <b>${Number(show.interval_minutes)}-minute interval</b>`
+                : `, <b>straight through with no interval</b>`
+            }${curtain ? `. Curtain at <b>${curtain}</b>` : ""}.
           </p>
           <p class="footline">${houseOpens ? `House opens ${houseOpens}` : "House opening time at the box office"}${curtain ? ` <span class="sep">&#8226;</span> Curtain ${curtain}` : ""}${intervalAt ? ` <span class="sep">&#8226;</span> Interval ~${intervalAt}` : ""}</p>
         </div>

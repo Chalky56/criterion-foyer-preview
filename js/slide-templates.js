@@ -24,13 +24,42 @@
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const ASSET_CACHE = "20260909motion3";
 
 function asset(ctx, path) {
   if (!path) {
     return "";
   }
   const base = (ctx && ctx.foyerPackBase) ? ctx.foyerPackBase.replace(/\/$/, "") : "";
-  return `${base}/${String(path).replace(/^\//, "")}`;
+  const suffix = ASSET_CACHE ? `?v=${ASSET_CACHE}` : "";
+  return `${base}/${String(path).replace(/^\//, "")}${suffix}`;
+}
+
+function motionEnabled(ctx, itemOverride) {
+  if (typeof itemOverride === "boolean") return itemOverride;
+  return ctx.theme?.motion?.photos !== false;
+}
+
+function particlesEnabled(ctx, itemOverride) {
+  if (itemOverride === false) return false;
+  if (itemOverride === true) return ctx.theme?.motion?.particles !== false;
+  return ctx.theme?.motion?.particles === true;
+}
+
+function seededRandom(seed) {
+  // Mulberry32 PRNG. Seed should be a stable string/number per slide.
+  let t = Number(seed);
+  if (Number.isNaN(t)) {
+    for (let i = 0; i < String(seed).length; i += 1) {
+      t = (t * 31 + String(seed).charCodeAt(i)) >>> 0;
+    }
+  }
+  return function next() {
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 function upper(value) {
@@ -84,12 +113,62 @@ function posterFrame(ctx, { src, alt = "", classes = "", fallback }) {
     </div>`;
 }
 
+function particleOverlay(item, ctx, { seed = "foyer", count = 15 } = {}) {
+  if (item?.sales_intent !== true || !particlesEnabled(ctx)) {
+    return "";
+  }
+  const rand = seededRandom(seed);
+  const motes = [];
+  for (let i = 0; i < count; i += 1) {
+    // Keep motes in spare margins (top/bottom bands and left/right strips),
+    // avoiding the central text/price/QR focus area.
+    const edge = rand();
+    let left;
+    let top;
+    if (edge < 0.25) {
+      left = 2 + rand() * 18;
+      top = 2 + rand() * 96;
+    } else if (edge < 0.5) {
+      left = 80 + rand() * 18;
+      top = 2 + rand() * 96;
+    } else if (edge < 0.75) {
+      left = 2 + rand() * 96;
+      top = 2 + rand() * 18;
+    } else {
+      left = 2 + rand() * 96;
+      top = 80 + rand() * 18;
+    }
+    const size = 4 + Math.round(rand() * 8); // 4-12 px
+    const opacity = 0.45 + rand() * 0.3; // Visible at foyer distance, no flashing.
+    const duration = 16 + Math.round(rand() * 14); // 16-30 s
+    const delay = -Math.round(rand() * duration);
+    const driftX = -30 + Math.round(rand() * 60);
+    const driftY = -60 + Math.round(rand() * 120);
+    const style = `--gd-left:${left.toFixed(2)}%;--gd-top:${top.toFixed(2)}%;--gd-size:${size}px;--gd-opacity:${opacity.toFixed(3)};--gd-duration:${duration}s;--gd-delay:${delay}s;--gd-drift-x:${driftX}px;--gd-drift-y:${driftY}px;`;
+    motes.push(`<span style="${style}" data-mote="${i}"></span>`);
+  }
+  return `<div class="gold-dust" aria-hidden="true" data-particle-seed="${seed}">${motes.join("")}</div>`;
+}
+
+function photoFrame(ctx, { src, alt = "", classes = "", fallback, motion = null, cover = false }) {
+  const url = asset(ctx, src);
+  const wantsMotion = motionEnabled(ctx, motion);
+  const motionAttr = wantsMotion ? "true" : "false";
+  const modeClass = cover ? "cover" : "contain";
+  const extraClasses = String(classes).split(/\s+/).filter(name => name && name !== "cover" && name !== "contain").join(" ");
+  const safeFallback = fallback || `<strong>IMAGE</strong><span>pending</span>`;
+  return `<div class="photo-presentation ${modeClass}${extraClasses ? ` ${extraClasses}` : ""}" data-motion="${motionAttr}">
+      <div class="photo-window"><img class="photo-fg" src="${url}" alt="${alt}" onerror="this.closest('.photo-presentation').classList.add('missing')"></div>
+      <div class="photo-fallback">${safeFallback}</div>
+    </div>`;
+}
+
 function findProduction(ctx, id, index = 0) {
   const list = (ctx && ctx.nextProductions && ctx.nextProductions.productions) || [];
   return (id ? list.find(prod => prod.id === id) : null) || list[index] || null;
 }
 
-function findMemory(ctx, source) {
+function findMemory(ctx, source, memoryId) {
   const list = (ctx && ctx.archiveMemories && ctx.archiveMemories.memories) || [];
   const sourceToMemory = {
     "slides/archive-crime-and-punishment-1971.png": "crime-and-punishment-1971-nails",
@@ -101,8 +180,8 @@ function findMemory(ctx, source) {
     "slides/archive-inherit-the-wind-1962.png": "inherit-the-wind-1962-first-visit",
     "slides/archive-return-to-forbidden-planet-2005.png": "return-to-forbidden-planet-2005-wardrobe",
   };
-  const memoryId = sourceToMemory[source];
-  return list.find(memory => memory.id === memoryId || memory.image_local === source) || null;
+  const id = memoryId || sourceToMemory[source];
+  return list.find(memory => memory.id === id || memory.image_local === source) || null;
 }
 
 function productionYear(production) {
@@ -172,6 +251,70 @@ function bookBlock(prod, ctx) {
   return `<p class="tickets-pending">Tickets on sale nearer the date</p>`;
 }
 
+function storyMontage(item, ctx) {
+  const show = ctx.show || {};
+  const content = item.content || {};
+  const packCopy = item.story_key && show.foyer_content?.story_montages?.[item.story_key]
+    ? show.foyer_content.story_montages[item.story_key]
+    : {};
+  const frames = (content.frames && content.frames.length ? content.frames : packCopy.frames) || [];
+  const usableFrames = frames.filter(f => f && f.source);
+  if (!usableFrames.length) {
+    return `<p class="eyebrow alert">Story montage</p>
+      <h2 class="headline small">MISSING FRAMES</h2>
+      <p class="body">No usable frames for ${content.headline || item.story_key || "this story"}.</p>`;
+  }
+  const eyebrow = content.eyebrow || packCopy.eyebrow || "Behind the scenes";
+  const headline = content.headline || packCopy.headline || titleFromAsset(usableFrames[0].source);
+  const body = content.body || packCopy.body || "";
+  const footline = content.footline || packCopy.footline || "";
+  const credit = content.credit || packCopy.credit || "";
+  const reviewStatus = item.review_status || content.review_status || "";
+  const draftOwner = reviewStatus === "draft"
+    ? (content.draft_owner || packCopy.draft_owner || item.draft_owner || "Department")
+    : "";
+  const draftLabel = reviewStatus === "draft"
+    ? (content.draft_label || packCopy.draft_label || `for ${draftOwner}'s approval`)
+    : "";
+  const dwell = Math.max(9, Math.min(120, Number(item.dwell_seconds) || 21));
+  const count = usableFrames.length;
+  const frameClass = count === 2 ? "story-frames-2" : (count === 1 ? "story-frames-1" : "story-frames-3");
+  const framesHtml = usableFrames.map((frame, idx) => {
+    const alt = frame.alt || frame.caption || "";
+    return `<div class="story-frame" data-frame="${idx}">
+        <div class="story-frame-photo">
+          ${photoFrame(ctx, {
+            src: frame.source,
+            alt,
+            classes: "story-photo",
+            fallback: `<strong>FRAME ${idx + 1}</strong><span>${frame.caption || "image pending"}</span>`,
+            motion: frame.motion,
+            cover: frame.cover === true,
+          })}
+        </div>
+        ${frame.caption ? `<p class="frame-caption">${frame.caption}</p>` : ""}
+      </div>`;
+  }).join("\n        ");
+  const badge = reviewStatus === "draft"
+    ? `<p class="review-badge">Draft — ${draftLabel}</p>`
+    : "";
+  return `<div class="story-montage ${frameClass}" data-story-count="${count}" data-dwell="${dwell}" style="--story-dwell:${dwell}s;">
+      <div class="story-heading">
+        <p class="eyebrow calm">${eyebrow}</p>
+        <h2 class="headline tiny">${upper(headline)}</h2>
+        ${body ? `<p class="body story-body">${body}</p>` : ""}
+      </div>
+      <div class="story-stage">
+        ${framesHtml}
+      </div>
+      <div class="story-credit">
+        ${footline ? `<p class="footline">${footline}</p>` : ""}
+        ${credit ? `<p class="footline">${credit}</p>` : ""}
+        ${badge}
+      </div>
+    </div>`;
+}
+
 // Generic large-image-with-caption feature slide.
 // The image is the hero; the text is a caption. Landscape sources are
 // presented landscape (no portrait poster letterboxing). `popcorn-feature`
@@ -188,7 +331,7 @@ function featureTemplate(item, ctx) {
   const footline = content.footline || showContent.footline || "Production feature";
   return `<div class="feature-layout">
       <div class="feature-hero">
-        ${posterFrame(ctx, {
+        ${photoFrame(ctx, {
           src: item.source,
           alt: `${title} image`,
           classes: "feature feature-hero contain",
@@ -220,7 +363,7 @@ function aboutWriterTemplate(item, ctx) {
           </p>
           ${footline ? `<p class="footline">${footline}</p>` : ""}
         </div>
-        ${posterFrame(ctx, {
+        ${photoFrame(ctx, {
           src: image_local,
           alt: show.author || "",
           classes: "contain",
@@ -239,7 +382,8 @@ function gallerySources(item, fallbackPattern) {
     return [];
   }
   if (typeof fallbackPattern === "function") {
-    const count = Number(item.fallback_count) || 3;
+    const count = Number(item.fallback_count) ||
+      Math.max(3, (Number(item.offset) || 0) + (Number(item.limit) || 3));
     return Array.from({ length: count }, (_, i) => fallbackPattern(i + 1));
   }
   return [];
@@ -256,7 +400,7 @@ function paginateSources(sources, item) {
 }
 
 function galleryFrame(ctx, src, { title = "", note = "", muted = false } = {}) {
-  return posterFrame(ctx, {
+  return photoFrame(ctx, {
     src,
     alt: title || "",
     classes: `contain${muted ? " muted" : ""}`.trim(),
@@ -267,18 +411,21 @@ function galleryFrame(ctx, src, { title = "", note = "", muted = false } = {}) {
 function castGallery(item, ctx) {
   const show = ctx.show || {};
   const content = item.content || {};
-  const sources = gallerySources(item, n => `assets/photos/performance-0${n}.jpg`);
+  const packCopy = show.foyer_content?.cast_gallery || {};
+  const sourcePattern = content.source_pattern || packCopy.source_pattern || "assets/photos/performance-0N.jpg";
+  const sources = gallerySources(item, n => String(sourcePattern).replace(/0N/, String(n).padStart(2, "0")));
   const page = paginateSources(sources, { offset: item.offset, limit: item.limit != null ? item.limit : 3 });
   if (!page.length) {
     return "";
   }
-  const eyebrow = content.eyebrow || "Tonight's company";
-  const headline = content.headline || (show.title ? `The cast of ${show.title}` : "TONIGHT'S COMPANY");
-  const footline = content.footline || "";
+  const eyebrow = content.eyebrow || packCopy.eyebrow || "Tonight's company";
+  const headline = content.headline || packCopy.headline || (show.title ? `The cast of ${show.title}` : "TONIGHT'S COMPANY");
+  const footline = content.footline || packCopy.footline || "";
+  const cellNote = content.note || packCopy.note || "cast in performance";
   const gridClass = `photo-grid${item.portrait ? " portrait-safe" : ""}`;
   const cells = page.map(src => galleryFrame(ctx, src, {
     title: titleFromAsset(src),
-    note: "cast in performance",
+    note: cellNote,
     muted: true,
   })).join("\n        ");
   return `<p class="eyebrow calm">${eyebrow}</p>
@@ -291,18 +438,21 @@ function castGallery(item, ctx) {
 function productionGallery(item, ctx) {
   const show = ctx.show || {};
   const content = item.content || {};
-  const sources = gallerySources(item, n => `assets/photos/rehearsal-0${n}.jpg`);
+  const packCopy = show.foyer_content?.production_gallery || {};
+  const sourcePattern = content.source_pattern || packCopy.source_pattern || "assets/photos/rehearsal-0N.jpg";
+  const sources = gallerySources(item, n => String(sourcePattern).replace(/0N/, String(n).padStart(2, "0")));
   const page = paginateSources(sources, { offset: item.offset, limit: item.limit != null ? item.limit : 3 });
   if (!page.length) {
     return "";
   }
-  const eyebrow = content.eyebrow || "In rehearsal";
-  const headline = content.headline || (show.title ? `Inside the rehearsal room` : "IN REHEARSAL");
-  const footline = content.footline || "";
+  const eyebrow = content.eyebrow || packCopy.eyebrow || "In rehearsal";
+  const headline = content.headline || packCopy.headline || (show.title || "PRODUCTION GALLERY");
+  const footline = content.footline || packCopy.footline || "";
+  const cellNote = content.note || packCopy.note || "rehearsal shot";
   const gridClass = `photo-grid${item.portrait ? " portrait-safe" : ""}`;
   const cells = page.map(src => galleryFrame(ctx, src, {
     title: titleFromAsset(src),
-    note: "rehearsal shot",
+    note: cellNote,
   })).join("\n        ");
   return `<p class="eyebrow">${eyebrow}</p>
       <h2 class="headline small">${upper(headline)}</h2>
@@ -316,11 +466,13 @@ export const slideTemplates = {
   "welcome": (item, ctx) => {
     const show = ctx.show || {};
     const venue = show.venue || "Criterion Theatre";
+    const subtitle = show.subtitle || "";
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow">Tonight at ${venue}</p>
           <h2 class="headline" style="font-size:11vw; letter-spacing:6px;">${upper(show.title)}</h2>
-          <p class="author" style="font-family:'Bebas Neue',sans-serif; font-size:2.3vw; color:var(--neon-cyan); letter-spacing:8px; text-shadow:var(--glow-cyan); margin-top:-6px;">BY ${upper(show.author)}</p>
+          ${subtitle ? `<p class="subtitle">${subtitle}</p>` : ""}
+          <p class="author">BY ${upper(show.author)}</p>
           <p class="footline" style="margin-top:32px;">${formatRange(show.run_dates && show.run_dates.first, show.run_dates && show.run_dates.last)}</p>
         </div>
         ${posterFrame(ctx, {
@@ -334,23 +486,41 @@ export const slideTemplates = {
   // P02 — tonight, show info
   "show-info": (item, ctx) => {
     const show = ctx.show || {};
+    const content = item.content || {};
+    const packCopy = show.foyer_content?.show_info || {};
     const performance = ctx.performance || {};
     const curtain = performance.curtain || show.curtain || "";
     const houseOpens = performance.house_opens || "";
     const intervalAt = performance.interval_at_estimated || "";
+    const descriptor = content.descriptor || packCopy.descriptor
+      || (show.author || show.director
+        ? `A play by ${show.author || ""}${show.director ? ` &mdash; directed by ${show.director}` : ""}`
+        : "");
+    const hasRuntime = Number(show.running_time_minutes) > 0;
+    const hasInterval = Number.isFinite(Number(show.interval_minutes)) && Number(show.interval_minutes) > 0;
+    const isDraft = item.review_status === "draft" || content.review_status === "draft";
+    const draftBadge = isDraft
+      ? `<p class="review-badge">Draft &mdash; ${item.draft_label || content.draft_label || (item.draft_owner ? `for ${item.draft_owner}'s approval` : "for approval")}</p>`
+      : "";
+    const timingBody = hasRuntime
+      ? `<p class="body">
+            Running time approximately <b>${minutesToText(show.running_time_minutes)}</b>${
+              hasInterval
+                ? ` including one <b>${Number(show.interval_minutes)}-minute interval</b>`
+                : `, <b>straight through with no interval</b>`
+            }${curtain ? `. Curtain at <b>${curtain}</b>` : ""}.
+          </p>`
+      : `<p class="body">
+            Running time and interval are <b>not yet confirmed</b>. Please check back nearer the performance, or ask front-of-house.
+          </p>`;
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow">Tonight's production</p>
           <h2 class="headline medium">${upper(show.title)}</h2>
-          <p class="subhead">A play by ${show.author || ""} &mdash; directed by ${show.director || ""}</p>
-          <p class="body">
-            Running time approximately <b>${minutesToText(show.running_time_minutes)}</b>${
-              Number(show.interval_minutes) > 0
-                ? ` including one <b>${Number(show.interval_minutes)}-minute interval</b>`
-                : `, <b>straight through with no interval</b>`
-            }${curtain ? `. Curtain at <b>${curtain}</b>` : ""}.
-          </p>
+          ${descriptor ? `<p class="subhead">${descriptor}</p>` : ""}
+          ${timingBody}
           <p class="footline">${houseOpens ? `House opens ${houseOpens}` : "House opening time at the box office"}${curtain ? ` <span class="sep">&#8226;</span> Curtain ${curtain}` : ""}${intervalAt ? ` <span class="sep">&#8226;</span> Interval ~${intervalAt}` : ""}</p>
+          ${draftBadge}
         </div>
         ${posterFrame(ctx, {
           src: show.image_local,
@@ -398,7 +568,7 @@ export const slideTemplates = {
     const headline = content.headline || "CONTENT &amp; ACCESSIBILITY";
     return `<p class="eyebrow warn">${eyebrow}</p>
       <h2 class="headline small">${headline}</h2>
-      <p class="body small">This production contains the following. Please speak to a member of front-of-house if you have any concerns.</p>
+      <p class="body${content.body ? '' : ' small'}">${content.body || "This production contains the following. Please speak to a member of front-of-house if you have any concerns."}</p>
       <div class="two-col" style="margin-top:14px;">
           <div>
             ${col1}
@@ -407,6 +577,19 @@ export const slideTemplates = {
             ${col2}
           </div>
       </div>`;
+  },
+
+  // P05b — explicit content-advice gap. Does not import warnings from any
+  // previous show; simply tells the audience that advice is pending.
+  "content-advice-gap": (item, ctx) => {
+    const content = item.content || {};
+    const draftBadge = item.review_status === "draft"
+      ? `<p class="review-badge">Draft &mdash; ${item.draft_label || (item.draft_owner ? `for ${item.draft_owner}'s approval` : "for approval")}</p>`
+      : "";
+    return `<p class="eyebrow warn">Content notice</p>
+      <h2 class="headline small">CONTENT ADVICE TO BE CONFIRMED</h2>
+      <p class="body" style="max-width:none;">${content.body || "Age guidance, themes and other content information for this production have not been confirmed. Please speak to front-of-house if you have any concerns."}</p>
+      ${draftBadge}`;
   },
 
   // P06 — safety: phones, photography, fire exits
@@ -448,21 +631,55 @@ export const slideTemplates = {
   // P09 — director's note
   "director-quote": (item, ctx) => {
     const show = ctx.show || {};
-    const content = show.foyer_content?.director || {};
+    const packContent = show.foyer_content?.director || {};
+    const itemContent = item.content || {};
+    const isDraft = item.review_status === "draft" || itemContent.review_status === "draft";
+    const quote = itemContent.quote || packContent.quote || show.tagline || `Welcome to ${show.title || "tonight's production"}.`;
+    const draftOwner = isDraft ? (itemContent.draft_owner || packContent.draft_owner || show.director || "Director") : "";
+    const draftLabel = isDraft ? (itemContent.draft_label || packContent.draft_label || `for ${draftOwner}'s approval`) : "";
+    const bodyCopy = isDraft
+      ? `<p class="body" style="font-style:italic; color:var(--cream); max-width:none;">${quote}</p>`
+      : `<p class="body" style="font-style:italic; color:var(--cream); max-width:none;">
+            &ldquo;${quote}&rdquo;
+          </p>`;
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow calm">From the director</p>
           <h2 class="headline small outline">DIRECTOR'S NOTE</h2>
-          <p class="body" style="font-style:italic; color:var(--cream); max-width:none;">
-            &ldquo;${content.quote || show.tagline || `Welcome to ${show.title || "tonight's production"}.`}&rdquo;
-          </p>
+          ${bodyCopy}
           <p class="footline">${show.director || "Director"} <span class="sep">&#8226;</span> Director</p>
+          ${isDraft ? `<p class="review-badge">Draft — ${draftLabel}</p>` : ""}
         </div>
-        ${posterFrame(ctx, {
-          src: content.image_local,
+        ${photoFrame(ctx, {
+          src: itemContent.image_local || packContent.image_local,
           alt: show.director || "Director",
           classes: "contain",
           fallback: `<strong>${upper(show.director) || "DIRECTOR"}</strong><span>Director</span>`,
+        })}
+      </div>`;
+  },
+
+  // P09b — Chris Firth publicity-film placeholder. No blank video source;
+  // shows an intentional review card until the actual film is supplied.
+  "publicity-film-placeholder": (item, ctx) => {
+    const content = item.content || {};
+    const show = ctx.show || {};
+    const phase = content.phase || "Preshow";
+    const draftBadge = item.review_status === "draft"
+      ? `<p class="review-badge">Draft &mdash; ${item.draft_label || (item.draft_owner ? `for ${item.draft_owner}'s approval` : "for approval")}</p>`
+      : "";
+    return `<div class="split-layout">
+        <div class="split-text">
+          <p class="eyebrow">${phase} film</p>
+          <h2 class="headline small">PUBLICITY FILM</h2>
+          <p class="body" style="max-width:none;">${content.body || "A short publicity film for Underdog will appear here once Chris Firth supplies the approved footage. No old-show footage or invented running time is used."}</p>
+          ${draftBadge}
+        </div>
+        ${posterFrame(ctx, {
+          src: show.image_local,
+          alt: `${show.title || "Show"} poster placeholder`,
+          classes: "muted",
+          fallback: `<strong>${upper(show.title) || "PUBLICITY FILM"}</strong><span>Poster placeholder</span>`,
         })}
       </div>`;
   },
@@ -482,7 +699,7 @@ export const slideTemplates = {
             ${body}
           </p>
         </div>
-        ${posterFrame(ctx, {
+        ${photoFrame(ctx, {
           src: image_local,
           alt: headline || ctx.show?.title || "",
           classes: "contain",
@@ -510,7 +727,7 @@ export const slideTemplates = {
         <div class="split-text">
           ${text}
         </div>
-        ${posterFrame(ctx, {
+        ${photoFrame(ctx, {
           src: image_local,
           alt: headline,
           classes: "contain",
@@ -522,7 +739,8 @@ export const slideTemplates = {
   // P11 — immediate next production
   "next-production": (item, ctx) => {
     const prod = findProduction(ctx, item.production_id) || {};
-    return `<div class="split-layout">
+    return `<div class="split-layout sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "next-production", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Coming up next at ${ctx.show?.venue || "our theatre"}</p>
           <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
@@ -573,61 +791,100 @@ export const slideTemplates = {
   "volunteer": (item, ctx) => `<p class="eyebrow">Join us</p>
       <h2 class="headline small">VOLUNTEER AT ${upper(ctx.show?.venue) || "OUR THEATRE"}</h2>
       <p class="body">
-        ${ctx.show?.foyer_content?.volunteer?.body || "Speak to the front-of-house team to find out how to take part on stage, backstage, or around the building."}
+        ${item.content?.body || ctx.show?.foyer_content?.volunteer?.body || "Speak to the front-of-house team to find out how to take part on stage, backstage, or around the building."}
       </p>
-      ${ctx.show?.foyer_content?.volunteer?.footline ? `<p class="footline">${ctx.show.foyer_content.volunteer.footline}</p>` : ""}`,
+      ${(item.content?.footline || ctx.show?.foyer_content?.volunteer?.footline) ? `<p class="footline">${item.content?.footline || ctx.show.foyer_content.volunteer.footline}</p>` : ""}`,
 
   // P13 — tickets & walk-ins. Carries the tickets QR beside the price tiers
   // (destination not yet live — keep the "(QR not yet live)" caption).
   "tickets-walkins": (item, ctx) => {
     const prices = (ctx.show && ctx.show.ticket_prices) || {};
-    return `<p class="eyebrow">Tickets &amp; walk-ins</p>
-      <h2 class="headline small">TICKETS FROM ${prices.under_25 || "&pound;10"}</h2>
-      <div style="display:flex; gap:4%; align-items:center; max-width:94%; margin-top:18px;">
-        <div style="flex:1 1 auto; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:3%;">
-          <div style="border:1.5px solid var(--neon-cyan); padding:18px 14px; border-radius:3px; background:rgba(0,229,255,0.06);">
-            <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.15vw,1.6vh); color:var(--neon-cyan); letter-spacing:3px; text-transform:uppercase;">Standard</div>
-            <div style="font-family:'Anton',sans-serif; font-size:4.2vw; color:var(--white); letter-spacing:2px; margin-top:4px;">${prices.non_member || "&pound;15"}</div>
+    return `<div class="sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "tickets-walkins", count: 15 })}
+        <p class="eyebrow">Tickets &amp; walk-ins</p>
+        <h2 class="headline small">TICKETS FROM ${prices.under_25 || "&pound;10"}</h2>
+        <div class="walkins-grid">
+          <div class="walkins-tiers">
+            <div class="price-tier secondary">
+              <div class="price-label">Standard</div>
+              <div class="price-amount">${prices.non_member || "&pound;15"}</div>
+            </div>
+            <div class="price-tier accent">
+              <div class="price-label">Member</div>
+              <div class="price-amount">${prices.member || "&pound;12.50"}</div>
+            </div>
+            <div class="price-tier muted">
+              <div class="price-label">Under 25</div>
+              <div class="price-amount">${prices.under_25 || "&pound;10"}</div>
+            </div>
           </div>
-          <div style="border:1.5px solid var(--neon-magenta); padding:18px 14px; border-radius:3px; background:rgba(255,26,117,0.06);">
-            <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.15vw,1.6vh); color:var(--neon-magenta); letter-spacing:3px; text-transform:uppercase;">Member</div>
-            <div style="font-family:'Anton',sans-serif; font-size:4.2vw; color:var(--white); letter-spacing:2px; margin-top:4px;">${prices.member || "&pound;12.50"}</div>
-          </div>
-          <div style="border:1.5px solid var(--poster-yellow); padding:18px 14px; border-radius:3px; background:rgba(255,212,52,0.06);">
-            <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.15vw,1.6vh); color:var(--poster-yellow); letter-spacing:3px; text-transform:uppercase;">Under 25</div>
-            <div style="font-family:'Anton',sans-serif; font-size:4.2vw; color:var(--white); letter-spacing:2px; margin-top:4px;">${prices.under_25 || "&pound;10"}</div>
+          <div class="walkins-qr">
+            <div class="qr-card">
+              <img src="${asset(ctx, "assets/images/tickets-qr.png")}" alt="Scan to book tickets" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;qr-fallback&quot;>QR</span>'">
+            </div>
+            <div class="qr-caption">Scan to book</div>
           </div>
         </div>
-        <div style="flex:0 0 auto; text-align:center;">
-          <div style="width:11vw; max-width:170px; aspect-ratio:1/1; background:#FFFFFF; border:2px solid var(--neon-cyan); border-radius:6px; box-shadow:var(--glow-cyan); padding:6%; display:flex; align-items:center; justify-content:center;">
-            <img src="${asset(ctx, "assets/images/tickets-qr.png")}" alt="Scan to book tickets" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-family:Anton,sans-serif;color:#111;letter-spacing:2px;&quot;>QR</span>';">
-          </div>
-          <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.05vw,1.5vh); color:var(--neon-cyan); letter-spacing:2px; margin-top:9px; text-transform:uppercase;">Scan to book</div>
-        </div>
-      </div>
-      <p class="body small" style="margin-top:20px; color:var(--lavender);">
-        Tonight's house is available unless otherwise announced. Walk-ins welcome at the box office.
-        ${ctx.show?.tickets_url ? `Book online: <b style="color:var(--neon-cyan);">${ticketUrl(null, ctx)}</b>.` : ""}
-      </p>`;
+        <p class="body small" style="margin-top:20px; color:var(--lavender);">
+          Ask front-of-house about availability for tonight.
+          ${ctx.show?.tickets_url ? `Book online: <b style="color:var(--neon-cyan);">${ticketUrl(null, ctx)}</b>.` : ""}
+        </p>
+      </div>`;
+  },
+
+  // P13b — preshow ticket-sales anchor when prices/times are not confirmed.
+  // No invented stock status or price; points people to front-of-house.
+  "ticket-sales-anchor": (item, ctx) => {
+    const content = item.content || {};
+    const body = content.body || "Tickets for tonight? Ask front-of-house about availability.";
+    const footline = content.footline || ctx.show?.venue || "Criterion Theatre";
+    return `<div class="sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "ticket-sales-anchor", count: 15 })}
+        <p class="eyebrow">Tickets</p>
+        <h2 class="headline small">${upper(body)}</h2>
+        <p class="body">Ask a front-of-house team member about availability for tonight's performance. No price or stock status is shown until it is confirmed.</p>
+        <p class="footline">${footline}</p>
+      </div>`;
   },
 
   // I01 — interval bar spotlight (carries the real foyer-bar photo)
-  "bar-spotlight": (item, ctx) => `<div class="split-layout">
+  "bar-spotlight": (item, ctx) => {
+    const show = ctx.show || {};
+    const content = item.content || {};
+    const packCopy = show.foyer_content?.bar_spotlight || {};
+    const eyebrow = content.eyebrow || packCopy.eyebrow || "At the bar tonight";
+    const body = content.body || packCopy.body || "Beers, wines, soft drinks and snacks are being served now in the foyer bar.";
+    const barImage = content.image_local || packCopy.image_local || "assets/images/bar-foyer.jpg";
+    return `<div class="split-layout sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "bar-spotlight", count: 15 })}
         <div class="split-text">
-          <p class="eyebrow">At the bar tonight</p>
+          <p class="eyebrow">${eyebrow}</p>
           <h2 class="headline medium cyan">THE BAR IS OPEN</h2>
           <p class="body" style="max-width:none;">
-            Beers, wines, soft drinks and snacks are being served now in the foyer bar.
-            Please head back to your seats when the bell sounds.
+            ${body}
           </p>
         </div>
         ${posterFrame(ctx, {
-          src: "assets/images/bar-foyer.jpg",
+          src: barImage,
           alt: "The Criterion foyer bar",
           classes: "cyan",
           fallback: `<strong>THE BAR</strong><span>foyer bar photo</span>`,
         })}
-      </div>`,
+      </div>`;
+  },
+
+  // I01b — interval ice creams. Exact wording supplied by David.
+  "ice-cream": (item, ctx) => {
+    const content = item.content || {};
+    const headline = content.headline || "Interval ice creams";
+    const body = content.body || "Ice creams are available in the foyer during the interval.";
+    return `<div class="sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "ice-cream", count: 15 })}
+        <p class="eyebrow">During the interval</p>
+        <h2 class="headline small cyan">${upper(headline)}</h2>
+        <p class="body" style="max-width:none;">${body}</p>
+      </div>`;
+  },
 
   // I02 — live interval countdown; nextgen-foyer updates the data fields in place.
   "countdown": (item, ctx) => {
@@ -653,7 +910,8 @@ export const slideTemplates = {
   // I03 — next production, interval treatment
   "next-production-interval": (item, ctx) => {
     const prod = findProduction(ctx, item.production_id) || {};
-    return `<div class="split-layout">
+    return `<div class="split-layout sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "next-production-interval", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Coming next</p>
           <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
@@ -673,26 +931,38 @@ export const slideTemplates = {
       </div>`;
   },
 
-  "criterion-charity": () => `<p class="eyebrow">Did you know</p>
+  "criterion-charity": (item, ctx) => {
+    const content = item.content || {};
+    const packCopy = ctx.show?.foyer_content?.criterion_charity || {};
+    const body = content.body || packCopy.body
+      || "Every production is made by volunteers, and every ticket helps keep live theatre thriving in Earlsdon.";
+    return `<p class="eyebrow">Did you know</p>
       <h2 class="headline small cyan">THE CRITERION IS A CHARITY</h2>
       <p class="body">
-        Every production is made by volunteers, and every ticket helps keep live theatre thriving in Earlsdon.
+        ${body}
       </p>
-      <p class="footline">Registered charity 1161430</p>`,
+      <p class="footline">${content.footline || packCopy.footline || "Registered charity 1161430"}</p>`;
+  },
 
   // X01 — postshow bar (carries the real foyer-bar photo, muted frame)
   "bar-stays-open": (item, ctx) => {
+    const show = ctx.show || {};
+    const content = item.content || {};
+    const packCopy = show.foyer_content?.bar || {};
     const barClose = (ctx.performance && ctx.performance.bar_close) || "";
     const hasTime = /^\d{1,2}:\d{2}$/.test(barClose);
-    const bodyCopy = hasTime
-      ? `The bar is open until <b>${barClose}</b>. Stay a while &mdash; have a drink, talk it over,
-            and say hello to the cast.`
-      : `The bar stays open after the show &mdash; ask our staff for tonight's last orders. Stay a while,
-            have a drink, talk it over, and say hello to the cast.`;
+    const providedBody = content.body || packCopy.body;
+    const bodyCopy = providedBody
+      ? String(providedBody).replace(/\{\{bar_close\}\}/g, barClose)
+      : (hasTime
+        ? `The bar is open until <b>${barClose}</b>. Ask our staff for tonight's last orders.`
+        : "The bar stays open after the show. Ask our staff for tonight's last orders.");
     const footline = hasTime
       ? `Tonight <span class="sep">&#8226;</span> ${barClose} close`
       : `Tonight <span class="sep">&#8226;</span> the bar is open`;
-    return `<div class="split-layout">
+    const barImage = content.image_local || packCopy.image_local || "assets/images/bar-foyer.jpg";
+    return `<div class="split-layout sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "bar-stays-open", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Thank you for being with us</p>
           <h2 class="headline small">THE BAR STAYS OPEN</h2>
@@ -702,7 +972,7 @@ export const slideTemplates = {
           <p class="footline">${footline}</p>
         </div>
         ${posterFrame(ctx, {
-          src: "assets/images/bar-foyer.jpg",
+          src: barImage,
           alt: "The Criterion foyer bar",
           classes: "muted",
           fallback: `<strong>THE BAR</strong><span>foyer bar photo</span>`,
@@ -734,7 +1004,18 @@ export const slideTemplates = {
 
   // X03/X06-X10 plus additional archive pool entries
   "archive-memory": (item, ctx) => {
-    const memory = findMemory(ctx, item.source);
+    const content = item.content || {};
+    let memory = findMemory(ctx, item.source, item.memory_id);
+    // Per-item content can override or stand in for a shared memory record.
+    if (!memory && content.production) {
+      memory = {
+        production: content.production,
+        quote: content.quote || "",
+        author: content.author || "",
+        role: content.role || "",
+        image_local: content.image_local || item.source,
+      };
+    }
     if (!memory) {
       return `<p class="eyebrow calm">From the theatre archive</p>
         <h2 class="headline small outline">A LIFE IN THE THEATRE</h2>
@@ -742,19 +1023,25 @@ export const slideTemplates = {
     }
     const year = productionYear(memory.production);
     const title = productionTitle(memory.production);
-    return `<p class="eyebrow calm">From the theatre archive</p>
-      <h2 class="headline small outline">${year} &mdash; ${upper(title)}</h2>
-      <div class="archive-thumb-wrap">
-        <div class="archive-text">
-          <p class="body">&ldquo;${memory.quote}&rdquo;</p>
-          <p class="archive-attribution"><span class="attr-name">${memory.author}</span> &mdash; ${memory.role}</p>
+    const draftBadge = item.review_status === "draft"
+      ? `<p class="review-badge">Draft &mdash; ${item.draft_label || (item.draft_owner ? `for ${item.draft_owner}'s approval` : "for approval")}</p>`
+      : "";
+    return `<div class="archive-vignette">
+        <p class="eyebrow calm">From the theatre archive</p>
+        <h2 class="headline small outline">${year} &mdash; ${upper(title)}</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">&ldquo;${memory.quote}&rdquo;</p>
+            <p class="archive-attribution"><span class="attr-name">${memory.author}</span> &mdash; ${memory.role}</p>
+            ${draftBadge}
+          </div>
+          ${posterFrame(ctx, {
+            src: memory.image_local,
+            alt: memory.production,
+            classes: "muted contain",
+            fallback: `<strong>${year}</strong><span>poster</span>`,
+          })}
         </div>
-        ${posterFrame(ctx, {
-          src: memory.image_local,
-          alt: memory.production,
-          classes: "muted contain",
-          fallback: `<strong>${year}</strong><span>poster</span>`,
-        })}
       </div>`;
   },
 
@@ -763,6 +1050,10 @@ export const slideTemplates = {
 
   // P14 / XP1-XP3 — Popcorn pack alias for the generic feature template.
   "popcorn-feature": (item, ctx) => featureTemplate(item, ctx),
+
+  // Generic animated story montage: pack-authored ordered frames with stable
+  // headline, caption, credit and review status. No show-specific filenames here.
+  "story-montage": storyMontage,
 
   // P16 — rehearsal-photo gallery (preshow). Auto-fills from
   // assets/photos/rehearsal-0N.jpg; styled "photo pending" fallback per cell.
@@ -775,7 +1066,8 @@ export const slideTemplates = {
   // X05 — immediate next production, postshow treatment
   "next-production-postshow": (item, ctx) => {
     const prod = findProduction(ctx, item.production_id) || {};
-    return `<div class="split-layout">
+    return `<div class="split-layout sales-card">
+        ${particleOverlay(item, ctx, { seed: item.id || "next-production-postshow", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Book your next visit</p>
           <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>

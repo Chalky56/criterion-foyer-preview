@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "phase": "postshow",
+  "show_id": "underdog-2026",
+  "policy": {
+    "min_dwell_seconds": 9,
+    "max_dwell_seconds": 24,
+    "max_words_per_screen": 60,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 300,
+    "audio_allowed": false,
+    "group_rotation": [
+      "making",
+      "theatre"
+    ]
+  },
+  "_notes": "Prototype postshow loop. Target ~4-6 minutes. Actor/performance presence is carried by two cast-gallery pages and a photo-led thank-you. Making stories use the new story-montage template for props and wardrobe. Items marked review_status: draft are rendered with a review badge in preview and excluded from audience export.",
+  "items": [
+    {
+      "kind": "one-shot",
+      "id": "thank-you",
+      "template": "thank-you",
+      "trigger": "start",
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "From everyone at the Criterion",
+        "headline": "Thank you for coming",
+        "body": "For making the journey to Earlsdon, and for giving your evening to Underdog. We hope you'll come back.",
+        "footline": "Underdog <span class=\"sep\">&#8226;</span> 26 September - 3 October 2026"
+      }
+    },
+    {
+      "kind": "anchor",
+      "id": "cast-gallery-1",
+      "template": "cast-gallery",
+      "every_n": 5,
+      "dwell_seconds": 18,
+      "limit": 3,
+      "offset": 0,
+      "content": {
+        "eyebrow": "Tonight's company",
+        "headline": "The cast of Underdog",
+        "footline": "Early rehearsal photographs \u2014 draft selection",
+        "source_pattern": "assets/photos/performance-0N.jpg",
+        "note": "production image"
+      }
+    },
+    {
+      "kind": "anchor",
+      "id": "cast-gallery-2",
+      "template": "cast-gallery",
+      "every_n": 5,
+      "dwell_seconds": 18,
+      "limit": 3,
+      "offset": 3,
+      "content": {
+        "eyebrow": "Tonight's company",
+        "headline": "The cast of Underdog",
+        "footline": "Early rehearsal photographs \u2014 draft selection",
+        "source_pattern": "assets/photos/performance-0N.jpg",
+        "note": "production image"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "sewing-bee-story",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 2,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Chris Ingall",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "Many hands, one wardrobe",
+        "body": "Fabric, thread and patience turn a sketch into a performance-ready costume.",
+        "footline": "Wardrobe by Chris Ingall and team",
+        "frames": [
+          {
+            "source": "assets/craft/sewing-bee-05.jpg",
+            "caption": "Together",
+            "alt": "The sewing group around a table",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/sewing-bee-03.jpg",
+            "caption": "At work",
+            "alt": "Close-up stitching work",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/sewing-bee-02.jpg",
+            "caption": "Many hands",
+            "alt": "Shared sewing work",
+            "cover": true,
+            "motion": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "sugar-glass-story",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 2,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Claire McDermott / Bill",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "A glass made for the stage",
+        "body": "Moulded, shaped and finished to look like the real thing.",
+        "footline": "Props by Claire McDermott and team",
+        "frames": [
+          {
+            "source": "assets/craft/sugar-glass-mould.jpg",
+            "caption": "Making the mould",
+            "alt": "Pouring the sugar-glass mould"
+          },
+          {
+            "source": "assets/craft/sugar-glass-extract.jpg",
+            "caption": "Taking shape",
+            "alt": "Extracting the shaped prop"
+          },
+          {
+            "source": "assets/craft/sugar-glass-finished.jpg",
+            "caption": "The finished prop",
+            "alt": "Finished sugar-glass prop"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "pork-pie-story",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 2,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Claire McDermott / Erica",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "Looks like pastry",
+        "body": "Made to look convincing from the stalls, however it's built.",
+        "footline": "Props by Claire McDermott and team",
+        "frames": [
+          {
+            "source": "assets/craft/pork-pie-form.jpg",
+            "caption": "The form",
+            "alt": "The pie base taking shape"
+          },
+          {
+            "source": "assets/craft/pork-pie-surface.jpg",
+            "caption": "Building the surface",
+            "alt": "Adding the pie surface"
+          },
+          {
+            "source": "assets/craft/pork-pie-finish.jpg",
+            "caption": "The finish",
+            "alt": "Finished pork-pie prop"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "costume-concept",
+      "template": "feature",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/craft/costume-concept.jpg",
+      "content": {
+        "headline": "From idea to costume",
+        "body": "Concepts become patterns, stitches and something an actor can wear.",
+        "footline": "Costume concepts by Anne-marie Greene; wardrobe by Chris Ingall - authorship and final garment to confirm"
+      },
+      "review_status": "draft",
+      "draft_owner": "Anne-marie Greene / Chris Ingall"
+    },
+    {
+      "kind": "wildcard",
+      "id": "set-design",
+      "template": "feature",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/craft/set-concept.jpg",
+      "content": {
+        "headline": "An idea becomes a place",
+        "body": "From an early concept to the world you saw tonight, built by the production team.",
+        "footline": "Set design by Simon Sharpe - finished-stage viewpoint and construction credit to confirm"
+      },
+      "review_status": "draft",
+      "draft_owner": "Simon Sharpe"
+    },
+    {
+      "kind": "wildcard",
+      "id": "lighting-cues",
+      "template": "feature",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 13,
+      "source": "assets/photos/performance-05.jpg",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "130+ lighting cues",
+        "body": "One unfolding evening, shaped by light.",
+        "footline": "Lighting by Paul Harrison - cue count provisional, awaiting confirmation"
+      },
+      "review_status": "draft",
+      "draft_owner": "Paul Harrison"
+    },
+    {
+      "kind": "wildcard",
+      "id": "sound-cues",
+      "template": "feature",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 13,
+      "source": "assets/photos/performance-06.jpg",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "90+ sound cues",
+        "body": "A world built around the actors, one cue at a time.",
+        "footline": "Sound by Dave Cornish - cue count provisional, awaiting confirmation"
+      },
+      "review_status": "draft",
+      "draft_owner": "Dave Cornish"
+    },
+    {
+      "kind": "wildcard",
+      "id": "rehearsal-journey",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Chris Firth",
+      "draft_label": "later rehearsal and dress photographs to follow",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "From rehearsal to the stage",
+        "body": "The company, the costumes, the light \u2014 coming together.",
+        "frames": [
+          {
+            "source": "assets/photos/rehearsal-01.jpg",
+            "stage": "early",
+            "caption": "Rehearsal",
+            "alt": "The Underdog company in early rehearsal",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/placeholders/later-rehearsal-photo.svg",
+            "stage": "developing",
+            "caption": "Taking shape",
+            "alt": "Later rehearsal photo to follow",
+            "motion": false
+          },
+          {
+            "source": "assets/placeholders/dress-rehearsal-photo.svg",
+            "stage": "dress",
+            "caption": "On stage",
+            "alt": "Dress rehearsal photo to follow",
+            "motion": false
+          }
+        ],
+        "footline": "Early rehearsal photographs \u2014 draft selection"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "conversation",
+      "template": "did-you-know",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 9,
+      "content": {
+        "headline": "What stayed with you?",
+        "body": "Discuss at the bar.",
+        "image_local": "assets/posters/underdog-2026.jpg",
+        "footline": "Underdog poster"
+      },
+      "review_status": "draft",
+      "draft_owner": "Anne-marie Greene"
+    },
+    {
+      "kind": "anchor",
+      "id": "next-production",
+      "template": "next-production-postshow",
+      "sales_intent": true,
+      "every_n": 6,
+      "production_ref": "next_productions.json#shakespeare-in-love-2026",
+      "dwell_seconds": 13
+    },
+    {
+      "kind": "wildcard",
+      "id": "volunteer-postshow",
+      "template": "volunteer",
+      "tag": "theatre",
+      "weight": 2,
+      "dwell_seconds": 16,
+      "content": {
+        "body": "Enjoy making things happen? Try costumes, props, lighting, sound, bar or front-of-house. Bring your skills, discover a new interest and meet the company.",
+        "footline": "Join us: speak to front-of-house or email info@criteriontheatre.co.uk"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-charity",
+      "template": "criterion-charity",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 16,
+      "content": {
+        "body": "Your ticket supports a registered charity. Our members keep this theatre alive \u2014 maintaining the building and making each production possible.",
+        "footline": "Join us: speak to front-of-house or email info@criteriontheatre.co.uk"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-stays-open",
+      "template": "bar-stays-open",
+      "sales_intent": true,
+      "tag": "theatre",
+      "weight": 2,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "publicity-film-postshow",
+      "template": "publicity-film-placeholder",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 10,
+      "review_status": "draft",
+      "draft_owner": "Chris Firth",
+      "draft_label": "publicity film to be supplied",
+      "content": {
+        "phase": "Postshow",
+        "body": "A short publicity film for Underdog will appear here once Chris Firth supplies the approved footage. No old-show footage or invented running time is used."
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-memory-of-water",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "review_status": "draft",
+      "draft_owner": "Anne-marie Greene",
+      "draft_label": "for Anne-marie's approval",
+      "content": {
+        "production": "The Memory of Water (2008)",
+        "quote": "In The Memory of Water, Anne-marie waited in a wardrobe for a phone cue. One night, the call came from her fellow actor instead.",
+        "author": "Anne-marie Greene",
+        "role": "Director / cast recollection",
+        "image_local": "assets/archive/memory-of-water-2157.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-curious-incident",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "review_status": "draft",
+      "draft_owner": "Chris Ingall",
+      "draft_label": "for Chris Ingall's approval",
+      "content": {
+        "production": "The Curious Incident of the Dog in the Night-time (2025)",
+        "quote": "Chris Ingall directed this production in 2025. For Underdog, her work continues in wardrobe.",
+        "author": "Chris Ingall",
+        "role": "Director / wardrobe connection",
+        "image_local": "assets/archive/curious-incident-4505.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-thrill-of-love",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "review_status": "draft",
+      "draft_owner": "Nicol Cortese",
+      "draft_label": "for Nicol's approval",
+      "content": {
+        "production": "The Thrill of Love (2014)",
+        "quote": "Nicol Cortese played Vicki Martin in The Thrill of Love in 2014. Tonight, she plays Emily Bront\u00eb.",
+        "author": "Nicol Cortese",
+        "role": "Actor / then and now",
+        "image_local": "assets/archive/thrill-of-love-3051.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-the-gift",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "review_status": "draft",
+      "draft_owner": "Simon Sharpe / Dave Cornish / props team",
+      "draft_label": "for Simon / Dave / props team's approval",
+      "content": {
+        "production": "The Gift (2022)",
+        "quote": "The Gift in 2022 brought together the people who build the worlds on stage: set, sound and props.",
+        "author": "Simon Sharpe, Dave Cornish and the props team",
+        "role": "Set, sound and props",
+        "image_local": "assets/archive/the-gift-4160.jpg"
+      }
+    }
+  ]
+}

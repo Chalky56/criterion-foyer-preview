@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "_generated": "2026-09-08",
+  "_purpose": "Underdog - The Other Other Bront\u00eb, 26 September - 3 October 2026. A Criterion-produced mainstage production. Foyer content is a review draft: early-rehearsal placeholders, department copy awaiting individual approval, and specific operational checks remain.",
+  "_copy_status": "REVIEW DRAFT. Production facts taken from the Criterion production page (criteriontheatre.co.uk/production/549) on 8 September 2026. Ticket prices and performance times checked 9 September. Anne-marie Greene confirmed a 20-minute interval and estimated one hour per act; the total runtime remains an estimate. Her content notice and director wording are included for review. Strobe versus flashing lights, final act estimates, copied house-opening times and Sunday bar closing still require specific checks.",
+  "id": "underdog-2026",
+  "title": "Underdog",
+  "subtitle": "The Other Other Bront\u00eb",
+  "author": "Sarah Gordon",
+  "director": "Anne-marie Greene",
+  "assistant_director": "Ruth Miller",
+  "movement_director": "Debra Relton Elves",
+  "venue": "Criterion Theatre, Earlsdon, Coventry",
+  "tagline": "This is not a story about well-behaved women.",
+  "synopsis": "Charlotte Bront\u00eb has a confession: one sister became an idol, another became known as the third. You know the one. No, not that one. The other, other one - Anne. A sharp, funny retelling of the Bront\u00eb sisters from the edges.",
+  "run_dates": {
+    "first": "2026-09-26",
+    "last": "2026-10-03"
+  },
+  "running_time_minutes": 140,
+  "interval_minutes": 20,
+  "_running_time_status": "Estimated total of 140 minutes including interval, derived from Anne-marie Greene's 9 September estimate of one hour per act plus the confirmed 20-minute interval. Recheck act estimates nearer dress; do not use this estimate as a countdown trigger.",
+  "_interval_status": "Confirmed by Anne-marie Greene on 9 September 2026: 20 minutes. The actual interval start remains operationally unconfirmed.",
+  "house_opens_minutes_before_curtain": null,
+  "image_local": "assets/posters/underdog-2026.jpg",
+  "_image_note": "Final poster pending from Chris Firth/publicity. A placeholder mat/frame will render until the approved poster is supplied.",
+  "production_page_url": "https://criteriontheatre.co.uk/production/549",
+  "tickets_url": "https://criteriontheatre.co.uk/tickets",
+  "tickets_on_sale": true,
+  "ticket_prices": {
+    "non_member": "\u00a315.00",
+    "member": "\u00a312.50",
+    "under_25": "\u00a310.00"
+  },
+  "_ticket_prices_status": "Underdog prices verified at https://criteriontheatre.co.uk/tickets on 9 September 2026; match Popcorn. Not a claim of tonight's seat availability.",
+  "cast": [
+    {
+      "role": "Charlotte Bront\u00eb",
+      "actor": "Alice Scott"
+    },
+    {
+      "role": "Emily Bront\u00eb",
+      "actor": "Nicol Cortese"
+    },
+    {
+      "role": "Anne Bront\u00eb",
+      "actor": "Rosie Pankhurst"
+    },
+    {
+      "role": "Branwell Bront\u00eb",
+      "actor": "Connor Bailey"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Frank Needham"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Olivia Needham"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Rowan McDonnell"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Verity Gillam-Greene"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Gisa Arumugarasa"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Anne Collins"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Angela Keen"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Zs\u00f3fia Hacsek"
+    }
+  ],
+  "_cast_source": "Criterion production page, 8 September 2026. Individual image permissions and preferred credit treatment still to be collected.",
+  "credits": {
+    "lines": [
+      "Written by Sarah Gordon",
+      "Directed by Anne-marie Greene",
+      "Assistant Director Ruth Miller",
+      "Movement Director Debra Relton Elves",
+      "Lighting by Paul Harrison",
+      "Sound by Dave Cornish",
+      "Set Design by Simon Sharpe",
+      "Wardrobe by Chris Ingall",
+      "Props by Claire McDermott"
+    ],
+    "photo_credit": "Production photographs by Chris Firth (dress rehearsal); early-rehearsal placeholders - photo credit to confirm"
+  },
+  "foyer_content": {
+    "writer": {
+      "body": "Sarah Gordon's plays include <i>The Snow Queen</i>, <i>Becoming Hettie</i> and <i>Underdog</i>. Her work retells familiar stories from the edges, finding the voices history sidelined.",
+      "footline": "Writer of Underdog",
+      "image_local": "assets/people/sarah-gordon.jpg"
+    },
+    "director": {
+      "quote": "Everyone knows Wuthering Heights. Everyone knows Jane Eyre. This is a play about the Bront\u00eb sister you can't quite name \u2014 and about what her family did to make sure of that.",
+      "attribution": "Anne-marie Greene, director",
+      "image_local": "assets/people/anne-marie-greene.jpg",
+      "draft_owner": "Anne-marie Greene"
+    },
+    "about_play": {
+      "headline": "The other, other Bront\u00eb",
+      "body": "Charlotte has a confession. One sister became an idol, another became known as the third. Sarah Gordon retells the Bront\u00eb story from the edges - gothic, funny and sharply observed.",
+      "image_local": "assets/posters/underdog-2026.jpg"
+    },
+    "venue": {
+      "headline": "A volunteer-run theatre",
+      "body": "Over <b>450 productions</b> since 1955 in a building that is <b>over 140 years old</b>. Run entirely by members - no paid employees, on stage or off.",
+      "footline": "Registered charity 1161430 <span class=\"sep\">&#8226;</span> A volunteer-run theatre in Earlsdon, Coventry"
+    },
+    "volunteer": {
+      "body": "Actors, makers, technicians, front-of-house, bar and box office - every part of the Criterion is volunteer-run. New members are always welcome, no experience needed.",
+      "footline": "Speak to front-of-house, or email info@criteriontheatre.co.uk"
+    },
+    "bar": {
+      "body": "Stay for a drink and a conversation.",
+      "image_local": "assets/images/bar-foyer.jpg"
+    },
+    "bar_spotlight": {
+      "eyebrow": "At the bar tonight",
+      "body": "Beers, wines, soft drinks and snacks are being served now in the foyer bar.",
+      "image_local": "assets/images/bar-foyer.jpg"
+    },
+    "criterion_charity": {
+      "body": "Your ticket supports a registered charity. Our members keep this theatre alive \u2014 maintaining the building and making each production possible.",
+      "charity_number": "1161430"
+    },
+    "show_info": {
+      "descriptor": "A play by <b>Sarah Gordon</b> &mdash; directed by <b>Anne-marie Greene</b>"
+    },
+    "thank_you": {
+      "eyebrow": "From everyone at the Criterion",
+      "headline": "Thank you for coming",
+      "body": "For making the journey to Earlsdon, and for giving your evening to Underdog. We hope you'll come back.",
+      "footline": "Underdog <span class=\"sep\">&#8226;</span> 26 September - 3 October 2026"
+    },
+    "cast_gallery": {
+      "eyebrow": "Tonight's company",
+      "headline": "The cast of Underdog",
+      "footline": "Early rehearsal photographs \u2014 draft selection",
+      "source_pattern": "assets/photos/performance-0N.jpg",
+      "note": "production image"
+    },
+    "production_gallery": {
+      "eyebrow": "In rehearsal",
+      "headline": "Making Underdog",
+      "footline": "Early rehearsal photographs \u2014 draft selection",
+      "source_pattern": "assets/photos/rehearsal-0N.jpg",
+      "note": "rehearsal shot"
+    },
+    "story_montages": {
+      "_note": "Per-item content in playlists is authoritative. This section is reserved for shared copy/credit defaults if future packs prefer centralised story metadata."
+    }
+  },
+  "_content_warnings_status": "Anne-marie Greene supplied the complete notice on 9 September 2026. Themes and age advice are answered. The wording retains 'strobe effects' for this review draft while Paul Harrison confirms strobe versus flashing lights.",
+  "content_warnings": [
+    {
+      "id": "underdog-complete-notice",
+      "headline": "Content notice",
+      "detail": "Explicit language; themes of grief and death; depictions of attempted suicide; haze and strobe effects; suitable for ages 14 and above. The Criterion advises caution but does not enforce an age limit.",
+      "tier": "top",
+      "confidence": "draft"
+    }
+  ],
+  "phase_policy": {
+    "audio_allowed": false,
+    "silent_first": true,
+    "audio_allowed_note": "Silent by default, per house convention. No foyer slide carries audio."
+  },
+  "branding_pack_ref": "../branding/theme.json",
+  "next_productions_ref": "next_productions.json",
+  "performances_ref": "performances.json"
+}

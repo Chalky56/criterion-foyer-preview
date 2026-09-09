@@ -757,23 +757,20 @@ html[data-watermark-position="top-left"] .ng-watermark { background-position: to
 /* Criterion house foyer engine. Show packs supply tokens, never layout. */
 
 body.nextgen-foyer {
-  /* core ink */
-  --ink:           #02101E;
-  --ink-2:         #07323A;
-  --ink-3:         #0A2233;
-  /* neon signals */
-  --neon-magenta:  #C7A45A;
-  --neon-cyan:     #6BA5C4;
-  --neon-violet:   #7E9BB0;
-  /* poster-tied accents */
-  --poster-yellow: #C7A45A;
-  --poster-red:    #B11D2E;
-  /* type */
-  --cream:         #F3EFD2;
-  --cream-2:       #C7BE9E;
-  --lavender:      #B9C6CE;
-  --white:         #FFFFFF;
-  --dim:           #6A5E7E;
+  /* Inherit the resolved show aliases from :root; local literals mask them. */
+  --ink: inherit;
+  --ink-2: inherit;
+  --ink-3: inherit;
+  --neon-magenta: inherit;
+  --neon-cyan: inherit;
+  --neon-violet: inherit;
+  --poster-yellow: inherit;
+  --poster-red: inherit;
+  --cream: inherit;
+  --cream-2: inherit;
+  --lavender: inherit;
+  --white: var(--colour-primary-text);
+  --dim: inherit;
   --glow-magenta:  0 2px 10px rgba(199, 164, 90, 0.18);
   --glow-cyan:     0 2px 10px rgba(107, 165, 196, 0.16);
   --glow-yellow:   0 2px 8px rgba(199, 164, 90, 0.14);
@@ -946,6 +943,36 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 
 .nextgen-foyer .author {
   font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+  font-size: 3vw;
+  color: var(--colour-primary-text);
+  letter-spacing: 8px;
+  margin-top: -6px;
+  /* Secondary is rule-only. The author line is information-bearing text, so it
+     uses the high-contrast text token rather than the decorative red. */
+  text-shadow: none;
+}
+.nextgen-foyer .subtitle {
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(3vw, 4.5vh);
+  line-height: 1.1;
+  color: var(--cream);
+  margin-top: -8px;
+  margin-bottom: 16px;
+  max-width: 80%;
+}
+.nextgen-foyer .review-badge {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 18px;
+  background: rgba(217, 169, 78, 0.15);
+  border: 2px solid var(--colour-accent);
+  border-radius: 4px;
+  color: var(--colour-accent);
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(1.5vw, 2.2vh);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 /* two-column lists (cast / warnings full) */
@@ -1077,6 +1104,83 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 .nextgen-foyer .poster-frame.missing img { display: none; }
 .nextgen-foyer .poster-frame.missing .fallback { display: flex; }
 
+/* Reusable photo presentation: clean, sharp image on the theme ground.
+   Contain preserves the whole object; cover fills the box and may be used
+   where crop margin permits a restrained Ken Burns pan/zoom.
+   No duplicated blurred photograph. */
+.nextgen-foyer .photo-presentation {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: var(--colour-background, #0d0806);
+  border: 1.5px solid rgba(217, 169, 78, 0.35);
+  border-radius: 2px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7);
+}
+.nextgen-foyer .photo-window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.nextgen-foyer .contain .photo-window {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+.nextgen-foyer .photo-presentation .photo-fg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.nextgen-foyer .photo-presentation.contain .photo-fg {
+  object-fit: contain;
+}
+.nextgen-foyer .photo-presentation.cover .photo-fg {
+  object-fit: cover;
+}
+.nextgen-foyer .photo-presentation .photo-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9vw;
+  color: var(--cream-2);
+  letter-spacing: 2px;
+  background: var(--colour-background, #0d0806);
+}
+.nextgen-foyer .photo-presentation.missing .photo-fg { display: none; }
+.nextgen-foyer .photo-presentation.missing .photo-fallback { display: flex; }
+
+/* Restrained Ken Burns on cover photos (~1.00 -> 1.06).
+   Contained photographs zoom inside a fixed window fitted to their natural ratio.
+   Posters, QR codes and text are never animated. */
+.nextgen-foyer .photo-presentation.cover[data-motion="true"] .photo-fg {
+  animation: photo-drift 14s linear infinite alternate;
+}
+.nextgen-foyer .photo-presentation.contain[data-motion="true"] .photo-fg {
+  animation: photo-contained-drift 14s linear infinite alternate;
+}
+@keyframes photo-contained-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+@keyframes photo-drift {
+  from { transform: scale(1.0) translate(0, 0); }
+  to   { transform: scale(1.06) translate(-1.5%, -1%); }
+}
+
 /* split layout: type left, poster right */
 .nextgen-foyer .split-layout {
   display: grid;
@@ -1089,7 +1193,8 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
    headline or poster can't force horizontal overflow that clips the corner
    wordmark (.ng-topline). */
 .nextgen-foyer .split-text { min-width: 0; }
-.nextgen-foyer .split-layout .poster-frame {
+.nextgen-foyer .split-layout .poster-frame,
+.nextgen-foyer .split-layout .photo-presentation {
   aspect-ratio: 1 / 1;
   width: 100%;
   min-width: 0;
@@ -1143,28 +1248,21 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   margin-top: 22px;
   height: 54%;
 }
-.nextgen-foyer .photo-grid .poster-frame {
+.nextgen-foyer .photo-grid .photo-presentation {
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
 }
 
 /* Portrait-safe variant: a bounded cell height (like the base .photo-grid
-   above) taller than the landscape 54% to give 2:3 posters more headroom,
-   with object-fit: contain so each poster renders whole rather than being
-   cropped or, as height: auto previously did, sized from width alone and
-   overflowing the slide at 1920x1080. Landscape grids are untouched. */
+   above) taller than the landscape 54% to give 2:3 posters more headroom.
+   The generated composites already contain the full image, so cells can fill. */
 .nextgen-foyer .photo-grid.portrait-safe {
   height: 62%;
 }
-.nextgen-foyer .photo-grid.portrait-safe .poster-frame {
+.nextgen-foyer .photo-grid.portrait-safe .photo-presentation {
   width: 100%;
   height: 100%;
-}
-.nextgen-foyer .photo-grid.portrait-safe .poster-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 /* Interval countdown */
@@ -1241,6 +1339,80 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   letter-spacing: 1px;
   text-transform: none;
   opacity: 0.85;
+}
+
+/* Tickets & walk-ins — three price tiers + QR. All colours come from the
+   active theme's accent/secondary/muted scale, not Popcorn's neon literals. */
+.nextgen-foyer .walkins-grid {
+  display: flex;
+  gap: 4%;
+  align-items: center;
+  max-width: 94%;
+  margin-top: 18px;
+}
+.nextgen-foyer .walkins-tiers {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3%;
+}
+.nextgen-foyer .walkins-qr {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.nextgen-foyer .price-tier {
+  border: 1.5px solid var(--tier-color);
+  padding: 18px 14px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--tier-color) 6%, transparent);
+}
+.nextgen-foyer .price-tier.accent   { --tier-color: var(--colour-accent); }
+.nextgen-foyer .price-tier.secondary { --tier-color: var(--colour-primary); }
+.nextgen-foyer .price-tier.muted    { --tier-color: var(--cream-2); }
+.nextgen-foyer .price-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: min(1.15vw, 1.6vh);
+  color: var(--tier-color);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.nextgen-foyer .price-amount {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 4.2vw;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+.nextgen-foyer .qr-card {
+  width: 11vw;
+  max-width: 170px;
+  aspect-ratio: 1 / 1;
+  background: #FFFFFF;
+  border: 2px solid var(--colour-accent);
+  border-radius: 6px;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--colour-accent) 25%, transparent);
+  padding: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nextgen-foyer .qr-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.nextgen-foyer .qr-fallback {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  color: #111;
+  letter-spacing: 2px;
+}
+.nextgen-foyer .qr-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: min(1.05vw, 1.5vh);
+  color: var(--colour-accent);
+  letter-spacing: 2px;
+  margin-top: 9px;
+  text-transform: uppercase;
 }
 
 /* Postshow archive and coming-soon treatments. */
@@ -1543,11 +1715,251 @@ body.nextgen-foyer.ng-preview .ng-shell {
   justify-content: center;
   align-items: center;
 }
-.nextgen-foyer .feature-hero .poster-frame {
+.nextgen-foyer .feature-hero .photo-presentation {
   width: 100%;
   height: 100%;
 }
-.nextgen-foyer .feature-hero .poster-frame img {
-  object-fit: contain;
-}
 .nextgen-foyer .feature-caption { min-width: 0; }
+.nextgen-foyer .feature-caption .body {
+  font-size: min(3.0vw, 4.5vh);
+  max-width: 86%;
+}
+.nextgen-foyer .feature-caption .footline {
+  font-size: min(3.0vw, 4.5vh);
+  letter-spacing: 2px;
+}
+.nextgen-foyer .feature-caption .eyebrow {
+  font-size: min(3.0vw, 4.5vh);
+}
+
+/* Story montage: equal medium picture boxes in a row, heading above,
+   captions below each picture, and credit/draft strip separate at the bottom.
+   Supports 1, 2 or 3 usable frames. */
+.nextgen-foyer .headline.tiny {
+  font-size: min(4.2vw, 6vh);
+}
+.nextgen-foyer .story-montage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 2vh 0;
+  gap: 2vh;
+}
+.nextgen-foyer .story-heading {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.nextgen-foyer .story-heading .eyebrow {
+  margin-bottom: 0.5vh;
+}
+.nextgen-foyer .story-heading .headline.tiny {
+  margin-bottom: 0.8vh;
+}
+.nextgen-foyer .story-heading .story-body {
+  margin: 0 auto;
+  max-width: 80%;
+  font-size: min(2.2vw, 3.2vh);
+}
+.nextgen-foyer .story-stage {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2.2vw;
+  min-height: 0;
+}
+.nextgen-foyer .story-frame {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 560px;
+  opacity: 0;
+}
+.nextgen-foyer .story-frames-1 .story-frame {
+  flex: 0 0 auto;
+  max-width: 560px;
+}
+.nextgen-foyer .story-frame-photo {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+.nextgen-foyer .story-frame-photo .photo-presentation {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+.nextgen-foyer .story-frame .frame-caption {
+  flex: 0 0 auto;
+  color: var(--cream);
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(1.8vw, 2.6vh);
+  padding: 1.2vh 0;
+  margin: 0;
+  text-align: center;
+}
+.nextgen-foyer .story-credit {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 0 4vw;
+}
+.nextgen-foyer .story-credit .footline {
+  margin: 0.4vh 0;
+}
+.nextgen-foyer .story-credit .review-badge {
+  display: inline-block;
+  margin-top: 0.8vh;
+  font-size: min(1.5vw, 2.2vh);
+}
+
+/* Automatic story reveal keyframes.
+   3 frames / 21 s: frame 0 visible immediately; frame 1 fades in ~5 s;
+   frame 2 fades in ~10 s; all remain visible to the end.
+   Transitions last ~0.8 s (3.8% of 21 s). */
+.nextgen-foyer .story-frames-3 .story-frame[data-frame="0"] {
+  animation: story-reveal-3-0 var(--story-dwell, 21s) linear forwards;
+}
+.nextgen-foyer .story-frames-3 .story-frame[data-frame="1"] {
+  animation: story-reveal-3-1 var(--story-dwell, 21s) linear forwards;
+}
+.nextgen-foyer .story-frames-3 .story-frame[data-frame="2"] {
+  animation: story-reveal-3-2 var(--story-dwell, 21s) linear forwards;
+}
+@keyframes story-reveal-3-0 {
+    0.0% { opacity: 1; }
+  100.0% { opacity: 1; }
+}
+@keyframes story-reveal-3-1 {
+    0.0%, 23.8% { opacity: 0; }
+   27.8%, 100.0% { opacity: 1; }
+}
+@keyframes story-reveal-3-2 {
+    0.0%, 47.6% { opacity: 0; }
+   51.4%, 100.0% { opacity: 1; }
+}
+
+/* 2 frames / 21 s: frame 0 visible immediately; frame 1 fades in ~10.5 s. */
+.nextgen-foyer .story-frames-2 .story-frame[data-frame="0"] {
+  animation: story-reveal-2-0 var(--story-dwell, 21s) linear forwards;
+}
+.nextgen-foyer .story-frames-2 .story-frame[data-frame="1"] {
+  animation: story-reveal-2-1 var(--story-dwell, 21s) linear forwards;
+}
+@keyframes story-reveal-2-0 {
+    0.0% { opacity: 1; }
+  100.0% { opacity: 1; }
+}
+@keyframes story-reveal-2-1 {
+    0.0%, 48.0% { opacity: 0; }
+   52.0%, 100.0% { opacity: 1; }
+}
+
+/* 1 frame: static, fully visible. */
+.nextgen-foyer .story-frames-1 .story-frame[data-frame="0"] {
+  opacity: 1;
+  animation: none;
+}
+
+.nextgen-foyer .story-montage.paused .story-frame,
+.nextgen-foyer .story-montage.paused .photo-presentation[data-motion="true"] .photo-fg {
+  animation-play-state: paused;
+}
+/* Reduced motion: all frames visible immediately. No frame is hidden.
+   Contain-only photographs stay still by design. */
+.nextgen-foyer.motion-reduced .story-frame,
+.nextgen-foyer.motion-reduced .photo-presentation[data-motion="true"] .photo-fg {
+  animation: none !important;
+}
+.nextgen-foyer.motion-reduced .story-frame {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nextgen-foyer:not(.motion-full) .story-frame {
+    animation: none !important;
+    opacity: 1;
+  }
+  .nextgen-foyer:not(.motion-full) .photo-presentation[data-motion="true"] .photo-fg {
+    animation: none;
+  }
+}
+
+/* Restrained opt-in gold dust for ticket / bar / refreshment / next-show cards.
+   12-18 seeded pseudo-random motes, 4-12px, slow varied travel, kept to spare
+   margins so they never sit over prices, QR codes or running copy.
+   Disabled by reduced motion or theme token. */
+.nextgen-foyer .sales-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.nextgen-foyer .sales-card > .split-text,
+.nextgen-foyer .sales-card > .walkins-grid,
+.nextgen-foyer .sales-card > .walkins-qr,
+.nextgen-foyer .sales-card > .poster-frame,
+.nextgen-foyer .sales-card > h2,
+.nextgen-foyer .sales-card > p,
+.nextgen-foyer .sales-card > .qr-card {
+  position: relative;
+  z-index: 1;
+}
+.nextgen-foyer .gold-dust {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nextgen-foyer .gold-dust span {
+  position: absolute;
+  left: var(--gd-left, 5%);
+  top: var(--gd-top, 5%);
+  width: var(--gd-size, 6px);
+  height: var(--gd-size, 6px);
+  border-radius: 50%;
+  background: var(--colour-accent);
+  opacity: 0;
+  box-shadow: 0 0 4px color-mix(in srgb, var(--colour-accent) 30%, transparent);
+  animation: gold-drift var(--gd-duration, 20s) ease-in-out infinite;
+  animation-delay: var(--gd-delay, 0s);
+}
+@keyframes gold-drift {
+  0%, 100% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  25%      { opacity: var(--gd-opacity, 0.3); }
+  50%      { opacity: calc(var(--gd-opacity, 0.3) * 0.65); transform: translate(var(--gd-drift-x, 0), var(--gd-drift-y, 20px)) scale(1); }
+  75%      { opacity: var(--gd-opacity, 0.3); }
+}
+.nextgen-foyer.motion-reduced .gold-dust {
+  display: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nextgen-foyer:not(.motion-full) .gold-dust { display: none !important; }
+}
+.nextgen-foyer.motion-full .gold-dust {
+  display: block !important;
+}
+
+/* Pause decoration, but reveal a newly selected slide immediately. */
+.nextgen-foyer #stage.motion-paused > .slide {
+  animation: none !important;
+  opacity: 1;
+}
+.nextgen-foyer #stage.motion-paused * {
+  animation-play-state: paused !important;
+}
+#ngp-motion-notice:not([hidden]) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-basis: 100%;
+  padding: 8px 12px;
+  color: #fff2d3;
+  background: #382a13;
+  font: 15px/1.3 system-ui, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+}
+#ngp-motion-preview { border: 1px solid #d9a94e; }

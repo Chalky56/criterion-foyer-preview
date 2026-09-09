@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "phase": "interval",
+  "show_id": "underdog-2026",
+  "_notes": "Service-led short loop: approximately 75% service and 25% next production. Anne-marie Greene confirmed a 20-minute interval, but its actual start is not known, so no countdown is inferred from the estimated act lengths. Ice-cream availability remains review copy pending operational confirmation.",
+  "policy": {
+    "min_dwell_seconds": 9,
+    "max_dwell_seconds": 15,
+    "max_words_per_screen": 40,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 48,
+    "audio_allowed": false
+  },
+  "items": [
+    {
+      "kind": "wildcard",
+      "id": "return-soon",
+      "template": "did-you-know-criterion",
+      "tag": "service",
+      "weight": 2,
+      "dwell_seconds": 12,
+      "content": {
+        "headline": "Act II will resume shortly",
+        "body": "Please enjoy the break. Make your way back to your seats when you hear the bell or see the house lights change."
+      },
+      "_note": "The interval is confirmed as 20 minutes, but the actual start is not. Keep this non-countdown wording until an operational trigger supplies a truthful return time."
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-spotlight",
+      "template": "bar-spotlight",
+      "sales_intent": true,
+      "tag": "service",
+      "weight": 2,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "ice-cream",
+      "template": "ice-cream",
+      "sales_intent": true,
+      "tag": "service",
+      "weight": 1,
+      "dwell_seconds": 12,
+      "content": {
+        "headline": "Interval ice creams",
+        "body": "Ice creams are available in the foyer during the interval."
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-interval",
+      "template": "next-production-interval",
+      "sales_intent": true,
+      "tag": "service",
+      "weight": 1,
+      "production_ref": "next_productions.json#shakespeare-in-love-2026",
+      "dwell_seconds": 12
+    }
+  ]
+}

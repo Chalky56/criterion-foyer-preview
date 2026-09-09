@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "name": "underdog-2026",
+  "label": "Underdog - The Other Other",
+  "description": "Look B for Underdog, 26 September - 3 October 2026. A dark warm ground with hot gold accent and a struck-through red for emphasis. Anton supplies the blunt modern condensed headlines; IM Fell English carries the period body. Restrained overlay on the Criterion house theme: it retunes ground, accents, texture, watermark and type only. Grid, type scale, lockup geometry, QR card, CTA and next-strip placement stay engine-owned.",
+
+  "colours": {
+    "ground": "#17120E",
+    "accent": "#D9A94E",
+    "secondary": "#B5432E",
+    "text": "#EDE3D2",
+    "muted_text": "#B9A88E"
+  },
+  "_colour_notes": {
+    "ground": "Warm soot black. Ratio against text is 14.63:1.",
+    "accent": "Hot gold for headlines, CTAs and emphasis marks. Ratio against ground is 8.62:1; safe as text.",
+    "secondary": "Struck-through red for rules, separators and small emphasis only. Ratio against ground is 3.37:1 - RULE COLOUR ONLY, never running copy.",
+    "text": "Warm parchment. Ratio against ground is 14.63:1; the body-text floor is 10:1.",
+    "muted_text": "Aged paper for footlines and small print. Ratio against ground is 8.02:1; above the 7:1 muted floor."
+  },
+
+  "fonts": {
+    "headline": "Anton",
+    "body": "IM Fell English"
+  },
+  "_font_notes": "Anton and IM Fell English are both in APPROVED_FONTS in platform/obs-helper/js/theme-loader.js and the corresponding .woff2 files are present in platform/obs-helper/assets/fonts/. The theatre dry-run still has to prove the fonts serve HTTP 200 with no LOADING hang; that is a deployment check, not a schema one.",
+
+  "watermark": {
+    "image": null,
+    "opacity": 0.1,
+    "position": "bottom-right"
+  },
+  "_watermark_notes": "No show-specific watermark drawn yet. The engine falls back to the house Criterion roofline mark, which is acceptable for the prototype and keeps the foyer recognisably Criterion-hosted.",
+
+  "texture": {
+    "image": null,
+    "opacity": 0
+  },
+  "_texture_notes": "No texture drawn yet. The ground renders flat, which is consistent with the clean modern/period contrast of look B.",
+
+  "poster_frame": "mat",
+  "_poster_frame_notes": "Parchment-style mat suits the period body type and the warm dark ground.",
+
+  "phase_intensity": {
+    "preshow": 1.0,
+    "interval": 0.9,
+    "postshow": 0.65
+  },
+  "_phase_intensity_notes": "Preshow bright and welcoming; interval slightly dimmed for the break; postshow dimmed for a long loop in a thinning bar.",
+
+  "motion": {
+    "photos": true,
+    "particles": true
+  },
+  "_motion_notes": "Cover photographs move gently within crop margin; contained photographs zoom from 94% to 100% inside the box. Posters, QR codes and text remain still. Seeded gold motes appear only on cards with explicit sales_intent. Both effects are suppressed by Reduced mode and can be disabled per show."
+}

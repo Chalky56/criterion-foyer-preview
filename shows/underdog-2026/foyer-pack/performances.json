@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "show_id": "underdog-2026",
+  "_source": "Criterion tickets page, checked 9 September 2026: seven performances, with 19:30 evening curtains and a 17:00 Sunday curtain. House-opening times and evening bar closing are copied from Popcorn at David's request.",
+  "_times_status": "Curtain times are published. The 20-minute interval is confirmed, but its actual start is not; interval_at_estimated and act_2_at_estimated therefore remain null. House opening is copied as 19:00 evenings / 16:30 Sunday and needs an Underdog-specific check. Evening bar close is copied as 23:00; Sunday bar close remains specifically TBC.",
+
+  "performances": [
+    { "id": "underdog-2026-night-1", "date": "2026-09-26", "weekday": "Saturday", "curtain": "19:30", "house_opens": "19:00", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": "23:00", "press_night": false, "matinee": false, "notes": "Opening night. Curtain published; house opening and bar close copied from Popcorn at David's request." },
+    { "id": "underdog-2026-night-2", "date": "2026-09-27", "weekday": "Sunday", "curtain": "17:00", "house_opens": "16:30", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": null, "press_night": false, "matinee": true, "notes": "Sunday performance. Curtain published; house opening copied from Popcorn. Sunday bar close TBC with FoH/bar." },
+    { "id": "underdog-2026-night-3", "date": "2026-09-29", "weekday": "Tuesday", "curtain": "19:30", "house_opens": "19:00", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": "23:00", "press_night": false, "matinee": false, "notes": "Curtain published; house opening and bar close copied from Popcorn at David's request." },
+    { "id": "underdog-2026-night-4", "date": "2026-09-30", "weekday": "Wednesday", "curtain": "19:30", "house_opens": "19:00", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": "23:00", "press_night": false, "matinee": false, "notes": "Curtain published; house opening and bar close copied from Popcorn at David's request." },
+    { "id": "underdog-2026-night-5", "date": "2026-10-01", "weekday": "Thursday", "curtain": "19:30", "house_opens": "19:00", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": "23:00", "press_night": false, "matinee": false, "notes": "Curtain published; house opening and bar close copied from Popcorn at David's request." },
+    { "id": "underdog-2026-night-6", "date": "2026-10-02", "weekday": "Friday", "curtain": "19:30", "house_opens": "19:00", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": "23:00", "press_night": false, "matinee": false, "notes": "Curtain published; house opening and bar close copied from Popcorn at David's request." },
+    { "id": "underdog-2026-night-7", "date": "2026-10-03", "weekday": "Saturday", "curtain": "19:30", "house_opens": "19:00", "interval_at_estimated": null, "act_2_at_estimated": null, "bar_close": "23:00", "press_night": false, "matinee": false, "notes": "Closing night. Curtain published; house opening and bar close copied from Popcorn at David's request." }
+  ]
+}

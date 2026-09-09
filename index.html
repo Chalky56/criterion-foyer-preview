@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Criterion Foyer Display</title>
-<link rel="stylesheet" href="style.css?v=20260802">
+<link rel="stylesheet" href="style.css?v=20260909motion3">
 </head>
 <body class="nextgen-foyer" data-phase="preshow">
 <div class="ng-shell">
@@ -26,10 +27,10 @@
 </div>
 
 <script type="module">
-  import { getActiveShow, getVisitingCompany, startShowPolling } from "./js/show-resolver.js?v=20260802";
-  import { loadTheme } from "./js/theme-loader.js?v=20260802";
-  import { Scheduler } from "./js/scheduler.js?v=20260802";
-  import { renderSlideHTML, canRenderSlide } from "./js/slide-templates.js?v=20260802";
+  import { getActiveShow, getVisitingCompany, startShowPolling } from "./js/show-resolver.js?v=20260909motion3";
+  import { loadTheme } from "./js/theme-loader.js?v=20260909motion3";
+  import { Scheduler } from "./js/scheduler.js?v=20260909motion3";
+  import { renderSlideHTML, canRenderSlide } from "./js/slide-templates.js?v=20260909motion3";
 
   const params = new URLSearchParams(window.location.search);
   const dwellSeconds = params.get("dwell");
@@ -85,6 +86,8 @@
   const preview = params.get("preview") === "1";
   let previewPaused = false;
   let previewDwellOverride = null;
+  let remainingMs = 0;
+  let playbackDeadline = 0;
   const previewHistory = [];
   let previewIndex = -1;
   let previewBarBuilt = false;
@@ -128,6 +131,7 @@
   }
 
   async function updateState(current, next) {
+    if (preview) return; // A review must never send live state, even on a live host.
     await fetch("api/state", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -165,10 +169,70 @@
     console.warn("Missing foyer asset:", item.source);
   }
 
+  function setStoryPaused(paused) {
+    stage.classList.toggle("motion-paused", paused);
+    const montage = stage.querySelector(".story-montage");
+    montage?.classList.toggle("paused", paused);
+    for (const animation of stage.getAnimations({ subtree: true })) {
+      if (paused) animation.pause();
+      else animation.play();
+    }
+  }
+
+  function scheduleCurrent() {
+    if (preview && previewPaused) return;
+    playbackDeadline = performance.now() + remainingMs;
+    timer = window.setTimeout(() => advance(), Math.max(1, remainingMs));
+  }
+
+  function stepStoryFrame(direction) {
+    const montage = stage.querySelector(".story-montage");
+    if (!montage) {
+      return;
+    }
+    const frames = Array.from(montage.querySelectorAll(".story-frame"));
+    if (!frames.length) {
+      return;
+    }
+    previewPause();
+    const dwellMs = Number(montage.dataset.dwell) * 1000;
+    const animations = stage.getAnimations({ subtree: true });
+    const elapsed = Number(animations.find(a => a.animationName?.startsWith("story-reveal"))?.currentTime) || 0;
+    const interval = frames.length === 3 ? dwellMs * 0.238 : dwellMs * 0.48;
+    let current = Math.min(frames.length - 1, Math.floor(elapsed / interval));
+    current = (current + direction + frames.length) % frames.length;
+    const target = current ? current * interval + dwellMs * 0.045 : 0;
+    animations.forEach(animation => { animation.currentTime = target; });
+    remainingMs = Math.max(1, dwellMs - target);
+  }
+
+  let photoObserver;
+  function fitPhotoWindows() {
+    photoObserver?.disconnect();
+    const fit = (frame) => {
+      const img = frame.querySelector('.photo-fg');
+      const window = frame.querySelector('.photo-window');
+      if (!img?.naturalWidth || !window || !frame.isConnected) return;
+      const scale = Math.min(frame.clientWidth / img.naturalWidth, frame.clientHeight / img.naturalHeight);
+      window.style.width = `${img.naturalWidth * scale}px`;
+      window.style.height = `${img.naturalHeight * scale}px`;
+    };
+    photoObserver = new ResizeObserver(entries => entries.forEach(entry => fit(entry.target)));
+    stage.querySelectorAll('.photo-presentation.contain').forEach(frame => {
+      const img = frame.querySelector('.photo-fg');
+      img?.addEventListener('load', () => fit(frame), { once: true });
+      fit(frame);
+      photoObserver.observe(frame);
+    });
+  }
+
   function renderSlide(entry) {
     document.body.classList.remove("media-active");
     ctx.countdown = getCountdownState();
     stage.innerHTML = renderSlideHTML(entry, ctx);
+    fitPhotoWindows();
+    remainingMs = ((preview && previewDwellOverride) || entry.dwell_seconds || 5) * 1000;
+    setStoryPaused(preview && previewPaused);
     if (entry.template === "countdown") {
       updateCountdown();
       countdownTimer = window.setInterval(updateCountdown, 60 * 1000);
@@ -176,11 +240,12 @@
   }
 
   function renderVideo(item) {
+    photoObserver?.disconnect();
     document.body.classList.add("media-active");
     stage.innerHTML = "";
     const video = document.createElement("video");
     video.className = "ng-media";
-    video.autoplay = true;
+    video.autoplay = !(preview && previewPaused);
     video.muted = true;
     video.playsInline = true;
     video.src = `${ctx.foyerPackBase.replace(/\/$/, "")}/${item.source.replace(/^\//, "")}`;
@@ -324,12 +389,12 @@
     } else {
       renderSlide(current);
       if (!(preview && previewPaused)) {
-        const dwell = (preview && previewDwellOverride) ? previewDwellOverride : (current.dwell_seconds || 5);
-        timer = window.setTimeout(() => advance(), dwell * 1000);
+        scheduleCurrent();
       }
     }
     if (preview) {
       updatePreviewNowShowing(current);
+      refreshPreviewControls();
     }
     await updateState(current, next);
   }
@@ -409,6 +474,7 @@
       performances,
       performance,
       visitingCompany,
+      theme: resolvedTheme,
       videoItems: Object.fromEntries(
         (playlist.items || [])
           .filter(item => isVideo(item))
@@ -496,17 +562,66 @@
     if (btn) {
       btn.textContent = previewPaused ? "\u25B6 Play" : "\u275A\u275A Pause";
     }
+    updateMotionNotice();
+  }
+
+  function updateMotionNotice() {
+    const notice = document.getElementById("ngp-motion-notice");
+    const message = document.getElementById("ngp-motion-message");
+    if (!notice || !message) return;
+    const reduced = document.body.classList.contains("motion-reduced");
+    notice.hidden = !(reduced || previewPaused);
+    message.textContent = reduced
+      ? "Motion is off: reduced-motion mode shows still pictures and hides sparkles."
+      : "Preview paused: pictures, story reveals and sparkles are frozen.";
+    document.getElementById("ngp-motion-preview").textContent = reduced ? "Preview animations" : "Resume playback";
+  }
+
+  function updateMotionPreference() {
+    const select = document.getElementById("ngp-motion");
+    if (!select) {
+      return;
+    }
+    document.body.classList.remove("motion-full", "motion-reduced");
+    let mode = "Full";
+    if (select.value === "full") {
+      document.body.classList.add("motion-full");
+    } else if (select.value === "reduced") {
+      document.body.classList.add("motion-reduced");
+      mode = "Reduced";
+    } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.body.classList.add("motion-reduced");
+      mode = "Reduced (system)";
+    } else {
+      mode = "Full (system)";
+    }
+    const readout = document.getElementById("ngp-motion-mode");
+    if (readout) {
+      readout.textContent = mode;
+    }
+    setStoryPaused(previewPaused);
+    updateMotionNotice();
   }
 
   function previewPlay() {
+    clearTimer();
     previewPaused = false;
+    setStoryPaused(false);
     updatePreviewPlayButton();
-    advance();
+    const video = stage.querySelector("video");
+    if (video) {
+      video.play();
+      return;
+    }
+    scheduleCurrent();
   }
 
   function previewPause() {
+    if (!previewPaused && timer) remainingMs = Math.max(1, playbackDeadline - performance.now());
     previewPaused = true;
     clearTimer();
+    setStoryPaused(true);
+    stage.querySelector("video")?.pause();
     updatePreviewPlayButton();
   }
 
@@ -548,9 +663,12 @@
       dwell_seconds: item.dwell_seconds || 6,
     };
     clearTimer();
-    previewPaused = true;
     recordPreviewHistory(entry);
     renderPreviewEntry(entry);
+    setStoryPaused(previewPaused);
+    if (!isVideo(entry)) scheduleCurrent();
+    else if (previewPaused) stage.querySelector("video")?.pause();
+    refreshPreviewControls();
     updatePreviewPlayButton();
   }
 
@@ -568,7 +686,6 @@
     scheduler = null;
     previewHistory.length = 0;
     previewIndex = -1;
-    previewPaused = false;
     await buildScheduler();
     await advance();
     refreshPreviewControls();
@@ -591,8 +708,14 @@
           }),
       );
       select.innerHTML = options.join("");
+      select.value = previewHistory[previewIndex]?.id || "";
     }
-    updatePreviewNowShowing(previewHistory[previewIndex]);
+    const currentItem = previewIndex >= 0 ? previewHistory[previewIndex] : null;
+    const storyGroup = document.getElementById("ngp-story-group");
+    if (storyGroup) {
+      storyGroup.style.display = currentItem && currentItem.template === "story-montage" ? "" : "none";
+    }
+    updatePreviewNowShowing(currentItem);
     updatePreviewPlayButton();
   }
 
@@ -655,6 +778,10 @@
         <button class="ngp-btn" id="ngp-play" title="Play / pause">\u275A\u275A Pause</button>
         <button class="ngp-btn" id="ngp-next" title="Next slide, then pause">Next \u25B6</button>
       </div>
+      <div class="ngp-group" id="ngp-story-group" style="display:none;">
+        <button class="ngp-btn" id="ngp-frame-prev" title="Previous story frame">\u25C0 Frame</button>
+        <button class="ngp-btn" id="ngp-frame-next" title="Next story frame">Frame \u25B6</button>
+      </div>
       <label class="ngp-field">Jump
         <select class="ngp-select" id="ngp-jump"></select>
       </label>
@@ -664,6 +791,18 @@
       <label class="ngp-field">Dwell
         <input type="number" class="ngp-input" id="ngp-dwell" min="2" max="60" step="1" placeholder="auto">s
       </label>
+      <label class="ngp-field">Motion
+        <select class="ngp-select" id="ngp-motion">
+          <option value="system" selected>System</option>
+          <option value="full">Full motion</option>
+          <option value="reduced">Reduced</option>
+        </select>
+        <span class="ngp-stamp" id="ngp-motion-mode" title="Effective motion mode">auto</span>
+      </label>
+      <div id="ngp-motion-notice" role="status" hidden>
+        <span id="ngp-motion-message"></span>
+        <button class="ngp-btn" id="ngp-motion-preview">Preview animations</button>
+      </div>
     `;
     document.body.appendChild(bar);
     bar.querySelectorAll("#ngp-phases .ngp-btn").forEach(btn => {
@@ -672,6 +811,8 @@
     document.getElementById("ngp-prev").addEventListener("click", previewPrev);
     document.getElementById("ngp-play").addEventListener("click", previewTogglePlay);
     document.getElementById("ngp-next").addEventListener("click", previewStep);
+    document.getElementById("ngp-frame-prev").addEventListener("click", () => stepStoryFrame(-1));
+    document.getElementById("ngp-frame-next").addEventListener("click", () => stepStoryFrame(1));
     document.getElementById("ngp-jump").addEventListener("change", event => {
       if (event.target.value) {
         previewJump(event.target.value);
@@ -681,6 +822,22 @@
       const value = Number(event.target.value);
       previewDwellOverride = Number.isFinite(value) && value > 0 ? value : null;
     });
+    document.getElementById("ngp-motion").addEventListener("change", updateMotionPreference);
+    const requestedMotion = params.get("motion");
+    if (["full", "reduced", "system"].includes(requestedMotion)) {
+      document.getElementById("ngp-motion").value = requestedMotion;
+    }
+    document.getElementById("ngp-motion-preview").addEventListener("click", () => {
+      if (document.body.classList.contains("motion-reduced")) {
+        document.getElementById("ngp-motion").value = "full";
+        updateMotionPreference();
+        const current = previewHistory[previewIndex];
+        if (current && !isVideo(current)) renderPreviewEntry(current);
+      }
+      previewPlay();
+    });
+    window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", updateMotionPreference);
+    updateMotionPreference();
     loadBuildStamp(document.getElementById("ngp-stamp")).finally(fitPreviewCanvas);
     fitPreviewCanvas();
     window.addEventListener("resize", fitPreviewCanvas);
@@ -689,8 +846,10 @@
     }
   }
 
+  let resolvedTheme = null;
+
   async function boot() {
-    await loadTheme();
+    resolvedTheme = await loadTheme();
     if (preview) {
       setupPreview();
     }

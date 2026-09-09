@@ -10,6 +10,7 @@ export const HOUSE_THEME = Object.freeze({
   texture: { image: null, opacity: 0 },
   poster_frame: "mat",
   phase_intensity: { preshow: 1, interval: 0.9, postshow: 0.65 },
+  motion: { photos: true, particles: false },
 });
 
 const APPROVED_FONTS = new Set([
@@ -59,6 +60,7 @@ export function normalizeTheme(theme = {}) {
     texture: { ...HOUSE_THEME.texture, ...(theme.texture || {}) },
     posterFrame: POSTER_FRAMES.has(theme.poster_frame) ? theme.poster_frame : HOUSE_THEME.poster_frame,
     phaseIntensity: { ...HOUSE_THEME.phase_intensity, ...(theme.phase_intensity || {}) },
+    motion: { ...HOUSE_THEME.motion, ...(theme.motion || {}) },
   };
 }
 
@@ -111,16 +113,16 @@ export function applyThemeTokens(theme, brandingBase = "") {
 
 export async function loadTheme() {
   const activeShow = await getActiveShow();
-  applyThemeTokens(HOUSE_THEME);
-  if (!activeShow?.paths?.branding) return HOUSE_THEME;
+  let resolved = applyThemeTokens(HOUSE_THEME);
+  if (!activeShow?.paths?.branding) return resolved;
   try {
     const response = await fetch(`${activeShow.paths.branding}/theme.json?t=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) return HOUSE_THEME;
+    if (!response.ok) return resolved;
     const theme = await response.json();
-    applyThemeTokens(theme, activeShow.paths.branding);
-    return theme;
+    resolved = applyThemeTokens(theme, activeShow.paths.branding);
+    return resolved;
   } catch (error) {
     console.warn("Theme unavailable; using Criterion house theme:", error);
-    return HOUSE_THEME;
+    return resolved;
   }
 }

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "_notes": "Next productions after Underdog (26 Sep - 3 Oct 2026). A coming attraction must be later than Underdog; completed Lovett, Popcorn and Springboard 2026 appear only in deliberately dated archive stories.",
+  "_tickets_on_sale_note": "tickets_on_sale gates the booking QR and ticket URL on the Coming-Up slides. Advertise everything, but only show a booking link where tickets can actually be bought.",
+
+  "productions": [
+    {
+      "id": "shakespeare-in-love-2026",
+      "production_page": "https://criteriontheatre.co.uk/production/550",
+      "title": "Shakespeare in Love",
+      "subtitle": "",
+      "author": "Marc Norman and Tom Stoppard",
+      "adapter": "Lee Hall",
+      "director": "Hugh Sorrill",
+      "run_dates": { "first": "2026-12-05", "last": "2026-12-12" },
+      "synopsis_short": "Based on the Academy Award-winning film. Shakespeare hasn't written a hit in years and his creditors are at the door - until a casting session changes everything.",
+      "image_local": "assets/posters/shakespeare-in-love-2026.jpg",
+      "tickets_on_sale": false,
+      "tickets_url": "https://criteriontheatre.co.uk/tickets"
+    }
+  ]
+}

@@ -144,10 +144,18 @@
     });
   }
 
+  function captionText(item, show) {
+    const tag = item?.tag?.replace(/_/g, " ") || "";
+    if (!tag) return "";
+    const foldedTag = tag.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const words = [show?.title, show?.subtitle]
+      .filter(Boolean)
+      .flatMap(value => String(value).match(/[\p{L}\p{N}]+/gu) || []);
+    return words.find(word => word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === foldedTag) || tag;
+  }
+
   function setCaption(item) {
-    caption.textContent = item?.tag
-      ? `${item.tag.replace(/_/g, " ")}`
-      : "";
+    caption.textContent = captionText(item, ctx?.show);
   }
 
   function clearTimer() {

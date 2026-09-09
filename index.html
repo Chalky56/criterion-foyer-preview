@@ -92,6 +92,7 @@
   let previewIndex = -1;
   let previewBarBuilt = false;
   let currentPlaylistItems = [];
+  let previewLinkNotice = "";
   const stage = document.getElementById("stage");
   const caption = document.getElementById("caption");
   const showLabel = document.getElementById("show-label");
@@ -144,18 +145,8 @@
     });
   }
 
-  function captionText(item, show) {
-    const tag = item?.tag?.replace(/_/g, " ") || "";
-    if (!tag) return "";
-    const foldedTag = tag.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    const words = [show?.title, show?.subtitle]
-      .filter(Boolean)
-      .flatMap(value => String(value).match(/[\p{L}\p{N}]+/gu) || []);
-    return words.find(word => word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === foldedTag) || tag;
-  }
-
-  function setCaption(item) {
-    caption.textContent = captionText(item, ctx?.show);
+  function setCaption() {
+    caption.textContent = "";
   }
 
   function clearTimer() {
@@ -699,6 +690,51 @@
     refreshPreviewControls();
   }
 
+  function updatePreviewLinkNotice() {
+    const target = document.getElementById("ngp-link-status");
+    if (target) {
+      target.textContent = previewLinkNotice;
+      target.hidden = !previewLinkNotice;
+    }
+  }
+
+  async function resolvePreviewCardRequest() {
+    const cardId = params.get("card");
+    if (!preview || !cardId) return null;
+    const activeShow = await getActiveShow();
+    const foyerPackBase = activeShow?.paths?.foyerPack;
+    if (!foyerPackBase) return null;
+    const phases = ["preshow", "interval", "postshow"];
+    const playlists = await Promise.all(phases.map(async name => ({
+      phase: name,
+      playlist: await fetchJson(`${foyerPackBase}/playlists/${name}.json`),
+    })));
+    const matches = playlists.flatMap(({ phase: matchPhase, playlist }) =>
+      (playlist.items || [])
+        .filter(item => item.id === cardId)
+        .map(item => ({ phase: matchPhase, item }))
+    );
+    const requestedPhase = params.get("phase")?.trim().toLowerCase();
+    let target = matches.length === 1 ? matches[0] : null;
+    if (matches.length > 1 && requestedPhase) {
+      target = matches.find(match => match.phase === requestedPhase) || null;
+    }
+    if (matches.length > 1 && !target) {
+      previewLinkNotice = `Card '${cardId}' exists in ${matches.map(match => match.phase).join(" and ")}; choose a phase.`;
+    } else if (!matches.length) {
+      previewLinkNotice = `Card '${cardId}' was not found; showing the phase start.`;
+    }
+    if (target) {
+      const phaseParams = new URLSearchParams();
+      phaseParams.set("phase", target.phase);
+      route = resolveRoute(phaseParams);
+      phase = route.name;
+      document.body.dataset.phase = route.phase;
+    }
+    updatePreviewLinkNotice();
+    return target;
+  }
+
   function refreshPreviewControls() {
     if (!preview || !previewBarBuilt) {
       return;
@@ -724,6 +760,7 @@
       storyGroup.style.display = currentItem && currentItem.template === "story-montage" ? "" : "none";
     }
     updatePreviewNowShowing(currentItem);
+    updatePreviewLinkNotice();
     updatePreviewPlayButton();
   }
 
@@ -796,6 +833,7 @@
       <label class="ngp-field">Now showing
         <span class="ngp-stamp" id="ngp-now">No slide</span>
       </label>
+      <span class="ngp-stamp" id="ngp-link-status" role="status" hidden></span>
       <label class="ngp-field">Dwell
         <input type="number" class="ngp-input" id="ngp-dwell" min="2" max="60" step="1" placeholder="auto">s
       </label>
@@ -865,11 +903,16 @@
       renderUnavailableRoute();
       return;
     }
+    const deepLinkTarget = preview ? await resolvePreviewCardRequest() : null;
     await buildScheduler();
     if (route.template) {
       await renderSingleRoute();
     } else {
       await advance();
+    }
+    if (deepLinkTarget) {
+      previewPause();
+      previewJump(deepLinkTarget.item.id);
     }
     if (preview) {
       refreshPreviewControls();

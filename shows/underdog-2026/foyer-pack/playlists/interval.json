@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "interval",
   "show_id": "underdog-2026",
-  "_notes": "Service-led short loop: approximately 75% service and 25% next production. Anne-marie Greene confirmed a 20-minute interval, but its actual start is not known, so no countdown is inferred from the estimated act lengths. Ice-cream availability remains review copy pending operational confirmation.",
+  "_notes": "Service-led short loop: approximately 75% service and 25% next production. Anne-marie Greene confirmed a 20-minute interval, but its actual start is not known, so no countdown is inferred from the estimated act lengths. Ice-cream availability remains review copy pending operational confirmation. Revised 10 September 2026: both service cards now carry photographs. Copy stays deliberately short - the interval is the phase where the display says less, per docs/plans foyer purpose note. Ice cream is available all evening, not only at the interval; the fuller ice-cream card lives in preshow.",
   "policy": {
     "min_dwell_seconds": 9,
     "max_dwell_seconds": 15,
@@ -32,19 +32,42 @@
       "sales_intent": true,
       "tag": "service",
       "weight": 2,
-      "dwell_seconds": 12
+      "dwell_seconds": 12,
+      "content": {
+        "eyebrow": "Twenty minutes",
+        "body": "Drinks, snacks and ice cream are being served now.",
+        "image_local": "assets/bar/pint-marble.jpg"
+      }
     },
     {
       "kind": "wildcard",
       "id": "ice-cream",
-      "template": "ice-cream",
+      "template": "story-montage",
       "sales_intent": true,
       "tag": "service",
       "weight": 1,
-      "dwell_seconds": 12,
+      "dwell_seconds": 14,
       "content": {
-        "headline": "Interval ice creams",
-        "body": "Ice creams are available in the foyer during the interval."
+        "eyebrow": "During the interval",
+        "headline": "Criterion ice cream",
+        "body": "From the fridge in the foyer.",
+        "footline": "Ask front-of-house for tonight's flavours",
+        "frames": [
+          {
+            "source": "assets/bar/ice-cream-chocolate.jpg",
+            "caption": "Chocolate",
+            "alt": "A tub of Criterion chocolate ice cream",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/ice-cream-vanilla.jpg",
+            "caption": "Gold Medal Vanilla",
+            "alt": "A tub of Criterion Gold Medal Vanilla ice cream",
+            "cover": true,
+            "motion": true
+          }
+        ]
       }
     },
     {

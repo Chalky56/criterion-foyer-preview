@@ -15,7 +15,7 @@
       "theatre"
     ]
   },
-  "_notes": "Review loop. Anne-marie Greene confirmed the 20-minute interval and estimated one hour per act. Published curtain times are loaded; house-opening times are copied from Popcorn for confirmation. Two separated anchors repeat the complete content notice. The supplied wording retains strobe while Paul Harrison confirms strobe versus flashing lights. Bront\u00eb material and the director wording are approved for this review.",
+  "_notes": "Review loop. Anne-marie Greene confirmed the 20-minute interval and estimated one hour per act. Published curtain times are loaded; house-opening times are copied from Popcorn for confirmation. Two separated anchors repeat the complete content notice. The supplied wording retains strobe while Paul Harrison confirms strobe versus flashing lights. Bront\u00eb material and the director wording are approved for this review. Bar, ice-cream and sound content revised 10 September 2026: the single bar slide is replaced by a rotating pool of five multi-panel bar montages, so the cards rarely repeat across a preshow hour. Named stock is draft pending the bar team; the guest ale is deliberately not named because it rotates.",
   "items": [
     {
       "kind": "anchor",
@@ -224,7 +224,7 @@
       "weight": 1,
       "dwell_seconds": 15,
       "content": {
-        "headline": "The other other one",
+        "headline": "The {other} other one",
         "body": "Anne died in Scarborough in 1849, aged 29. Her writing still asks difficult questions.",
         "image_local": "assets/posters/underdog-2026.jpg"
       }
@@ -290,20 +290,209 @@
     },
     {
       "kind": "wildcard",
-      "id": "bar-spotlight",
-      "template": "bar-spotlight",
-      "sales_intent": true,
+      "id": "criterion-story",
+      "template": "did-you-know-criterion",
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 11
     },
     {
       "kind": "wildcard",
-      "id": "criterion-story",
-      "template": "did-you-know-criterion",
+      "id": "bar-story",
+      "template": "story-montage",
       "tag": "theatre",
+      "sales_intent": true,
       "weight": 1,
-      "dwell_seconds": 11
+      "dwell_seconds": 18,
+      "review_status": "draft",
+      "draft_owner": "bar team",
+      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "content": {
+        "eyebrow": "At the bar",
+        "headline": "An empty glass, and three minutes",
+        "body": "The foyer bar is run by members of this theatre, the same as everything else here.",
+        "frames": [
+          {
+            "source": "assets/bar/story-glass.jpg",
+            "caption": "An empty glass",
+            "alt": "An empty glass on the bar",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/story-pull.jpg",
+            "caption": "Pulled by hand",
+            "alt": "A pint being pulled on the handpump",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/story-pint.jpg",
+            "caption": "Yours",
+            "alt": "A full glass of cask ale",
+            "cover": true,
+            "motion": true
+          }
+        ],
+        "footline": "The foyer bar - volunteer-run, like everything here"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-ale",
+      "template": "story-montage",
+      "tag": "theatre",
+      "sales_intent": true,
+      "weight": 1,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "bar team",
+      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "content": {
+        "eyebrow": "On the handpump",
+        "headline": "A different ale each visit",
+        "body": "The guest cask ale changes through the season, so the pint you have tonight may not be here next time.",
+        "footline": "Ask front-of-house what's on the pump tonight",
+        "frames": [
+          {
+            "source": "assets/bar/cask-pull.jpg",
+            "caption": "Pulled by hand",
+            "alt": "A pint being pulled on the handpump",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/pint-marble.jpg",
+            "caption": "No button for it",
+            "alt": "A full glass of cask ale on the bar",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/bar-welcome.jpg",
+            "caption": "Come and say hello",
+            "alt": "The foyer bar",
+            "cover": true,
+            "motion": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-wine",
+      "template": "story-montage",
+      "tag": "theatre",
+      "sales_intent": true,
+      "weight": 1,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "bar team",
+      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "content": {
+        "eyebrow": "At the bar tonight",
+        "headline": "Wine by the glass",
+        "body": "Red, white and something with bubbles, opened and poured at the bar when you order it.",
+        "footline": "Drinks are welcome in the auditorium - please bring your glass back to the bar afterwards",
+        "frames": [
+          {
+            "source": "assets/bar/wine-open.jpg",
+            "caption": "Opened tonight",
+            "alt": "A bottle being opened at the bar",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/wine-red.jpg",
+            "caption": "Red",
+            "alt": "Red wine poured into a glass",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/wine-white.jpg",
+            "caption": "White",
+            "alt": "White wine poured into a glass",
+            "cover": true,
+            "motion": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-shelf",
+      "template": "story-montage",
+      "tag": "theatre",
+      "sales_intent": true,
+      "weight": 1,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "bar team",
+      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "content": {
+        "eyebrow": "At the bar tonight",
+        "headline": "Bottles, spirits and snacks",
+        "body": "Bottled beers and lagers, gin, whisky and brandy, a full range of soft drinks - and something to go with them.",
+        "footline": "The foyer bar, a few steps from your seat",
+        "frames": [
+          {
+            "source": "assets/bar/bottle-pour.jpg",
+            "caption": "Chilled and ready",
+            "alt": "A bottled beer being poured",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/optics-wall.jpg",
+            "caption": "Behind the bar",
+            "alt": "Spirits on the optics",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/snacks-product.jpg",
+            "caption": "Something to go with it",
+            "alt": "Crisps, peanuts and chocolate on the bar",
+            "cover": true,
+            "motion": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-ice-cream",
+      "template": "story-montage",
+      "tag": "theatre",
+      "sales_intent": true,
+      "weight": 1,
+      "dwell_seconds": 16,
+      "review_status": "draft",
+      "draft_owner": "bar team",
+      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "content": {
+        "eyebrow": "From the ice-cream fridge",
+        "headline": "Criterion ice cream",
+        "body": "Our own tubs, from the fridge in the foyer - and available all evening, not only at the interval.",
+        "footline": "Ask front-of-house for tonight's flavours",
+        "frames": [
+          {
+            "source": "assets/bar/ice-cream-chocolate.jpg",
+            "caption": "Chocolate",
+            "alt": "A tub of Criterion chocolate ice cream",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/ice-cream-vanilla.jpg",
+            "caption": "Gold Medal Vanilla",
+            "alt": "A tub of Criterion Gold Medal Vanilla ice cream",
+            "cover": true,
+            "motion": true
+          }
+        ]
+      }
     }
   ]
 }

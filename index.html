@@ -646,6 +646,10 @@
     previewPaused = true;
     previewIndex -= 1;
     renderPreviewEntry(previewHistory[previewIndex]);
+    // Every other control path refreshes the bar; this one did not, so after
+    // PREV the JUMP select still named the newer slide and the FRAME group
+    // stayed hidden on a montage. Reproduced and fixed 2026-09-10.
+    refreshPreviewControls();
     updatePreviewPlayButton();
   }
 

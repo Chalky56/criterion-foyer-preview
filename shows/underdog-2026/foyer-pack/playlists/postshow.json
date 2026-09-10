@@ -217,20 +217,75 @@
     },
     {
       "kind": "wildcard",
-      "id": "sound-cues",
-      "template": "feature",
+      "id": "sound-signal-path",
+      "template": "story-montage",
       "tag": "making",
       "weight": 1,
-      "dwell_seconds": 13,
-      "source": "assets/photos/performance-06.jpg",
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Dave Cornish",
+      "draft_label": "cue count is David's own count from the SCS screen, awaiting Dave's confirmation",
       "content": {
         "eyebrow": "Behind the scenes",
-        "headline": "90+ sound cues",
-        "body": "A world built around the actors, one cue at a time.",
+        "headline": "How a sound reaches you",
+        "body": "Around 65 sound cues, fired by hand, one at a time, all evening.",
+        "frames": [
+          {
+            "source": "assets/sound/story-cues.jpg",
+            "caption": "It starts as a list",
+            "alt": "The SCS cue list on the sound operator's screen",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/sound/story-desk.jpg",
+            "caption": "It passes through the desk",
+            "alt": "The X32 mixing desk in its flight case",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/sound/story-amps.jpg",
+            "caption": "It reaches the room",
+            "alt": "The amplifier rack and its cabling",
+            "cover": true,
+            "motion": true
+          }
+        ],
         "footline": "Sound by Dave Cornish - cue count provisional, awaiting confirmation"
-      },
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "sound-foh",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 16,
       "review_status": "draft",
-      "draft_owner": "Dave Cornish"
+      "draft_owner": "Dave Cornish",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "The quiet end of the room",
+        "body": "Every cue you heard tonight was fired from a few feet behind the back row.",
+        "footline": "Sound by Dave Cornish",
+        "frames": [
+          {
+            "source": "assets/sound/cue-list.jpg",
+            "caption": "Every sound, right on cue",
+            "alt": "The SCS cue list on the sound operator's screen",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/sound/foh-rack.jpg",
+            "caption": "The operating position",
+            "alt": "The sound operating position at the back of the auditorium",
+            "cover": true,
+            "motion": true
+          }
+        ]
+      }
     },
     {
       "kind": "wildcard",
@@ -279,12 +334,12 @@
       "template": "did-you-know",
       "tag": "theatre",
       "weight": 1,
-      "dwell_seconds": 9,
+      "dwell_seconds": 12,
       "content": {
+        "eyebrow": "Tonight's performance",
         "headline": "What stayed with you?",
-        "body": "Discuss at the bar.",
-        "image_local": "assets/posters/underdog-2026.jpg",
-        "footline": "Underdog poster"
+        "body": "Which sister did you believe? Did the ending land the way you expected? And what did you make of that set? Whoever you came with saw a different play - talk it over at the bar.",
+        "image_local": "assets/posters/underdog-2026.jpg"
       },
       "review_status": "draft",
       "draft_owner": "Anne-marie Greene"
@@ -307,7 +362,7 @@
       "dwell_seconds": 16,
       "content": {
         "body": "Enjoy making things happen? Try costumes, props, lighting, sound, bar or front-of-house. Bring your skills, discover a new interest and meet the company.",
-        "footline": "Join us: speak to front-of-house or email info@criteriontheatre.co.uk"
+        "footline": "Join us: speak to front-of-house or email volunteer@criteriontheatre.co.uk"
       }
     },
     {
@@ -319,7 +374,7 @@
       "dwell_seconds": 16,
       "content": {
         "body": "Your ticket supports a registered charity. Our members keep this theatre alive \u2014 maintaining the building and making each production possible.",
-        "footline": "Join us: speak to front-of-house or email info@criteriontheatre.co.uk"
+        "footline": "Join us: speak to front-of-house or email volunteer@criteriontheatre.co.uk"
       }
     },
     {
@@ -329,7 +384,10 @@
       "sales_intent": true,
       "tag": "theatre",
       "weight": 2,
-      "dwell_seconds": 12
+      "dwell_seconds": 12,
+      "content": {
+        "image_local": "assets/bar/bar-welcome.jpg"
+      }
     },
     {
       "kind": "wildcard",

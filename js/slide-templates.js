@@ -62,8 +62,23 @@ function seededRandom(seed) {
   };
 }
 
+/* Inline emphasis convention: {word} in show copy renders the braced word in the
+   theme's emphasis colour. The swap happens AFTER toUpperCase() - braces are
+   unaffected by it - so no HTML ever lives in the show JSON. plain() strips the
+   braces for the handful of places the same string is used as plain text.
+   Added 2026-09-10 for Underdog's "THIS IS {NOT} A STORY..." headline. */
+const EM_BRACES = /\{([^{}]*)\}/g;
+
+function emphasise(text) {
+  return String(text ?? "").replace(EM_BRACES, '<span class="hl-em">$1</span>');
+}
+
+function plain(text) {
+  return String(text ?? "").replace(EM_BRACES, "$1");
+}
+
 function upper(value) {
-  return String(value || "").toUpperCase();
+  return emphasise(String(value || "").toUpperCase());
 }
 
 function parseDate(iso) {
@@ -111,6 +126,27 @@ function posterFrame(ctx, { src, alt = "", classes = "", fallback }) {
       <img src="${asset(ctx, src)}" alt="${alt}" onerror="this.parentElement.classList.add('missing')">
       <div class="fallback">${fallback}</div>
     </div>`;
+}
+
+/* Inline SVG marks, not raster icons: they take the theme's accent token, stay
+   crisp at any size on a 1920x1080 foyer screen, and cannot 404 at curtain-up.
+   Stroke widths are set for legibility at 3-8 metres. Added 2026-09-10. */
+function warningIcon() {
+  return `<svg class="slide-icon" viewBox="0 0 64 58" aria-hidden="true" focusable="false">
+      <path d="M32 3.5 L61.5 54.5 H2.5 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
+      <line x1="32" y1="22" x2="32" y2="38" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/>
+      <circle cx="32" cy="46.5" r="3.2" fill="currentColor"/>
+    </svg>`;
+}
+
+function phonesOffIcon() {
+  return `<svg class="slide-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <rect x="19" y="5" width="26" height="54" rx="5" fill="none" stroke="currentColor" stroke-width="4.5"/>
+      <line x1="27.5" y1="13" x2="36.5" y2="13" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="32" cy="50" r="2.8" fill="currentColor"/>
+      <line x1="9" y1="59" x2="55" y2="5" stroke="var(--colour-background)" stroke-width="11" stroke-linecap="round"/>
+      <line x1="9" y1="59" x2="55" y2="5" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/>
+    </svg>`;
 }
 
 function particleOverlay(item, ctx, { seed = "foyer", count = 15 } = {}) {
@@ -298,7 +334,9 @@ function storyMontage(item, ctx) {
   const badge = reviewStatus === "draft"
     ? `<p class="review-badge">Draft — ${draftLabel}</p>`
     : "";
-  return `<div class="story-montage ${frameClass}" data-story-count="${count}" data-dwell="${dwell}" style="--story-dwell:${dwell}s;">
+  const salesClass = item?.sales_intent === true ? " sales-card" : "";
+  return `<div class="story-montage ${frameClass}${salesClass}" data-story-count="${count}" data-dwell="${dwell}" style="--story-dwell:${dwell}s;">
+      ${particleOverlay(item, ctx, { seed: item.id || "story-montage", count: 15 })}
       <div class="story-heading">
         <p class="eyebrow calm">${eyebrow}</p>
         <h2 class="headline tiny">${upper(headline)}</h2>
@@ -329,7 +367,9 @@ function featureTemplate(item, ctx) {
   const eyebrow = content.eyebrow || showContent.eyebrow || "From tonight's production";
   const body = content.body || showContent.body || show.synopsis || "";
   const footline = content.footline || showContent.footline || "Production feature";
-  return `<div class="feature-layout">
+  const salesClass = item?.sales_intent === true ? " sales-card" : "";
+  return `<div class="feature-layout${salesClass}">
+      ${particleOverlay(item, ctx, { seed: item.id || "feature", count: 15 })}
       <div class="feature-hero">
         ${photoFrame(ctx, {
           src: item.source,
@@ -566,7 +606,8 @@ export const slideTemplates = {
     const col2 = selected.slice(half).map(warningLine).join("\n            ");
     const eyebrow = content.eyebrow || "Full Content Advisory";
     const headline = content.headline || "CONTENT &amp; ACCESSIBILITY";
-    return `<p class="eyebrow warn">${eyebrow}</p>
+    return `${warningIcon()}
+      <p class="eyebrow warn">${eyebrow}</p>
       <h2 class="headline small">${headline}</h2>
       <p class="body${content.body ? '' : ' small'}">${content.body || "This production contains the following. Please speak to a member of front-of-house if you have any concerns."}</p>
       <div class="two-col" style="margin-top:14px;">
@@ -593,7 +634,8 @@ export const slideTemplates = {
   },
 
   // P06 — safety: phones, photography, fire exits
-  "safety": () => `<p class="eyebrow">Before curtain</p>
+  "safety": () => `${phonesOffIcon()}
+      <p class="eyebrow">Before curtain</p>
       <h2 class="headline small">PHONES OFF &mdash; NO PHOTOGRAPHY</h2>
       <p class="body">
         Please silence your phones completely &mdash; vibrate is loud on stage.
@@ -634,7 +676,7 @@ export const slideTemplates = {
     const packContent = show.foyer_content?.director || {};
     const itemContent = item.content || {};
     const isDraft = item.review_status === "draft" || itemContent.review_status === "draft";
-    const quote = itemContent.quote || packContent.quote || show.tagline || `Welcome to ${show.title || "tonight's production"}.`;
+    const quote = itemContent.quote || packContent.quote || plain(show.tagline) || `Welcome to ${show.title || "tonight's production"}.`;
     const draftOwner = isDraft ? (itemContent.draft_owner || packContent.draft_owner || show.director || "Director") : "";
     const draftLabel = isDraft ? (itemContent.draft_label || packContent.draft_label || `for ${draftOwner}'s approval`) : "";
     const bodyCopy = isDraft
@@ -691,9 +733,10 @@ export const slideTemplates = {
     const headline = content.headline || trivia.headline;
     const body = content.body || trivia.body || ctx.show?.synopsis || "";
     const image_local = content.image_local || trivia.image_local;
+    const eyebrow = content.eyebrow || trivia.eyebrow || "Did you know";
     return `<div class="split-layout">
         <div class="split-text">
-          <p class="eyebrow">Did you know</p>
+          <p class="eyebrow">${eyebrow}</p>
           <h2 class="headline small">${upper(headline) || upper(ctx.show?.title)}</h2>
           <p class="body" style="max-width:none;">
             ${body}
@@ -1115,7 +1158,7 @@ export const slideTemplates = {
     const body = vc.body || (show.author && show.venue
       ? `A visiting production by ${show.author} at ${show.venue}.`
       : `A visiting production at ${show.venue || "Criterion Theatre"}.`);
-    const footline = vc.footline || show.tagline || "";
+    const footline = vc.footline || plain(show.tagline) || "";
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow">Visiting company</p>

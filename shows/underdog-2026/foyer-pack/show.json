@@ -2,7 +2,7 @@
   "schema_version": 1,
   "_generated": "2026-09-08",
   "_purpose": "Underdog - The Other Other Bront\u00eb, 26 September - 3 October 2026. A Criterion-produced mainstage production. Foyer content is a review draft: early-rehearsal placeholders, department copy awaiting individual approval, and specific operational checks remain.",
-  "_copy_status": "REVIEW DRAFT. Production facts taken from the Criterion production page (criteriontheatre.co.uk/production/549) on 8 September 2026. Ticket prices and performance times checked 9 September. Anne-marie Greene confirmed a 20-minute interval and estimated one hour per act; the total runtime remains an estimate. Her content notice and director wording are included for review. Strobe versus flashing lights, final act estimates, copied house-opening times and Sunday bar closing still require specific checks.",
+  "_copy_status": "REVIEW DRAFT. Production facts taken from the Criterion production page (criteriontheatre.co.uk/production/549) on 8 September 2026. Ticket prices and performance times checked 9 September. Anne-marie Greene confirmed a 20-minute interval and estimated one hour per act; the total runtime remains an estimate. Her content notice and director wording are included for review. Strobe versus flashing lights, final act estimates, copied house-opening times and Sunday bar closing still require specific checks. Bar, ice-cream and sound content revised 10 September 2026 against photographs taken on 9 September. Bar volunteer Lilian McGrath consented to appear, with no on-screen credit at her preference. Named bar stock is draft pending the bar team; the guest cask ale is not named because it rotates.",
   "id": "underdog-2026",
   "title": "Underdog",
   "subtitle": "The Other Other Bront\u00eb",
@@ -11,7 +11,7 @@
   "assistant_director": "Ruth Miller",
   "movement_director": "Debra Relton Elves",
   "venue": "Criterion Theatre, Earlsdon, Coventry",
-  "tagline": "This is not a story about well-behaved women.",
+  "tagline": "This is {not} a story about well-behaved women.",
   "synopsis": "Charlotte Bront\u00eb has a confession: one sister became an idol, another became known as the third. You know the one. No, not that one. The other, other one - Anne. A sharp, funny retelling of the Bront\u00eb sisters from the edges.",
   "run_dates": {
     "first": "2026-09-26",
@@ -122,16 +122,16 @@
     },
     "volunteer": {
       "body": "Actors, makers, technicians, front-of-house, bar and box office - every part of the Criterion is volunteer-run. New members are always welcome, no experience needed.",
-      "footline": "Speak to front-of-house, or email info@criteriontheatre.co.uk"
+      "footline": "Speak to front-of-house, or email volunteer@criteriontheatre.co.uk"
     },
     "bar": {
       "body": "Stay for a drink and a conversation.",
-      "image_local": "assets/images/bar-foyer.jpg"
+      "image_local": "assets/bar/bar-welcome.jpg"
     },
     "bar_spotlight": {
       "eyebrow": "At the bar tonight",
-      "body": "Beers, wines, soft drinks and snacks are being served now in the foyer bar.",
-      "image_local": "assets/images/bar-foyer.jpg"
+      "body": "Drinks, snacks and ice cream are being served now in the foyer bar.",
+      "image_local": "assets/bar/pint-marble.jpg"
     },
     "criterion_charity": {
       "body": "Your ticket supports a registered charity. Our members keep this theatre alive \u2014 maintaining the building and making each production possible.",

@@ -576,16 +576,19 @@ body.announcement-overlay-page {
   inset: 0;
   background-image: var(--watermark-image);
   background-repeat: no-repeat;
-  background-position: bottom 48px left 48px;
-  background-size: 440px auto;
+  /* Mirrors .criterion-mark (163px wide, bottom 18px, inset 28px) so the two
+     corner marks share a baseline and a footprint. At 440px it read as a smear
+     rather than a counterweight. Overridable per show via --watermark-size. */
+  background-position: bottom 18px left 28px;
+  background-size: var(--watermark-size, 163px) auto;
   opacity: var(--watermark-opacity);
   pointer-events: none;
 }
 
-html[data-watermark-position="bottom-left"] .ng-watermark { background-position: bottom 48px left 48px; }
-html[data-watermark-position="bottom-right"] .ng-watermark { background-position: bottom 48px right 48px; }
-html[data-watermark-position="top-right"] .ng-watermark { background-position: top 48px right 48px; }
-html[data-watermark-position="top-left"] .ng-watermark { background-position: top 48px left 48px; }
+html[data-watermark-position="bottom-left"] .ng-watermark { background-position: bottom 18px left 28px; }
+html[data-watermark-position="bottom-right"] .ng-watermark { background-position: bottom 18px right 28px; }
+html[data-watermark-position="top-right"] .ng-watermark { background-position: top 18px right 28px; }
+html[data-watermark-position="top-left"] .ng-watermark { background-position: top 18px left 28px; }
 
 .ng-topline {
   position: absolute;
@@ -908,6 +911,14 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 }
 .nextgen-foyer .headline.cyan { text-shadow: var(--glow-cyan); }
 .nextgen-foyer .headline.cyan.outline { -webkit-text-stroke-color: var(--neon-cyan); }
+/* {braced} emphasis inside a headline. Falls back through the theme's own
+   tokens, so a show that sets neither still gets something deliberate.
+   Underdog sets poster_red to a lightened struck-red: the theme's secondary
+   #B5432E is 3.37:1 on the ground, which clears WCAG large-text but sits well
+   under this pack's own 7:1 muted floor and recedes at 3-8 metres. */
+.nextgen-foyer .hl-em {
+  color: var(--colour-emphasis, var(--poster-red, var(--colour-primary)));
+}
 
 .nextgen-foyer .subhead {
   font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
@@ -1431,16 +1442,19 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 }
 .nextgen-foyer .archive-thumb-wrap {
   display: grid;
-  grid-template-columns: 1.5fr 0.9fr;
+  /* Archive photographs are landscape (about 16:9). The 1.5fr/0.9fr split with a
+     3/4 portrait frame letterboxed them into roughly 260x150 - unreadable at
+     3-8 metres. Wider column, landscape frame. Measured 2026-09-10. */
+  grid-template-columns: 1.05fr 1fr;
   gap: 5%;
   align-items: center;
   margin-top: 10px;
 }
 .nextgen-foyer .archive-thumb-wrap .poster-frame {
   width: 100%;
-  max-width: 260px;
-  max-height: 320px;
-  aspect-ratio: 3 / 4;
+  max-width: 660px;
+  max-height: 440px;
+  aspect-ratio: 3 / 2;
   justify-self: end;
 }
 .nextgen-foyer .archive-text .body { max-width: none; font-size: min(1.34vw, 2.1vh); }
@@ -1452,6 +1466,17 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   margin-top: 10px;
 }
 .nextgen-foyer .archive-attribution .attr-name { color: var(--neon-cyan); }
+/* Inline SVG marks on the advisory cards. Colour comes from the theme accent
+   token, so a new show retunes them for free. Sized in vw/vh for 3-8m reading. */
+.nextgen-foyer .slide-icon {
+  display: block;
+  height: min(6.5vw, 9.5vh);
+  width: auto;
+  margin-bottom: 1.4vh;
+  color: var(--colour-accent);
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
 .nextgen-foyer .review-quote {
   font-family: var(--font-body, 'Inter'), sans-serif;
   font-style: italic;
@@ -1720,16 +1745,27 @@ body.nextgen-foyer.ng-preview .ng-shell {
   height: 100%;
 }
 .nextgen-foyer .feature-caption { min-width: 0; }
+/* Caption type matches story-montage, the proven-legible sibling in this family
+   (.story-heading .story-body). The previous min(3.0vw, 4.5vh) on eyebrow, body and
+   footline made the auto-sized caption row ~407px of a ~687px card, starving the 1fr
+   hero to ~212px. Body stays 34.56px at 1920x1080, so foyer legibility is unchanged.
+   Measured 2026-09-10: hero 212px -> 407px. */
 .nextgen-foyer .feature-caption .body {
-  font-size: min(3.0vw, 4.5vh);
+  font-size: min(2.2vw, 3.2vh);
   max-width: 86%;
 }
 .nextgen-foyer .feature-caption .footline {
-  font-size: min(3.0vw, 4.5vh);
+  font-size: min(1.3vw, 1.8vh);
   letter-spacing: 2px;
 }
 .nextgen-foyer .feature-caption .eyebrow {
-  font-size: min(3.0vw, 4.5vh);
+  font-size: 15px;
+}
+/* Scoped to the feature caption only: .headline.small is 6vw (115px at 1920), a sixth
+   of the card on its own. Matches .headline.tiny, the size story-montage uses for the
+   same job. Other templates using .headline.small are untouched. */
+.nextgen-foyer .feature-caption .headline {
+  font-size: min(4.2vw, 6vh);
 }
 
 /* Story montage: equal medium picture boxes in a row, heading above,
@@ -1902,6 +1938,16 @@ body.nextgen-foyer.ng-preview .ng-shell {
 .nextgen-foyer .sales-card > h2,
 .nextgen-foyer .sales-card > p,
 .nextgen-foyer .sales-card > .qr-card {
+  position: relative;
+  z-index: 1;
+}
+/* story-montage and feature carry their own children, so lift them above the
+   motes the same way the older sales cards do. Added 2026-09-10. */
+.nextgen-foyer .sales-card > .story-heading,
+.nextgen-foyer .sales-card > .story-stage,
+.nextgen-foyer .sales-card > .story-credit,
+.nextgen-foyer .sales-card > .feature-hero,
+.nextgen-foyer .sales-card > .feature-caption {
   position: relative;
   z-index: 1;
 }

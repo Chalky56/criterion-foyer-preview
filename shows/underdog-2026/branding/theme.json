@@ -9,7 +9,8 @@
     "accent": "#D9A94E",
     "secondary": "#B5432E",
     "text": "#EDE3D2",
-    "muted_text": "#B9A88E"
+    "muted_text": "#B9A88E",
+    "poster_red": "#D9614A"
   },
   "_colour_notes": {
     "ground": "Warm soot black. Ratio against text is 14.63:1.",
@@ -28,7 +29,7 @@
   "watermark": {
     "image": null,
     "opacity": 0.1,
-    "position": "bottom-right"
+    "position": "bottom-left"
   },
   "_watermark_notes": "No show-specific watermark drawn yet. The engine falls back to the house Criterion roofline mark, which is acceptable for the prototype and keeps the foyer recognisably Criterion-hosted.",
 

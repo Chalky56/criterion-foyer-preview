@@ -615,6 +615,17 @@ html[data-watermark-position="top-left"] .ng-watermark { background-position: to
   font-size: 34px;
   color: var(--colour-accent);
 }
+/* PRESHOW and POSTSHOW are our vocabulary, not the audience's - a patron in the
+   foyer already knows whether the show has started. INTERVAL is the exception:
+   it tells someone walking in that a break is running, so that one stays. The
+   unavailable state stays too, because that is a fault worth seeing.
+   Hidden with visibility rather than display, so .ng-topline keeps both flex
+   children and justify-content: space-between still pins the show name hard
+   right. Deliberately applies to the review build as well, so reviewers see
+   exactly what the audience will. David's call, 2026-09-10. */
+.nextgen-foyer .ng-phase { visibility: hidden; }
+.nextgen-foyer[data-phase="interval"] .ng-phase,
+.nextgen-foyer[data-phase="unavailable"] .ng-phase { visibility: visible; }
 
 .ng-show {
   font-family: var(--font-headline);
@@ -1709,6 +1720,23 @@ body.nextgen-foyer.ng-preview .ng-shell {
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--cream-2);
+}
+/* The bar reflowed between slides: 'NOW SHOWING <id> - <template>' varies in
+   width, and the FRAME group only appears on montages, so on a long id the
+   MOTION control wrapped to a second line and on a short one it did not.
+   Making the now-showing field the single flexible item absorbs both changes,
+   so every other control keeps its position. Reviewer chrome only - this bar
+   is never broadcast. Fixed 2026-09-10. */
+.ng-preview-bar > * { flex: 0 0 auto; }
+.ng-preview-bar .ngp-now-field {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.ng-preview-bar .ngp-now-field #ngp-now {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .ng-preview-bar .ngp-select,
 .ng-preview-bar .ngp-input {

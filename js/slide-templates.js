@@ -759,7 +759,10 @@ export const slideTemplates = {
     const body = content.body || venue.body || "This production is made possible by the people who support and volunteer at our theatre.";
     const footline = content.footline || venue.footline;
     const image_local = content.image_local || venue.image_local;
-    const text = `<p class="eyebrow">Did you know</p>
+    // Configurable so a service card can say what it is. "Did you know" over
+    // "Act II will resume shortly" framed an instruction as trivia. 2026-09-10.
+    const eyebrow = content.eyebrow || venue.eyebrow || "Did you know";
+    const text = `<p class="eyebrow">${eyebrow}</p>
       <h2 class="headline small">${upper(headline)}</h2>
       <p class="body">${body}</p>
       ${footline ? `<p class="footline">${footline}</p>` : ""}`;

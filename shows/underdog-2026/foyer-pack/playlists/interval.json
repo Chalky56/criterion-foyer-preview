@@ -20,10 +20,11 @@
       "weight": 2,
       "dwell_seconds": 12,
       "content": {
+        "eyebrow": "The interval",
         "headline": "Act II will resume shortly",
-        "body": "Please enjoy the break. Make your way back to your seats when you hear the bell or see the house lights change."
+        "body": "Please enjoy the break. Make your way back to your seats when you hear the bell or the announcement to return."
       },
-      "_note": "The interval is confirmed as 20 minutes, but the actual start is not. Keep this non-countdown wording until an operational trigger supplies a truthful return time."
+      "_note": "The interval is confirmed as 20 minutes, but the actual start is not. Keep this non-countdown wording until an operational trigger supplies a truthful return time. House lights were removed from this copy on 10 September 2026: the Criterion does not change them to call the audience back - the cues are a pre-recorded bell and paired five- and three-minute announcements (David). Never describe a cue the building does not actually give."
     },
     {
       "kind": "wildcard",

@@ -821,6 +821,57 @@
       "output_height": 768,
       "output_bytes": 129162,
       "output_sha256": "160f0702e64fd779e1b4b35b4c347ee8ad063b07cdb2ca8c690893879f2644b6"
+    },
+    {
+      "slot_id": "lighting/plan",
+      "source_local": "originals/lx-2026-09-12/plan.jpg",
+      "source_url": null,
+      "output": "lighting/plan.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 82,
+      "credit": "Criterion lighting department, photographed by David Chapman at the theatre, 11 September 2026. The rig plan is the Underdog plan (titled T'OTHER BRONTIE, dated 6/9/26). Discussed with and pending approval from Paul Harrison, head of lighting.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1400,
+      "output_height": 933,
+      "output_bytes": 225492,
+      "output_sha256": "eaa1a5ea098a126cb3c2be4e33c93b6059d9e001946f26a8a8ba2b1db00fc6e8"
+    },
+    {
+      "slot_id": "lighting/laser",
+      "source_local": "originals/lx-2026-09-12/laser.jpg",
+      "source_url": null,
+      "output": "lighting/laser.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 82,
+      "credit": "Criterion lighting department, photographed by David Chapman at the theatre, 11 September 2026. The rig plan is the Underdog plan (titled T'OTHER BRONTIE, dated 6/9/26). Discussed with and pending approval from Paul Harrison, head of lighting.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1400,
+      "output_height": 932,
+      "output_bytes": 220326,
+      "output_sha256": "964727ad47b113fc44167ad27a5bae14f7111c0a62deca2eae313cee01921132"
+    },
+    {
+      "slot_id": "lighting/desk",
+      "source_local": "originals/lx-2026-09-12/desk.jpg",
+      "source_url": null,
+      "output": "lighting/desk.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 82,
+      "credit": "Criterion lighting department, photographed by David Chapman at the theatre, 11 September 2026. The rig plan is the Underdog plan (titled T'OTHER BRONTIE, dated 6/9/26). Discussed with and pending approval from Paul Harrison, head of lighting.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1400,
+      "output_height": 933,
+      "output_bytes": 279634,
+      "output_sha256": "fc755d0a258d8497d389fe0d05ed45c677cb8be00ca874e921d4830585d63b47"
     }
   ],
   "authored_assets": [
@@ -851,8 +902,9 @@
       "prototype_status": "draft"
     }
   ],
-  "generated_at": "2026-09-10T00:00:00Z",
-  "total_output_bytes": 9243279,
+  "generated_at": "2026-09-12T00:00:00Z",
+  "total_output_bytes": 9968731,
   "_note_2026_09_10": "Bar, ice-cream and sound records added 10 September 2026. Sources are JPEG crops of the iPhone HEIC originals in originals/criterion-bar-2026-09-09/; prepare_foyer_images.py cannot read HEIC (no pillow-heif), so the crop step converts first. Re-running the script on a full checkout regenerates every record from its own source.",
-  "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids."
+  "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids.",
+  "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/."
 }

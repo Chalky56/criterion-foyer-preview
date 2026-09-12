@@ -201,19 +201,42 @@
     {
       "kind": "wildcard",
       "id": "lighting-cues",
-      "template": "feature",
+      "template": "story-montage",
       "tag": "making",
       "weight": 1,
-      "dwell_seconds": 13,
-      "source": "assets/photos/performance-05.jpg",
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Paul Harrison",
+      "draft_label": "images and cue count, for Paul Harrison's approval",
       "content": {
         "eyebrow": "Behind the scenes",
-        "headline": "130+ lighting cues",
-        "body": "One unfolding evening, shaped by light.",
-        "footline": "Lighting by Paul Harrison - cue count provisional, awaiting confirmation"
-      },
-      "review_status": "draft",
-      "draft_owner": "Paul Harrison"
+        "headline": "Nothing you saw was lit by accident",
+        "body": "Around 90 lighting cues - drawn on paper long before the first night, programmed at the desk, then played live from the back of the room.",
+        "frames": [
+          {
+            "source": "assets/lighting/plan.jpg",
+            "caption": "Drawn first, on paper",
+            "alt": "The Underdog lighting rig plan on a clipboard",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/lighting/desk.jpg",
+            "caption": "Programmed, cue by cue",
+            "alt": "The ZerOS lighting desk and its cue stack",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/lighting/laser.jpg",
+            "caption": "Then it reaches the stage",
+            "alt": "Laser light traced across the stage floor",
+            "cover": true,
+            "motion": true
+          }
+        ],
+        "footline": "Lighting by Paul Harrison"
+      }
     },
     {
       "kind": "wildcard",

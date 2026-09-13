@@ -209,18 +209,41 @@
     {
       "kind": "wildcard",
       "id": "set-design",
-      "template": "feature",
+      "template": "story-montage",
       "tag": "making",
       "weight": 1,
-      "dwell_seconds": 14,
-      "source": "assets/craft/set-concept.jpg",
-      "content": {
-        "headline": "An idea becomes a place",
-        "body": "From an early concept to the world you saw tonight, built by the production team.",
-        "footline": "Set design by Simon Sharpe - finished-stage viewpoint and construction credit to confirm"
-      },
+      "dwell_seconds": 21,
       "review_status": "draft",
-      "draft_owner": "Simon Sharpe"
+      "draft_owner": "Simon Sharpe",
+      "draft_label": "finished-stage photograph still to come",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "An idea becomes a place",
+        "body": "A drawing, then timber, paint and ladders, then the world you were sitting in.",
+        "frames": [
+          {
+            "source": "assets/craft/set-concept.jpg",
+            "caption": "First, the drawing",
+            "alt": "Early set concept for Underdog",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/set-build.jpg",
+            "caption": "Then, the build",
+            "alt": "The Criterion stage mid-build: lighting bar, painted cloth, ladder",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/placeholders/set-finished.svg",
+            "caption": "Then, opening night",
+            "alt": "Finished set photograph to follow",
+            "motion": false
+          }
+        ],
+        "footline": "Set design by Simon Sharpe - finished-stage photograph and construction credit to confirm"
+      }
     },
     {
       "kind": "wildcard",

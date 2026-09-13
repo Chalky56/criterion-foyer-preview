@@ -310,7 +310,7 @@ function storyMontage(item, ctx) {
     ? (content.draft_owner || packCopy.draft_owner || item.draft_owner || "Department")
     : "";
   const draftLabel = reviewStatus === "draft"
-    ? (content.draft_label || packCopy.draft_label || `for ${draftOwner}'s approval`)
+    ? (content.draft_label || item.draft_label || packCopy.draft_label || `for ${draftOwner}'s approval`)
     : "";
   const dwell = Math.max(9, Math.min(120, Number(item.dwell_seconds) || 21));
   const count = usableFrames.length;

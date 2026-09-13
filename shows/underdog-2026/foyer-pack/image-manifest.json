@@ -296,6 +296,74 @@
       "output_sha256": "36cec824adf26ce79a79fa0d65647ec676a3c6a2882d07403efefcd3805392c5"
     },
     {
+      "slot_id": "craft/tease-set",
+      "source_local": "originals/crops-2026-09-13/tease-set.jpg",
+      "source_url": null,
+      "output": "craft/tease-set.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "Shared in the Underdog creative WhatsApp group, 13 September 2026, during the set build. Photographer to confirm; cropped to 1.8:1 with no other change. Three jackets flown above the table against the painted moorland cloth. The set is mid-build, not the finished stage picture. Confirm with Simon Sharpe.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1152,
+      "output_height": 640,
+      "output_bytes": 108004,
+      "output_sha256": "f4fa12b3fa3833c1e58773b66d59ea895c4cb45a97970942307a4f497a9aa43e"
+    },
+    {
+      "slot_id": "craft/doll-box",
+      "source_local": "originals/crops-2026-09-13/doll-box.jpg",
+      "source_url": null,
+      "output": "craft/doll-box.jpg",
+      "max_width": 1200,
+      "max_height": 1600,
+      "quality": 85,
+      "credit": "Shared in the Underdog creative WhatsApp group, 13 September 2026, during the set build. Photographer to confirm. The life-size doll box under construction, with Erica Young (joint head of props) standing inside it to show its scale. Trimmed only; portrait kept because the height is the point. Erica Young's permission requested 13 September 2026 and pending - the card carries a draft badge saying so.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 875,
+      "output_height": 1454,
+      "output_bytes": 139696,
+      "output_sha256": "eee9745af1bac4c0c380b5357155c6562165ae796ca390289982df4d01f106f9"
+    },
+    {
+      "slot_id": "craft/set-build",
+      "source_local": "originals/crops-2026-09-13/set-build.jpg",
+      "source_url": null,
+      "output": "craft/set-build.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "Shared in the Underdog creative WhatsApp group, 13 September 2026, during the set build. Photographer to confirm. The stage mid-build: overstage bar, painted cloth, a single jacket flown, ladder. Cropped from the left at 0.20 so the two volunteers working on stage fall outside the frame, and to 1.571:1 for a three-frame montage. Confirm with Simon Sharpe.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 960,
+      "output_height": 610,
+      "output_bytes": 81787,
+      "output_sha256": "349c22869eea3b2bc35215561bf5d8ffd1ee562cde051a2ed56b9327bbf9a96d"
+    },
+    {
+      "slot_id": "lighting/tease-rig",
+      "source_local": "originals/crops-2026-09-13/tease-rig.jpg",
+      "source_url": null,
+      "output": "lighting/tease-rig.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "Shared in the Underdog creative WhatsApp group, 13 September 2026, during the set build. Photographer to confirm; cropped to 1.8:1 with no other change. The overstage lighting bar. Cropped from the left so the two volunteers working on stage are outside the frame. Confirm with Paul Harrison.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 936,
+      "output_height": 520,
+      "output_bytes": 69814,
+      "output_sha256": "f074deabce372b2eef6dcc36af39aa45b29dee67a6535b9158bdd62b92af6d3b"
+    },
+    {
       "slot_id": "craft/sugar-glass-mould",
       "source_local": "originals/received-2026-09-08/unnamed.jpg",
       "source_url": null,
@@ -972,10 +1040,8 @@
     {
       "slot_id": "tease/lighting",
       "output": "placeholders/tease-lighting.svg",
-      "role": "Neutral review placeholder; replace with an approved lighting photograph. Sized 3:2 for the feature hero band.",
-      "replacement_slots": [
-        "preshow/tease-lighting/hero"
-      ],
+      "role": "Reusable review placeholder, currently unused - the lighting and set teases now carry build photographs. Kept for the next discipline that has no image.",
+      "replacement_slots": [],
       "output_width": 1800,
       "output_height": 1000,
       "output_bytes": 1005,
@@ -996,21 +1062,32 @@
     {
       "slot_id": "tease/set",
       "output": "placeholders/tease-set.svg",
-      "role": "Neutral review placeholder; replace with an approved set photograph. Sized 3:2 for the feature hero band.",
-      "replacement_slots": [
-        "preshow/tease-set/hero"
-      ],
+      "role": "Reusable review placeholder, currently unused - the lighting and set teases now carry build photographs. Kept for the next discipline that has no image.",
+      "replacement_slots": [],
       "output_width": 1800,
       "output_height": 1000,
       "output_bytes": 940,
       "prototype_status": "draft"
+    },
+    {
+      "slot_id": "set/finished",
+      "output": "placeholders/set-finished.svg",
+      "role": "Neutral review placeholder for the finished set on stage. Sized 1.571:1 for a three-frame story montage. Replace with a dress-rehearsal photograph; never relabel the build photograph as the finished set.",
+      "replacement_slots": [
+        "postshow/set-design/finished"
+      ],
+      "output_width": 1571,
+      "output_height": 1000,
+      "output_bytes": 984,
+      "prototype_status": "draft"
     }
   ],
   "generated_at": "2026-09-13T00:00:00Z",
-  "total_output_bytes": 10584224,
+  "total_output_bytes": 10984509,
   "_note_2026_09_10": "Bar, ice-cream and sound records added 10 September 2026. Sources are JPEG crops of the iPhone HEIC originals in originals/criterion-bar-2026-09-09/; prepare_foyer_images.py cannot read HEIC (no pillow-heif), so the crop step converts first. Re-running the script on a full checkout regenerates every record from its own source.",
   "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids.",
   "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/.",
   "_note_costume_2026_09_13": "Costume montage frames added 13 September 2026. Sources are 3:2 crops of Anne-marie Greene's supplied concept artwork in originals/received-2026-09-08/; crops in originals/crops-2026-09-13/. Frame 3 reuses the existing craft/costume-concept.jpg derivative unchanged.",
-  "_note_tease_2026_09_13": "Preshow discipline teases added 13 September 2026. Single-image feature cards, tag production, one per discipline; placeholders mark the disciplines still waiting on a photograph."
+  "_note_tease_2026_09_13": "Preshow discipline teases added 13 September 2026. Single-image feature cards, tag production, one per discipline; placeholders mark the disciplines still waiting on a photograph.",
+  "_note_whatsapp_2026_09_13": "Set-build photographs from the Underdog creative WhatsApp group added 13 September 2026; sources in originals/whatsapp-2026-09-13/, crops in originals/crops-2026-09-13/. originals/whatsapp-2026-09-13/s-l1600.webp is a third-party commercial product photograph carrying the Barbie wordmark and must never be published."
 }

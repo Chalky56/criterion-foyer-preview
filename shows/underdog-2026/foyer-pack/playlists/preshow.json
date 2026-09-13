@@ -181,16 +181,16 @@
       "tag": "production",
       "weight": 1,
       "dwell_seconds": 14,
-      "source": "assets/placeholders/tease-lighting.svg",
+      "source": "assets/lighting/tease-rig.jpg",
       "content": {
         "eyebrow": "Behind tonight's show",
         "headline": "Nothing is lit by accident",
         "body": "Every lighting state you'll see tonight was drawn on paper, programmed at the desk, then played live.",
-        "footline": "Lighting by Paul Harrison"
+        "footline": "Lighting by Paul Harrison - the rig, photographed during the build"
       },
       "review_status": "draft",
       "draft_owner": "Paul Harrison",
-      "draft_label": "lighting photograph still to come"
+      "draft_label": "rig photograph and wording, for Paul Harrison's approval"
     },
     {
       "kind": "wildcard",
@@ -199,16 +199,16 @@
       "tag": "production",
       "weight": 1,
       "dwell_seconds": 14,
-      "source": "assets/placeholders/tease-props.svg",
+      "source": "assets/craft/doll-box.jpg",
       "content": {
         "eyebrow": "Behind tonight's show",
         "headline": "Not everything is what it looks like",
         "body": "Some of what reaches the stage tonight was made by hand, in a workshop, to look convincing from your seat.",
-        "footline": "Props by Claire McDermott and team"
+        "footline": "Props by Claire McDermott, Erica Young and team"
       },
       "review_status": "draft",
-      "draft_owner": "Claire McDermott",
-      "draft_label": "props photograph still to come"
+      "draft_owner": "Erica Young / Claire McDermott",
+      "draft_label": "photograph of Erica Young - subject to her approval"
     },
     {
       "kind": "wildcard",
@@ -217,16 +217,16 @@
       "tag": "production",
       "weight": 1,
       "dwell_seconds": 14,
-      "source": "assets/placeholders/tease-set.svg",
+      "source": "assets/craft/tease-set.jpg",
       "content": {
         "eyebrow": "Behind tonight's show",
         "headline": "Someone drew this first",
         "body": "The world you're about to walk into began as a drawing, and then got built.",
-        "footline": "Set design by Simon Sharpe"
+        "footline": "Set design by Simon Sharpe - photographed during the build"
       },
       "review_status": "draft",
       "draft_owner": "Simon Sharpe",
-      "draft_label": "set photograph still to come"
+      "draft_label": "build photograph and wording, for Simon Sharpe's approval"
     },
     {
       "kind": "wildcard",

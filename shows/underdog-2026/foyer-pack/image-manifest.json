@@ -177,6 +177,40 @@
       "output_sha256": "177e9a8d083726bcc451e852042eba1f8527dba108326c84cc2d08204236eded"
     },
     {
+      "slot_id": "craft/costume-doll",
+      "source_local": "originals/crops-2026-09-13/costume-doll.jpg",
+      "source_url": null,
+      "output": "craft/costume-doll.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "Costume/prop concept artwork supplied by Anne-marie Greene (originals/received-2026-09-08/doll box.png). Cropped to 3:2 and the surrounding paper extended to fill the frame; no content added or removed. Purpose and maker to be confirmed.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1092,
+      "output_height": 695,
+      "output_bytes": 126015,
+      "output_sha256": "c8abc9fae368434f923c64101ee6f9dc9e8520e958766a161023a7622b5554bf"
+    },
+    {
+      "slot_id": "craft/costume-construction",
+      "source_local": "originals/crops-2026-09-13/costume-construction.jpg",
+      "source_url": null,
+      "output": "craft/costume-construction.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "Ensemble costume construction board supplied by Anne-marie Greene (originals/received-2026-09-08/Ensemble critics idea.png). Cropped to 3:2, excluding the small-text comparison panel which is illegible at foyer distance; background extended at both sides, no content added or removed.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1183,
+      "output_height": 753,
+      "output_bytes": 128061,
+      "output_sha256": "0256a967fa927a0c0afc7cdfd32afdceb39ffd3c8aaab5c6b6503cde7e4994e5"
+    },
+    {
       "slot_id": "craft/set-concept",
       "source_local": "originals/received-2026-09-08/Set design 4.png",
       "source_url": null,
@@ -902,9 +936,10 @@
       "prototype_status": "draft"
     }
   ],
-  "generated_at": "2026-09-12T00:00:00Z",
-  "total_output_bytes": 9968731,
+  "generated_at": "2026-09-13T00:00:00Z",
+  "total_output_bytes": 10224317,
   "_note_2026_09_10": "Bar, ice-cream and sound records added 10 September 2026. Sources are JPEG crops of the iPhone HEIC originals in originals/criterion-bar-2026-09-09/; prepare_foyer_images.py cannot read HEIC (no pillow-heif), so the crop step converts first. Re-running the script on a full checkout regenerates every record from its own source.",
   "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids.",
-  "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/."
+  "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/.",
+  "_note_costume_2026_09_13": "Costume montage frames added 13 September 2026. Sources are 3:2 crops of Anne-marie Greene's supplied concept artwork in originals/received-2026-09-08/; crops in originals/crops-2026-09-13/. Frame 3 reuses the existing craft/costume-concept.jpg derivative unchanged."
 }

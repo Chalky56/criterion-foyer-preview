@@ -140,42 +140,93 @@
     },
     {
       "kind": "wildcard",
-      "id": "craft-teaser-costume",
-      "template": "story-montage",
+      "id": "tease-wardrobe",
+      "template": "feature",
       "tag": "production",
       "weight": 1,
-      "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Chris Ingall / Claire McDermott",
+      "dwell_seconds": 14,
+      "source": "assets/craft/tease-wardrobe.jpg",
       "content": {
-        "eyebrow": "A glimpse behind the scenes",
-        "headline": "The making begins",
-        "body": "From wardrobe and props to light and sound, a company of volunteers is building tonight's world.",
-        "frames": [
-          {
-            "source": "assets/craft/sewing-bee-05.jpg",
-            "caption": "Together",
-            "alt": "The sewing group around a table",
-            "cover": true,
-            "motion": true
-          },
-          {
-            "source": "assets/craft/sewing-bee-03.jpg",
-            "caption": "At work",
-            "alt": "Close-up stitching work",
-            "cover": true,
-            "motion": true
-          },
-          {
-            "source": "assets/craft/sewing-bee-02.jpg",
-            "caption": "Many hands",
-            "alt": "Shared sewing work",
-            "cover": true,
-            "motion": true
-          }
-        ],
-        "footline": "Early rehearsal photographs \u2014 draft selection"
-      }
+        "eyebrow": "Behind tonight's show",
+        "headline": "Somebody made that",
+        "body": "Every costume you'll see tonight was cut and stitched by volunteers, in this building.",
+        "footline": "Wardrobe by Chris Ingall and team"
+      },
+      "review_status": "draft",
+      "draft_owner": "Chris Ingall",
+      "draft_label": "image selection, for Chris Ingall's approval"
+    },
+    {
+      "kind": "wildcard",
+      "id": "tease-sound",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/sound/tease-desk.jpg",
+      "content": {
+        "eyebrow": "Behind tonight's show",
+        "headline": "Listen for the ones you don't notice",
+        "body": "Every sound in tonight's play is fired by hand, cue by cue, from the back of the room.",
+        "footline": "Sound by Dave Cornish"
+      },
+      "review_status": "draft",
+      "draft_owner": "Dave Cornish",
+      "draft_label": "image and wording, for Dave Cornish's approval"
+    },
+    {
+      "kind": "wildcard",
+      "id": "tease-lighting",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/placeholders/tease-lighting.svg",
+      "content": {
+        "eyebrow": "Behind tonight's show",
+        "headline": "Nothing is lit by accident",
+        "body": "Every lighting state you'll see tonight was drawn on paper, programmed at the desk, then played live.",
+        "footline": "Lighting by Paul Harrison"
+      },
+      "review_status": "draft",
+      "draft_owner": "Paul Harrison",
+      "draft_label": "lighting photograph still to come"
+    },
+    {
+      "kind": "wildcard",
+      "id": "tease-props",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/placeholders/tease-props.svg",
+      "content": {
+        "eyebrow": "Behind tonight's show",
+        "headline": "Not everything is what it looks like",
+        "body": "Some of what reaches the stage tonight was made by hand, in a workshop, to look convincing from your seat.",
+        "footline": "Props by Claire McDermott and team"
+      },
+      "review_status": "draft",
+      "draft_owner": "Claire McDermott",
+      "draft_label": "props photograph still to come"
+    },
+    {
+      "kind": "wildcard",
+      "id": "tease-set",
+      "template": "feature",
+      "tag": "production",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/placeholders/tease-set.svg",
+      "content": {
+        "eyebrow": "Behind tonight's show",
+        "headline": "Someone drew this first",
+        "body": "The world you're about to walk into began as a drawing, and then got built.",
+        "footline": "Set design by Simon Sharpe"
+      },
+      "review_status": "draft",
+      "draft_owner": "Simon Sharpe",
+      "draft_label": "set photograph still to come"
     },
     {
       "kind": "wildcard",

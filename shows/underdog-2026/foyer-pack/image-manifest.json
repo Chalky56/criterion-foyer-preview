@@ -279,6 +279,23 @@
       "output_sha256": "0152b00eefea8621cacf118e37c26dd05eb3a5c1ea987e1f8517ec3acb2ef97a"
     },
     {
+      "slot_id": "craft/tease-wardrobe",
+      "source_local": "originals/crops-2026-09-13/tease-wardrobe.jpg",
+      "source_url": null,
+      "output": "craft/tease-wardrobe.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "Wardrobe work (supplied rehearsal photograph, sewing bee 6.jpg). Cropped to the work surface so no one is identifiable; chosen so the preshow tease uses a different frame from the postshow sewing-bee montage.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 891,
+      "output_height": 495,
+      "output_bytes": 99086,
+      "output_sha256": "36cec824adf26ce79a79fa0d65647ec676a3c6a2882d07403efefcd3805392c5"
+    },
+    {
       "slot_id": "craft/sugar-glass-mould",
       "source_local": "originals/received-2026-09-08/unnamed.jpg",
       "source_url": null,
@@ -670,6 +687,23 @@
       "output_sha256": "daa235e4825bb60c61930788497e6895636e26f171186a3b3ad45662a626b7e8"
     },
     {
+      "slot_id": "sound/tease-desk",
+      "source_local": "originals/crops-2026-09-13/tease-desk.jpg",
+      "source_url": null,
+      "output": "sound/tease-desk.jpg",
+      "max_width": 1400,
+      "max_height": 1050,
+      "quality": 85,
+      "credit": "The X32 sound desk, photographed by David Chapman at the theatre, 9 September 2026. Widened crop of the same original as sound/desk.jpg, cut to 1.8:1 for the preshow feature hero.",
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1400,
+      "output_height": 777,
+      "output_bytes": 257901,
+      "output_sha256": "9aa12135b655d7c49823b65924e36c7f6e83c4b46976d886e7a0cc4c485f4819"
+    },
+    {
       "slot_id": "sound/amp-rack",
       "source_local": "originals/crops-2026-09-10/sound_amp-rack.jpg",
       "source_url": null,
@@ -934,12 +968,49 @@
       "output_height": 1200,
       "output_bytes": 755,
       "prototype_status": "draft"
+    },
+    {
+      "slot_id": "tease/lighting",
+      "output": "placeholders/tease-lighting.svg",
+      "role": "Neutral review placeholder; replace with an approved lighting photograph. Sized 3:2 for the feature hero band.",
+      "replacement_slots": [
+        "preshow/tease-lighting/hero"
+      ],
+      "output_width": 1800,
+      "output_height": 1000,
+      "output_bytes": 1005,
+      "prototype_status": "draft"
+    },
+    {
+      "slot_id": "tease/props",
+      "output": "placeholders/tease-props.svg",
+      "role": "Neutral review placeholder; replace with an approved props photograph. Sized 3:2 for the feature hero band.",
+      "replacement_slots": [
+        "preshow/tease-props/hero"
+      ],
+      "output_width": 1800,
+      "output_height": 1000,
+      "output_bytes": 975,
+      "prototype_status": "draft"
+    },
+    {
+      "slot_id": "tease/set",
+      "output": "placeholders/tease-set.svg",
+      "role": "Neutral review placeholder; replace with an approved set photograph. Sized 3:2 for the feature hero band.",
+      "replacement_slots": [
+        "preshow/tease-set/hero"
+      ],
+      "output_width": 1800,
+      "output_height": 1000,
+      "output_bytes": 940,
+      "prototype_status": "draft"
     }
   ],
   "generated_at": "2026-09-13T00:00:00Z",
-  "total_output_bytes": 10224317,
+  "total_output_bytes": 10584224,
   "_note_2026_09_10": "Bar, ice-cream and sound records added 10 September 2026. Sources are JPEG crops of the iPhone HEIC originals in originals/criterion-bar-2026-09-09/; prepare_foyer_images.py cannot read HEIC (no pillow-heif), so the crop step converts first. Re-running the script on a full checkout regenerates every record from its own source.",
   "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids.",
   "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/.",
-  "_note_costume_2026_09_13": "Costume montage frames added 13 September 2026. Sources are 3:2 crops of Anne-marie Greene's supplied concept artwork in originals/received-2026-09-08/; crops in originals/crops-2026-09-13/. Frame 3 reuses the existing craft/costume-concept.jpg derivative unchanged."
+  "_note_costume_2026_09_13": "Costume montage frames added 13 September 2026. Sources are 3:2 crops of Anne-marie Greene's supplied concept artwork in originals/received-2026-09-08/; crops in originals/crops-2026-09-13/. Frame 3 reuses the existing craft/costume-concept.jpg derivative unchanged.",
+  "_note_tease_2026_09_13": "Preshow discipline teases added 13 September 2026. Single-image feature cards, tag production, one per discipline; placeholders mark the disciplines still waiting on a photograph."
 }

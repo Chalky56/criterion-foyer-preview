@@ -367,6 +367,16 @@ function featureTemplate(item, ctx) {
   const eyebrow = content.eyebrow || showContent.eyebrow || "From tonight's production";
   const body = content.body || showContent.body || show.synopsis || "";
   const footline = content.footline || showContent.footline || "Production feature";
+  const reviewStatus = item.review_status || content.review_status || "";
+  const draftOwner = reviewStatus === "draft"
+    ? (content.draft_owner || item.draft_owner || showContent.draft_owner || "Department")
+    : "";
+  const draftLabel = reviewStatus === "draft"
+    ? (content.draft_label || item.draft_label || `for ${draftOwner}'s approval`)
+    : "";
+  const badge = reviewStatus === "draft"
+    ? `<p class="review-badge">Draft \u2014 ${draftLabel}</p>`
+    : "";
   const salesClass = item?.sales_intent === true ? " sales-card" : "";
   return `<div class="feature-layout${salesClass}">
       ${particleOverlay(item, ctx, { seed: item.id || "feature", count: 15 })}
@@ -383,6 +393,7 @@ function featureTemplate(item, ctx) {
         <h2 class="headline small" style="color:var(--poster-yellow);">${upper(title)}</h2>
         <p class="body" style="max-width:none;">${body}</p>
         <p class="footline">${footline}</p>
+        ${badge}
       </div>
     </div>`;
 }

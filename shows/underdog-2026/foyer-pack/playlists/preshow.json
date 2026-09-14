@@ -68,9 +68,6 @@
       "template": "director-quote",
       "every_n": 3,
       "dwell_seconds": 13,
-      "review_status": "draft",
-      "draft_owner": "Anne-marie Greene",
-      "draft_label": "wording approved; public preview and theatre use pending",
       "content": {
         "quote": "Everyone knows Wuthering Heights. Everyone knows Jane Eyre. This is a play about the Bront\u00eb sister you can't quite name \u2014 and about what her family did to make sure of that.",
         "image_local": "assets/people/anne-marie-greene.jpg"
@@ -299,7 +296,7 @@
       "template": "tickets-walkins",
       "sales_intent": true,
       "tag": "theatre",
-      "weight": 1,
+      "weight": 2,
       "dwell_seconds": 10,
       "content": {
         "body": "Tickets for tonight? Ask front-of-house about availability.",
@@ -315,10 +312,10 @@
       "dwell_seconds": 10,
       "review_status": "draft",
       "draft_owner": "Chris Firth",
-      "draft_label": "publicity film to be supplied",
+      "draft_label": "optional - shown only if a film is supplied",
       "content": {
         "phase": "Preshow",
-        "body": "A short publicity film for Underdog will appear here once Chris Firth supplies the approved footage. No old-show footage or invented running time is used."
+        "body": "A short general Criterion publicity film could appear here if footage is supplied."
       }
     },
     {

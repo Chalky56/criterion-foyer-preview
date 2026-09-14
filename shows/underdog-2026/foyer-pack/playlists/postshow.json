@@ -436,10 +436,10 @@
       "dwell_seconds": 10,
       "review_status": "draft",
       "draft_owner": "Chris Firth",
-      "draft_label": "publicity film to be supplied",
+      "draft_label": "optional - shown only if a film is supplied",
       "content": {
         "phase": "Postshow",
-        "body": "A short publicity film for Underdog will appear here once Chris Firth supplies the approved footage. No old-show footage or invented running time is used."
+        "body": "A short publicity film for Underdog could appear here if footage is supplied."
       }
     },
     {

@@ -692,7 +692,9 @@ html[data-watermark-position="top-left"] .ng-watermark { background-position: to
   width: 100%;
   max-width: 1500px;
   min-height: 96px;
-  max-height: 156px;
+  /* 156 -> 170px: two clamped lines at the 56px type floor need ~121px of
+     content plus 44px padding and 4px border (2026-09-14 band de-Popcorn). */
+  max-height: 170px;
   padding: 22px 34px;
   display: flex;
   align-items: center;
@@ -720,11 +722,13 @@ html[data-watermark-position="top-left"] .ng-watermark { background-position: to
   padding-right: 26px;
   border-right: 1px solid rgba(255, 255, 255, 0.18);
   font-family: var(--font-headline);
-  font-size: 24px;
+  font-size: 34px;
   font-weight: 600;
   letter-spacing: 0.18em;
   white-space: nowrap;
-  color: var(--neon-cyan, #00E5FF);
+  /* --colour-accent, not --neon-cyan: cyan maps to the show's secondary, a
+     rule-only colour that must never carry text (Underdog #B5432E = 3.37:1). */
+  color: var(--colour-accent, #D9A94E);
 }
 
 .announcement-overlay-page[data-kind="nudge"] .announcement-kicker {
@@ -736,7 +740,7 @@ html[data-watermark-position="top-left"] .ng-watermark { background-position: to
   min-width: 0;
   color: var(--cream-2, var(--colour-primary-text, #F4E5C2));
   font-family: var(--font-headline);
-  font-size: clamp(26px, 3.1vw, 40px);
+  font-size: clamp(26px, 3.1vw, 56px);
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: 0.01em;
@@ -796,6 +800,19 @@ body.nextgen-foyer {
   color: var(--cream);
 }
 
+/* Same masking fix as body.nextgen-foyer above, but ONLY the six literals the
+   shared body rule at ~line 546 sets on body.announcement-overlay-page - the
+   overlay must keep background: transparent (it sits over live scenes in OBS),
+   so it cannot share the block above. */
+body.announcement-overlay-page {
+  --ink: inherit;
+  --ink-2: inherit;
+  --neon-magenta: inherit;
+  --neon-cyan: inherit;
+  --poster-yellow: inherit;
+  --cream: inherit;
+}
+
 /* ---- ambient layers ---- */
 .nextgen-foyer .ng-ambient {
   position: absolute;
@@ -805,8 +822,13 @@ body.nextgen-foyer {
   pointer-events: none;
   opacity: var(--phase-intensity-preshow, 1);
 }
+/* A phase with no rule in this group inherits PRESHOW's brightness through the
+   base rule's --phase-intensity-preshow fallback - not the nearest phase's.
+   That is what left holding, the quietest phase, rendering at full brightness.
+   Every new phase needs its own line here. */
 body.nextgen-foyer[data-phase="interval"] .ng-ambient { opacity: var(--phase-intensity-interval, 0.9); }
 body.nextgen-foyer[data-phase="postshow"] .ng-ambient { opacity: var(--phase-intensity-postshow, 0.65); }
+body.nextgen-foyer[data-phase="holding"] .ng-ambient { opacity: var(--phase-intensity-holding, 0.4); }
 .nextgen-foyer .ng-ambient::after {
   content: '';
   position: absolute;
@@ -891,7 +913,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 .nextgen-foyer .eyebrow {
   font-family: 'JetBrains Mono', monospace; /* fixed: house monospace kicker treatment, not themed */
   font-weight: 400;
-  font-size: 15px;
+  font-size: 34px;
   letter-spacing: 6px;
   text-transform: uppercase;
   color: var(--neon-cyan);
@@ -943,18 +965,18 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 
 .nextgen-foyer .body {
   font-family: var(--font-body, 'Inter'), sans-serif;
-  font-size: min(1.6vw, 2.3vh);
+  font-size: min(2.45vw, 3.5556vh);
   line-height: 1.5;
   color: var(--cream);
   max-width: 76%;
   margin: 0 0 18px 0;
 }
-.nextgen-foyer .body.small { font-size: min(1.55vw, 2.25vh); max-width: 72%; }
+.nextgen-foyer .body.small { font-size: min(2.45vw, 3.5556vh); max-width: 72%; }
 .nextgen-foyer .body.mono  { font-family: 'JetBrains Mono', monospace; /* fixed: monospace variant, not themed */ font-size: min(1.25vw, 1.8vh); letter-spacing: 1.5px; color: var(--lavender); }
 
 .nextgen-foyer .footline {
   font-family: 'JetBrains Mono', monospace; /* fixed: monospace metadata line (times, sources), not themed */
-  font-size: min(1.3vw, 1.8vh);
+  font-size: min(2.27vw, 3.15vh);
   color: var(--cream-2);
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -975,7 +997,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 }
 .nextgen-foyer .subtitle {
   font-family: var(--font-body, 'Inter'), sans-serif;
-  font-size: min(3vw, 4.5vh);
+  font-size: min(3.46vw, 5.19vh);
   line-height: 1.1;
   color: var(--cream);
   margin-top: -8px;
@@ -991,7 +1013,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   border-radius: 4px;
   color: var(--colour-accent);
   font-family: var(--font-body, 'Inter'), sans-serif;
-  font-size: min(1.5vw, 2.2vh);
+  font-size: min(2.15vw, 3.15vh);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -1111,7 +1133,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   text-align: center;
   padding: 18px;
   font-family: 'JetBrains Mono', monospace; /* fixed: monospace placeholder caption, not themed */
-  font-size: 0.9vw;
+  font-size: 1.77vw;
   color: var(--cream-2);
   letter-spacing: 2px;
 }
@@ -1177,7 +1199,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   text-align: center;
   padding: 18px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9vw;
+  font-size: 1.77vw;
   color: var(--cream-2);
   letter-spacing: 2px;
   background: var(--colour-background, #0d0806);
@@ -1340,7 +1362,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 }
 .nextgen-foyer .book-qr-caption {
   font-family: 'JetBrains Mono', monospace; /* fixed: monospace QR caption, not themed */
-  font-size: min(1.05vw, 1.5vh);
+  font-size: min(3.63vw, 5.19vh);
   color: var(--neon-cyan);
   letter-spacing: 2px;
   margin-top: 9px;
@@ -1356,7 +1378,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 .nextgen-foyer .tickets-pending {
   margin-top: 22px;
   font-family: 'JetBrains Mono', monospace; /* fixed: monospace status line, not themed */
-  font-size: min(1.3vw, 1.8vh);
+  font-size: min(2.27vw, 3.15vh);
   color: var(--cream-2);
   letter-spacing: 1px;
   text-transform: none;
@@ -1393,9 +1415,11 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 .nextgen-foyer .price-tier.muted    { --tier-color: var(--cream-2); }
 .nextgen-foyer .price-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: min(1.15vw, 1.6vh);
+  font-size: min(3.73vw, 5.19vh);
   color: var(--tier-color);
-  letter-spacing: 3px;
+  /* 3px -> 1px tracking: at the 56px floor "Under 25" needed ~293px against a
+     288px tier box and wrapped to two lines (2026-09-14 type-floor repair). */
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 .nextgen-foyer .price-amount {
@@ -1430,7 +1454,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 }
 .nextgen-foyer .qr-caption {
   font-family: 'JetBrains Mono', monospace;
-  font-size: min(1.05vw, 1.5vh);
+  font-size: min(3.63vw, 5.19vh);
   color: var(--colour-accent);
   letter-spacing: 2px;
   margin-top: 9px;
@@ -1468,10 +1492,10 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   aspect-ratio: 3 / 2;
   justify-self: end;
 }
-.nextgen-foyer .archive-text .body { max-width: none; font-size: min(1.34vw, 2.1vh); }
+.nextgen-foyer .archive-text .body { max-width: none; font-size: min(2.45vw, 3.5556vh); }
 .nextgen-foyer .archive-attribution {
   font-family: 'JetBrains Mono', monospace; /* fixed: monospace attribution/date run, not themed */
-  font-size: min(1.08vw, 1.55vh);
+  font-size: min(2.19vw, 3.15vh);
   color: var(--cream-2);
   letter-spacing: 2px;
   margin-top: 10px;
@@ -1491,7 +1515,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
 .nextgen-foyer .review-quote {
   font-family: var(--font-body, 'Inter'), sans-serif;
   font-style: italic;
-  font-size: min(1.45vw, 2.1vh);
+  font-size: min(2.45vw, 3.5556vh);
   line-height: 1.5;
   color: var(--cream);
   border-left: 2px solid var(--neon-cyan);
@@ -1503,7 +1527,7 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   display: block;
   font-style: normal;
   font-family: 'JetBrains Mono', monospace; /* fixed: monospace source/URL, not themed */
-  font-size: min(1.08vw, 1.55vh);
+  font-size: min(2.19vw, 3.15vh);
   color: var(--cream-2);
   margin-top: 8px;
   letter-spacing: 2px;
@@ -1776,18 +1800,19 @@ body.nextgen-foyer.ng-preview .ng-shell {
 /* Caption type matches story-montage, the proven-legible sibling in this family
    (.story-heading .story-body). The previous min(3.0vw, 4.5vh) on eyebrow, body and
    footline made the auto-sized caption row ~407px of a ~687px card, starving the 1fr
-   hero to ~212px. Body stays 34.56px at 1920x1080, so foyer legibility is unchanged.
+   hero to ~212px. Body is 38.40px at 1920x1080 (body tier unified 2026-09-14),
+   so foyer legibility is unchanged.
    Measured 2026-09-10: hero 212px -> 407px. */
 .nextgen-foyer .feature-caption .body {
-  font-size: min(2.2vw, 3.2vh);
+  font-size: min(2.45vw, 3.5556vh);
   max-width: 86%;
 }
 .nextgen-foyer .feature-caption .footline {
-  font-size: min(1.3vw, 1.8vh);
+  font-size: min(2.27vw, 3.15vh);
   letter-spacing: 2px;
 }
 .nextgen-foyer .feature-caption .eyebrow {
-  font-size: 15px;
+  font-size: 34px;
 }
 /* Scoped to the feature caption only: .headline.small is 6vw (115px at 1920), a sixth
    of the card on its own. Matches .headline.tiny, the size story-montage uses for the
@@ -1823,7 +1848,7 @@ body.nextgen-foyer.ng-preview .ng-shell {
 .nextgen-foyer .story-heading .story-body {
   margin: 0 auto;
   max-width: 80%;
-  font-size: min(2.2vw, 3.2vh);
+  font-size: min(2.45vw, 3.5556vh);
 }
 .nextgen-foyer .story-stage {
   flex: 1 1 auto;
@@ -1859,7 +1884,7 @@ body.nextgen-foyer.ng-preview .ng-shell {
   flex: 0 0 auto;
   color: var(--cream);
   font-family: var(--font-body, 'Inter'), sans-serif;
-  font-size: min(1.8vw, 2.6vh);
+  font-size: min(2.18vw, 3.15vh);
   padding: 1.2vh 0;
   margin: 0;
   text-align: center;
@@ -1875,7 +1900,7 @@ body.nextgen-foyer.ng-preview .ng-shell {
 .nextgen-foyer .story-credit .review-badge {
   display: inline-block;
   margin-top: 0.8vh;
-  font-size: min(1.5vw, 2.2vh);
+  font-size: min(2.15vw, 3.15vh);
 }
 
 /* Automatic story reveal keyframes.

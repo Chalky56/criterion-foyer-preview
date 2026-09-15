@@ -174,7 +174,7 @@
       "weight": 1,
       "dwell_seconds": 21,
       "review_status": "draft",
-      "draft_owner": "Anne-marie Greene / Chris Ingall",
+      "draft_owner": "Anne-marie Greene / Tilly McDermott",
       "draft_label": "images and captions, for Anne-marie Greene's approval",
       "content": {
         "eyebrow": "Behind the scenes",
@@ -203,7 +203,47 @@
             "motion": true
           }
         ],
-        "footline": "Costume designs by Anne-marie Greene; wardrobe by Chris Ingall - final garments to confirm"
+        "footline": "Costume design by Anne-marie Greene and Tilly McDermott; wardrobe by Chris Ingall and team - final garments to confirm"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "costume-build",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 2,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Anne-marie Greene / Tilly McDermott",
+      "draft_label": "new costume images, for Anne-marie Greene's confirmation",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "Charity shop, then scissors",
+        "body": "Denim shirt fronts, brocade panels, gold topstitching - drawn, then cut and sewn.",
+        "frames": [
+          {
+            "source": "assets/craft/costume-anne.jpg",
+            "caption": "Anne Bront\u00eb, drawn",
+            "alt": "Costume design sketch titled Anne Bront\u00eb: denim strips added to the sleeves, a denim collar with pulled threads",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/costume-pattern.jpg",
+            "caption": "Worked out, panel by panel",
+            "alt": "A construction drawing: denim shirt front, brocade side panels, topstitched in gold",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/costume-garment.jpg",
+            "caption": "Then made",
+            "alt": "The finished garment on a stand: a denim shirt front with brocade side panels",
+            "cover": true,
+            "motion": true
+          }
+        ],
+        "footline": "Costume design by Anne-marie Greene and Tilly McDermott; wardrobe by Chris Ingall and team"
       }
     },
     {
@@ -451,13 +491,13 @@
       "dwell_seconds": 14,
       "review_status": "draft",
       "draft_owner": "Anne-marie Greene",
-      "draft_label": "for Anne-marie's approval",
+      "draft_label": "wording is Anne-marie's own; photograph supplied by her",
       "content": {
         "production": "The Memory of Water (2008)",
-        "quote": "In The Memory of Water, Anne-marie waited in a wardrobe for a phone cue. One night, the call came from her fellow actor instead.",
+        "quote": "I had to go into the wardrobe at one point and burst out when the phone rang. One night the phone did not ring, and after what seemed like a very long time one of the other actors proclaimed, very loudly, \u2018You can come out now!\u2019",
         "author": "Anne-marie Greene",
-        "role": "Director / cast recollection",
-        "image_local": "assets/archive/memory-of-water-2157.jpg"
+        "role": "In the cast, with Cathryn Bowler",
+        "image_local": "assets/archive/memory-of-water-amg.jpg"
       }
     },
     {
@@ -487,13 +527,13 @@
       "dwell_seconds": 14,
       "review_status": "draft",
       "draft_owner": "Nicol Cortese",
-      "draft_label": "for Nicol's approval",
+      "draft_label": "photograph supplied by Anne-marie; for Nicol's approval",
       "content": {
         "production": "The Thrill of Love (2014)",
         "quote": "Nicol Cortese played Vicki Martin in The Thrill of Love in 2014. Tonight, she plays Emily Bront\u00eb.",
         "author": "Nicol Cortese",
-        "role": "Actor / then and now",
-        "image_local": "assets/archive/thrill-of-love-3051.jpg"
+        "role": "Actor, then and now - centre, in 2014",
+        "image_local": "assets/archive/thrill-of-love-nicol.jpg"
       }
     },
     {

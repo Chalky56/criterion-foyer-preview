@@ -38,7 +38,7 @@
     const raw = (searchParams.get("phase") || searchParams.get("scene") || "preshow")
       .trim()
       .toLowerCase();
-    const phases = new Set(["preshow", "interval", "postshow"]);
+    const phases = new Set(["preshow", "interval", "postshow", "holding"]);
     const singleRoutes = {
       welcome: "welcome",
       tonight: "show-info",
@@ -408,6 +408,33 @@
     await updateState(current, null);
   }
 
+  // `holding` is an optional fourth playlist: when a pack has none, the phase
+  // runs its postshow playlist rather than rendering SLIDE UNAVAILABLE or going
+  // black. data-phase stays "holding" so the theme's phase intensity applies.
+  async function loadPhasePlaylist(foyerPackBase, phase) {
+    try {
+      const playlist = await fetchJson(`${foyerPackBase}/playlists/${phase}.json`);
+      if (phase === "holding") {
+        // Holding anchors are the whole rotation, not interjections, so an
+        // anchor with no every_n means "every position" - without this the
+        // scheduler's every_n slot test never fires it.
+        for (const item of playlist.items || []) {
+          if (item.kind === "anchor" && !item.every_n) {
+            item.every_n = 1;
+          }
+        }
+        console.info("holding phase: loaded playlists/holding.json");
+      }
+      return playlist;
+    } catch (error) {
+      if (phase !== "holding") {
+        throw error;
+      }
+      console.warn("holding phase: playlists/holding.json unavailable; running the postshow playlist instead", error);
+      return fetchJson(`${foyerPackBase}/playlists/postshow.json`);
+    }
+  }
+
   function heldRoutePlaylist(route, nextProductions) {
     const productionCount = nextProductions?.productions?.length || 0;
     return {
@@ -432,11 +459,11 @@
     const showMeta = await fetchJson(`${foyerPackBase}/show.json`);
     let playlist = { items: [] };
     if (!route.template && !route.heldTemplates) {
-      playlist = await fetchJson(`${foyerPackBase}/playlists/${route.phase}.json`);
+      playlist = await loadPhasePlaylist(foyerPackBase, route.phase);
     }
     let nextProductions = { productions: [] };
     let archiveMemories = { memories: [] };
-    let performances = { performances: [] };
+    let performances = null;
     let visitingCompany = null;
     try {
       nextProductions = await fetchJson(`${foyerPackBase}/next_productions.json`);
@@ -708,13 +735,13 @@
     const activeShow = await getActiveShow();
     const foyerPackBase = activeShow?.paths?.foyerPack;
     if (!foyerPackBase) return null;
-    const phases = ["preshow", "interval", "postshow"];
+    const phases = ["preshow", "interval", "postshow", "holding"];
     const playlists = await Promise.all(phases.map(async name => ({
       phase: name,
-      playlist: await fetchJson(`${foyerPackBase}/playlists/${name}.json`),
+      playlist: await fetchJson(`${foyerPackBase}/playlists/${name}.json`).catch(() => null),
     })));
     const matches = playlists.flatMap(({ phase: matchPhase, playlist }) =>
-      (playlist.items || [])
+      (playlist?.items || [])
         .filter(item => item.id === cardId)
         .map(item => ({ phase: matchPhase, item }))
     );
@@ -821,6 +848,7 @@
         <button class="ngp-btn" data-phase="preshow">Preshow</button>
         <button class="ngp-btn" data-phase="interval">Interval</button>
         <button class="ngp-btn" data-phase="postshow">Postshow</button>
+        <button class="ngp-btn" data-phase="holding">Holding</button>
       </div>
       <div class="ngp-group">
         <button class="ngp-btn" id="ngp-prev" title="Previous shown slide">\u25C0 Prev</button>

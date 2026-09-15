@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "phase": "holding",
+  "show_id": "underdog-2026",
+  "_notes": "The overnight state for the Underdog run. Fired by the Autopilot holding step at curtain+210 (23:00 evenings, 20:30 on Sunday 27 September) and held until the preshow loop starts again at curtain-30. Deliberately quiet: by that hour the foyer is a handful of people finishing drinks, and a full rotation selling tickets and asking for volunteers is shouting at nobody. This is the fourth playlist described in docs/backlog/foyer-late-night-phase.md, finally built.",
+  "_show_when_note": "Items carry show_when: \"countdown\" (there is a future performance), \"final\" (there is not), or \"always\". The engine already has to work out which case it is in order to choose between sub_countdown and sub_final, so this costs nothing extra. Between performances one card holds; on the final night the phase becomes a short three-card loop that sends people away with somewhere to come back to.",
+  "policy": {
+    "min_dwell_seconds": 20,
+    "max_dwell_seconds": 60,
+    "max_words_per_screen": 24,
+    "consecutive_repeat": true,
+    "loop_target_seconds": 60,
+    "audio_allowed": false
+  },
+  "_policy_note": "Between performances there is one card on a 60-second refresh - consecutive_repeat is true because there is only one card and the refresh exists solely to advance the countdown, not to change what is on screen. On the final night three cards rotate at 20 seconds.",
+  "items": [
+    {
+      "kind": "anchor",
+      "id": "holding",
+      "template": "holding",
+      "show_when": "countdown",
+      "dwell_seconds": 60,
+      "message": "Thank you for coming",
+      "sub_countdown": "Underdog preshow display starts in {countdown}",
+      "_note": "The overnight card. Small type low on a dark screen, deliberately unobtrusive - the one place on the foyer display where the 56px floor does not apply, because there is no audience to read it at six metres.",
+      "_countdown_format_note": "{countdown} renders with units - '20h 00m', '1d 22h 30m' - never a bare H:MM. Measured 15 September: on four of the six nights the gap from bar close to the next house opening is exactly 20 hours, and 'starts in 20:00' on a foyer screen at midnight reads as 'starts at eight o'clock'. The Sunday gap is 46h 30m, which as '46:30' means nothing at all."
+    },
+    {
+      "kind": "anchor",
+      "id": "final-thanks",
+      "template": "holding",
+      "show_when": "final",
+      "dwell_seconds": 20,
+      "message": "Thank you for coming",
+      "sub_final": "That was the last performance of Underdog. Thank you for coming."
+    },
+    {
+      "kind": "anchor",
+      "id": "final-next-production",
+      "template": "holding",
+      "show_when": "final",
+      "dwell_seconds": 20,
+      "message": "See you at Shakespeare in Love",
+      "sub_final": "5 - 12 December 2026. Based on the Academy Award-winning film.",
+      "_note": "Dates and description from foyer-pack/next_productions.json. tickets_on_sale is false for Shakespeare in Love, so this card deliberately carries no booking link or QR - advertise everything, but only offer a link where tickets can actually be bought. Revisit when it goes on sale."
+    },
+    {
+      "kind": "anchor",
+      "id": "final-regulars",
+      "template": "holding",
+      "show_when": "final",
+      "dwell_seconds": 20,
+      "message": "The Criterion is open all year",
+      "sub_final": "Club nights in the bar, Wednesdays and Fridays, 20:30 to 23:00. Coffee morning in the bar and foyer, first Saturday of the month, 10:30 to 12:00.",
+      "_note": "Days and times confirmed by David, 15 September 2026. Times were deliberately absent in the first draft rather than guessed; this is the confirmed version and the draft badge has been removed."
+    }
+  ]
+}

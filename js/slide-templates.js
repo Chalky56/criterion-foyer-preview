@@ -512,6 +512,104 @@ function productionGallery(item, ctx) {
       </div>${footline ? `<p class="footline">${footline}</p>` : ""}`;
 }
 
+/* Holding-phase helpers (added 15 September 2026). The pack owns the wording;
+   the engine owns the clock, computed at render time so the 60-second re-render
+   actually advances it.
+   - `sub_countdown` substitutes {countdown} with H:MM until the earliest future
+     performance's house_opens ("Underdog preshow display starts in 14:27").
+   - `sub_final` applies once no future performance remains.
+   - A plain `sub` renders as written in either case.
+   - performances.json absent or unparseable -> the card renders `message`
+     alone; the state is unknown, so guessing at countdown vs final wording
+     would risk lying to the foyer.
+   `show_when` on a playlist item ("countdown" / "final" / "always") selects
+   which items belong to the current case; canRenderSlide applies it so the
+   scheduler skips cards meant for the other state. */
+function holdingPerformances(ctx) {
+  const list = ctx?.performances?.performances;
+  return Array.isArray(list) ? list : null;
+}
+
+function performanceMoment(dateText, timeText) {
+  const day = parseDate(dateText);
+  if (!day || !/^\d{2}:\d{2}$/.test(timeText || "")) {
+    return null;
+  }
+  const [hour, minute] = timeText.split(":").map(Number);
+  return new Date(day.getFullYear(), day.getMonth(), day.getDate(), hour, minute, 0, 0);
+}
+
+// Earliest performance whose house_opens is still ahead of right now.
+function nextHouseOpen(ctx) {
+  const list = holdingPerformances(ctx);
+  if (!list) {
+    return null;
+  }
+  const now = Date.now();
+  let next = null;
+  for (const entry of list) {
+    const at = performanceMoment(entry?.date, entry?.house_opens);
+    if (at && at.getTime() > now && (!next || at < next.at)) {
+      next = { performance: entry, at };
+    }
+  }
+  return next;
+}
+
+function itemShowWhenApplies(item, ctx) {
+  const when = item?.show_when;
+  if (!when || when === "always") {
+    return true;
+  }
+  if (!holdingPerformances(ctx)) {
+    return false; // cannot tell countdown from final - show neither guess
+  }
+  const hasNext = Boolean(nextHouseOpen(ctx));
+  if (when === "countdown") {
+    return hasNext;
+  }
+  if (when === "final") {
+    return !hasNext;
+  }
+  return true; // unrecognised value: keep the item rather than drop it
+}
+
+// Remaining time with units, never a bare H:MM: the gap from bar close to the
+// next house opening runs 17 to 47 hours, so "20:00" on a foyer screen at
+// midnight reads as a clock time, not a duration. "43m" under an hour,
+// "20h 00m" under a day, "1d 22h 30m" beyond. Floored to whole minutes,
+// clamped at 0m.
+function holdingCountdownText(at) {
+  const totalMinutes = Math.max(0, Math.floor((at.getTime() - Date.now()) / 60000));
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
+  const minutes = totalMinutes % 60;
+  if (days) {
+    return `${days}d ${hours}h ${String(minutes).padStart(2, "0")}m`;
+  }
+  if (hours) {
+    return `${hours}h ${String(minutes).padStart(2, "0")}m`;
+  }
+  return `${minutes}m`;
+}
+
+function holdingSubLine(item, ctx) {
+  if (!holdingPerformances(ctx)) {
+    return "";
+  }
+  const next = nextHouseOpen(ctx);
+  if (next) {
+    if (item?.sub_countdown) {
+      return String(item.sub_countdown).replaceAll("{countdown}", holdingCountdownText(next.at));
+    }
+    return item?.sub ? String(item.sub) : "";
+  }
+  if (item?.sub_final) {
+    return String(item.sub_final);
+  }
+  return item?.sub ? String(item.sub) : "";
+}
+
 export const slideTemplates = {
   // P01 — welcome / tonight
   "welcome": (item, ctx) => {
@@ -1246,11 +1344,13 @@ export const slideTemplates = {
       ${tour.footline ? `<p class="footline">${tour.footline}</p>` : ""}`;
   },
 
-  // Holding card — blank the foyer during a performance.
+  // Holding card — blank the foyer during a performance. The sub-line resolves
+  // sub_countdown / sub_final / sub per the helpers above; the countdown value
+  // is recomputed on every render, so the playlist's re-dwell ticks it.
   "holding": (item, ctx) => {
     const show = ctx.show || {};
     const message = item?.message || "Performance in progress";
-    const sub = item?.sub || "";
+    const sub = holdingSubLine(item, ctx);
     return `<div class="holding-slide">
         <p class="eyebrow">${show.venue || "Criterion Theatre"}</p>
         <h2 class="headline small">${upper(show.title) || "TONIGHT"}</h2>
@@ -1279,6 +1379,9 @@ export function renderSlideHTML(item, ctx) {
 // null, undefined or an empty string. The scheduler uses this to skip items that
 // would otherwise produce an empty card (e.g. a tour slide with no dates).
 export function canRenderSlide(item, ctx) {
+  if (!itemShowWhenApplies(item, ctx)) {
+    return false;
+  }
   const template = item && item.template ? slideTemplates[item.template] : null;
   if (!template) {
     return true;

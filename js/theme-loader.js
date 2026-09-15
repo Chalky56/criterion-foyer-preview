@@ -9,7 +9,7 @@ export const HOUSE_THEME = Object.freeze({
   watermark: { image: "assets/criterion-roof-mark-outline.svg", opacity: 0.12, position: "bottom-right" },
   texture: { image: null, opacity: 0 },
   poster_frame: "mat",
-  phase_intensity: { preshow: 1, interval: 0.9, postshow: 0.65 },
+  phase_intensity: { preshow: 1, interval: 0.9, postshow: 0.65, holding: 0.4 },
   motion: { photos: true, particles: false },
 });
 
@@ -91,6 +91,7 @@ export function applyThemeTokens(theme, brandingBase = "") {
     "--phase-intensity-preshow": String(resolved.phaseIntensity.preshow),
     "--phase-intensity-interval": String(resolved.phaseIntensity.interval),
     "--phase-intensity-postshow": String(resolved.phaseIntensity.postshow),
+    "--phase-intensity-holding": String(resolved.phaseIntensity.holding),
   };
   Object.entries(tokens).forEach(([key, value]) => root.style.setProperty(key, value));
   // Legacy show packs retain their signed-off palette names. They are scoped

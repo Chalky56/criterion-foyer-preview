@@ -1761,38 +1761,73 @@ body.nextgen-foyer.ng-preview .ng-shell {
    later inherits flex: 0 0 auto and simply reduces the room those three
    share, rather than starting a second row. The bases must be explicit and
    small: flex wraps on each item's HYPOTHETICAL size, so 'flex: 0 1 auto'
-   would start a new row before any shrinking happened at all.
+   would start a new row before any shrinking happened at all. The bases are
+   weighted 150 / 40 / 40 so the build stamp - which reviewers quote back when
+   reporting what they saw - keeps its full two lines down to 1366px, while the
+   jump and now-showing labels, which only repeat what is already on screen,
+   give up their width first. Below about 1300px the controls alone exceed the
+   line and two rows is the honest outcome.
    Reviewer chrome only - this bar
    is never broadcast. Fixed 2026-09-10, made structural 2026-09-17. */
 .ng-preview-bar > * { flex: 0 0 auto; }
 .ng-preview-bar .ngp-brand {
-  flex: 1 1 64px;
+  flex: 1 1 150px;
   min-width: 0;
 }
-.ng-preview-bar .ngp-brand #ngp-stamp {
+.ng-preview-bar .ngp-brand #ngp-stamp,
+.ng-preview-bar .ngp-brand .ngp-built {
   display: block;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* The build time sits on its own line rather than being truncated off the end
+   of the version: reviewers quote it when reporting what they saw. The version
+   already carries the build date, so this line only adds day, month and time,
+   and both lines carry the full locale string as a tooltip. */
+.ng-preview-bar .ngp-built {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+  color: var(--cream-2);
+  opacity: 0.75;
+}
 .ng-preview-bar .ngp-jump-field {
-  flex: 1 1 64px;
+  flex: 1 1 100px;
   min-width: 0;
 }
+/* Floors, so shrinking never leaves a control unusable: the jump select keeps
+   enough width to read the start of a card id rather than collapsing to a bare
+   chevron, and the now-showing value keeps enough to be worth reading. */
 .ng-preview-bar .ngp-jump-field .ngp-select {
-  min-width: 4ch;
+  min-width: 12ch;
 }
 .ng-preview-bar .ngp-now-field {
-  flex: 2 1 64px;
+  flex: 1 1 110px;
   min-width: 0;
+  overflow: hidden;
 }
 .ng-preview-bar .ngp-now-field #ngp-now {
-  min-width: 0;
+  min-width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* Narrow reviewer windows cannot hold the build time as well as every control
+   at a usable size. Below 1560px it is dropped from the bar and the text items
+   dropped from the bar and the text items give up their weighting; the full
+   string is still on the tooltip of the version line. */
+@media (max-width: 1559px) {
+  .ng-preview-bar .ngp-brand .ngp-built { display: none; }
+  /* Below this width the controls alone nearly fill the line. Squeezing the
+     text items further makes their own labels collide, so the bar is allowed
+     a second row instead - which is legible, where an overlap is not. */
+  .ng-preview-bar .ngp-brand { flex: 0 0 auto; }
+  .ng-preview-bar .ngp-jump-field { flex: 0 0 auto; }
+  .ng-preview-bar .ngp-now-field { flex: 1 1 110px; }
+}
+
 .ng-preview-bar .ngp-select,
 .ng-preview-bar .ngp-input {
   background: var(--ink);

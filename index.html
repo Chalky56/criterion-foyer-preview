@@ -805,9 +805,19 @@
         throw new Error("build-info.json unavailable");
       }
       const info = await response.json();
-      const builtAt = info.built_at ? new Date(info.built_at).toLocaleString() : "unknown";
-      target.textContent = `${info.version || "dev"} \u00B7 built ${builtAt}`;
-      target.title = target.textContent;
+      const built = info.built_at ? new Date(info.built_at) : null;
+      // The version already carries the build date, so the second line only has
+      // to add day, month and time. The full locale string stays on the tooltip.
+      const builtShort = built
+        ? built.toLocaleString(undefined, { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })
+        : "unknown";
+      target.textContent = info.version || "dev";
+      target.title = `${info.version || "dev"} \u00B7 built ${built ? built.toLocaleString() : "unknown"}`;
+      const builtEl = document.getElementById("ngp-built");
+      if (builtEl) {
+        builtEl.textContent = `built ${builtShort}`;
+        builtEl.title = target.title;
+      }
     } catch (error) {
       target.textContent = "local / dev";
     }
@@ -844,6 +854,7 @@
       <div class="ngp-brand">
         <span class="ngp-title">ENGINE REVIEW</span>
         <span class="ngp-stamp" id="ngp-stamp">\u2026</span>
+        <span class="ngp-built" id="ngp-built"></span>
       </div>
       <div class="ngp-group" id="ngp-phases" role="tablist">
         <button class="ngp-btn" data-phase="preshow">Preshow</button>

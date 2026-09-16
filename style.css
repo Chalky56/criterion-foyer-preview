@@ -1700,6 +1700,7 @@ body.nextgen-foyer.ng-preview .ng-shell {
   font-size: 12px;
   letter-spacing: 3px;
   color: var(--cream);
+  white-space: nowrap;
 }
 .ng-preview-bar .ngp-stamp {
   font-size: 10px;
@@ -1745,15 +1746,45 @@ body.nextgen-foyer.ng-preview .ng-shell {
   text-transform: uppercase;
   color: var(--cream-2);
 }
-/* The bar reflowed between slides: 'NOW SHOWING <id> - <template>' varies in
-   width, and the FRAME group only appears on montages, so on a long id the
-   MOTION control wrapped to a second line and on a short one it did not.
-   Making the now-showing field the single flexible item absorbs both changes,
-   so every other control keeps its position. Reviewer chrome only - this bar
-   is never broadcast. Fixed 2026-09-10. */
+/* The bar must not reflow between slides. Its width varies three ways: the
+   FRAME group appears only on montages, 'NOW SHOWING <id> - <template>'
+   changes per slide, and the JUMP select is as wide as its longest option.
+   The 2026-09-10 fix made the now-showing field the only flexible item; that
+   held until a fourth phase button (HOLDING) and the 'built <timestamp>'
+   suffix were added, which together pushed the fixed items past the line and
+   wrapped MOTION again on montage cards below about 1920px.
+
+   So the rule is now structural rather than a one-off: the three items that
+   carry variable-width TEXT - the build stamp, the jump select and the
+   now-showing label - shrink and ellipsise; every CONTROL keeps its natural
+   width so nothing a reviewer clicks ever moves. Anything added to the bar
+   later inherits flex: 0 0 auto and simply reduces the room those three
+   share, rather than starting a second row. The bases must be explicit and
+   small: flex wraps on each item's HYPOTHETICAL size, so 'flex: 0 1 auto'
+   would start a new row before any shrinking happened at all.
+   Reviewer chrome only - this bar
+   is never broadcast. Fixed 2026-09-10, made structural 2026-09-17. */
 .ng-preview-bar > * { flex: 0 0 auto; }
+.ng-preview-bar .ngp-brand {
+  flex: 1 1 64px;
+  min-width: 0;
+}
+.ng-preview-bar .ngp-brand #ngp-stamp {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ng-preview-bar .ngp-jump-field {
+  flex: 1 1 64px;
+  min-width: 0;
+}
+.ng-preview-bar .ngp-jump-field .ngp-select {
+  min-width: 4ch;
+}
 .ng-preview-bar .ngp-now-field {
-  flex: 1 1 140px;
+  flex: 2 1 64px;
   min-width: 0;
 }
 .ng-preview-bar .ngp-now-field #ngp-now {

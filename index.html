@@ -807,6 +807,7 @@
       const info = await response.json();
       const builtAt = info.built_at ? new Date(info.built_at).toLocaleString() : "unknown";
       target.textContent = `${info.version || "dev"} \u00B7 built ${builtAt}`;
+      target.title = target.textContent;
     } catch (error) {
       target.textContent = "local / dev";
     }
@@ -859,7 +860,7 @@
         <button class="ngp-btn" id="ngp-frame-prev" title="Previous story frame">\u25C0 Frame</button>
         <button class="ngp-btn" id="ngp-frame-next" title="Next story frame">Frame \u25B6</button>
       </div>
-      <label class="ngp-field">Jump
+      <label class="ngp-field ngp-jump-field">Jump
         <select class="ngp-select" id="ngp-jump"></select>
       </label>
       <label class="ngp-field ngp-now-field">Now showing

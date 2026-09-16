@@ -36,7 +36,7 @@
       "dwell_seconds": 12,
       "content": {
         "eyebrow": "Twenty minutes",
-        "body": "Drinks, snacks and ice cream are being served now.",
+        "body": "Drinks, snacks and ice cream are being served now. Anything ordered before the show is already poured and waiting.",
         "image_local": "assets/bar/pint-marble.jpg"
       }
     },

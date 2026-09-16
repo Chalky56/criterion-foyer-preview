@@ -346,6 +346,25 @@
     },
     {
       "kind": "wildcard",
+      "id": "bar-interval-order",
+      "template": "feature",
+      "sales_intent": true,
+      "tag": "theatre",
+      "weight": 2,
+      "dwell_seconds": 12,
+      "source": "assets/bar/pint-marble.jpg",
+      "content": {
+        "eyebrow": "Before the show",
+        "headline": "Order your interval drinks now",
+        "body": "Tell the bar what you'd like before curtain up, and it will be poured and waiting when the interval starts.",
+        "footline": "Order at the bar, or ask front-of-house"
+      },
+      "review_status": "draft",
+      "draft_owner": "Dave Cornish",
+      "draft_label": "interval pre-orders, for Dave Cornish's confirmation"
+    },
+    {
+      "kind": "wildcard",
       "id": "bar-story",
       "template": "story-montage",
       "tag": "theatre",
@@ -482,7 +501,7 @@
         "eyebrow": "At the bar tonight",
         "headline": "Bottles, spirits and snacks",
         "body": "Bottled beers and lagers, gin, whisky and brandy, a full range of soft drinks - and something to go with them.",
-        "footline": "The foyer bar, a few steps from your seat",
+        "footline": "Interval drinks can be ordered before the show - just ask",
         "frames": [
           {
             "source": "assets/bar/bottle-pour.jpg",

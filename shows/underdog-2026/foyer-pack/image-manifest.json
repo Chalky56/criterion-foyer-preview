@@ -422,14 +422,14 @@
       "max_width": 1400,
       "max_height": 1050,
       "quality": 85,
-      "credit": "Shared in the Underdog creative WhatsApp group, 13 September 2026, during the set build. Photographer to confirm. The stage mid-build: overstage bar, painted cloth, a single jacket flown, ladder. Cropped from the left at 0.20 so the two volunteers working on stage fall outside the frame, and to 1.571:1 for a three-frame montage. Confirm with Simon Sharpe.",
+      "credit": "Shared in the Underdog creative WhatsApp group, 13 September 2026, during the set build. Photographer to confirm. The stage mid-build: the painted cloth, a jacket flown above the table, the paint pots still out. Recropped 16 September 2026 so the set is the subject and only a strip of the overstage bar shows - the first crop was mostly lighting rig. Cut from the left at 0.23 so the two volunteers working on stage fall outside the frame, and to 1.571:1.",
       "source_page": null,
       "photo_id": null,
       "prototype_status": "draft",
-      "output_width": 960,
-      "output_height": 610,
-      "output_bytes": 81787,
-      "output_sha256": "349c22869eea3b2bc35215561bf5d8ffd1ee562cde051a2ed56b9327bbf9a96d"
+      "output_width": 924,
+      "output_height": 588,
+      "output_bytes": 80377,
+      "output_sha256": "becf5df09be06d0f961d0afece90c4ad1f4025037c132c0c5d1bd9bf28f2e23a"
     },
     {
       "slot_id": "lighting/tease-rig",
@@ -1167,8 +1167,8 @@
       "prototype_status": "draft"
     }
   ],
-  "generated_at": "2026-09-15T00:00:00Z",
-  "total_output_bytes": 11382476,
+  "generated_at": "2026-09-16T00:00:00Z",
+  "total_output_bytes": 11381066,
   "_note_2026_09_10": "Bar, ice-cream and sound records added 10 September 2026. Sources are JPEG crops of the iPhone HEIC originals in originals/criterion-bar-2026-09-09/; prepare_foyer_images.py cannot read HEIC (no pillow-heif), so the crop step converts first. Re-running the script on a full checkout regenerates every record from its own source.",
   "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids.",
   "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/.",

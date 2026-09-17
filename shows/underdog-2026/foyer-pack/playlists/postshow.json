@@ -107,13 +107,11 @@
       "tag": "making",
       "weight": 2,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Claire McDermott / Bill",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "A glass made for the stage",
         "body": "Moulded, shaped and finished to look like the real thing.",
-        "footline": "Props by Claire McDermott and team",
+        "footline": "Design and manufacture by Bill Young. Props team: Claire McDermott (i/c), Erica Young, Kelly Davidson, Bill Young",
         "frames": [
           {
             "source": "assets/craft/sugar-glass-mould.jpg",
@@ -140,13 +138,11 @@
       "tag": "making",
       "weight": 2,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Claire McDermott / Erica",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "Looks like pastry",
         "body": "Made to look convincing from the auditorium, however it's built.",
-        "footline": "Props by Claire McDermott and team",
+        "footline": "Design and manufacture by Erica Young. Props team: Claire McDermott (i/c), Erica Young, Kelly Davidson, Bill Young",
         "frames": [
           {
             "source": "assets/craft/pork-pie-form.jpg",
@@ -203,7 +199,7 @@
             "motion": true
           }
         ],
-        "footline": "Costume design by Anne-marie Greene and Tilly McDermott; wardrobe by Chris Ingall and team - final garments to confirm"
+        "footline": "Costume design by Anne-marie Greene, Tilly McDermott and Chris Ingall; made by the wardrobe team"
       }
     },
     {
@@ -243,7 +239,7 @@
             "motion": true
           }
         ],
-        "footline": "Costume design by Anne-marie Greene and Tilly McDermott; wardrobe by Chris Ingall and team"
+        "footline": "Costume design by Anne-marie Greene, Tilly McDermott and Chris Ingall; made by the wardrobe team"
       }
     },
     {
@@ -253,36 +249,74 @@
       "tag": "making",
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Simon Sharpe",
-      "draft_label": "finished-stage photograph still to come",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "An idea becomes a place",
-        "body": "A drawing, then timber, paint and ladders, then the world you were sitting in.",
+        "body": "It started in a notebook in June - a doll box, a central panel, entrances either side.",
         "frames": [
           {
-            "source": "assets/craft/set-concept.jpg",
-            "caption": "First, the drawing",
-            "alt": "Early set concept for Underdog",
+            "source": "assets/craft/set-notebook.jpg",
+            "caption": "First, a notebook",
+            "alt": "A design notebook opened at a page headed June 2026, Underdog, with notes on a doll box and a central panel",
             "cover": true,
-            "motion": true
-          },
-          {
-            "source": "assets/craft/set-build.jpg",
-            "caption": "Then, the build",
-            "alt": "The Criterion stage mid-build: lighting bar, painted cloth, ladder",
-            "cover": true,
-            "motion": true
-          },
-          {
-            "source": "assets/placeholders/set-finished.svg",
-            "caption": "Then, opening night",
-            "alt": "Finished set photograph to follow",
             "motion": false
+          },
+          {
+            "source": "assets/craft/set-concept.jpg",
+            "caption": "Then, a drawing",
+            "alt": "Simon Sharpe's set design drawing for Underdog",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/set-finished.jpg",
+            "caption": "Then, a place to live",
+            "alt": "The finished Underdog set: a painted moor, coats hanging above a table and benches",
+            "cover": true,
+            "motion": true
           }
         ],
-        "footline": "Set design by Simon Sharpe - finished-stage photograph and construction credit to confirm"
+        "footline": "Set design by Simon Sharpe; build team led by Mark Ward; painting by Paul Chokran, Judy Talbot and team"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "set-build-team",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 2,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "Simon Sharpe / Mark Ward",
+      "draft_label": "photograph consents being gathered",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "Someone built all of this",
+        "body": "Flats, a table, a bench and a moor - built by a team led by Mark Ward.",
+        "frames": [
+          {
+            "source": "assets/craft/build-flats.jpg",
+            "caption": "Flats, wall by wall",
+            "alt": "Unpainted flats being erected on the Criterion stage",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/build-table.jpg",
+            "caption": "A table, from underneath",
+            "alt": "Two volunteers assembling the table and bench on stage, one working underneath it",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/craft/build-ready.jpg",
+            "caption": "Furniture in",
+            "alt": "The painted moor cloth with a stepladder, table and chairs in place",
+            "cover": true,
+            "motion": true
+          }
+        ],
+        "footline": "Frances Dixon, Mike Waterson, Simon Sharpe, Hannah Burns, Hilary Folkes, Keith Folkes, Jane Duran, Gordon Booth"
       }
     },
     {
@@ -525,9 +559,6 @@
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 14,
-      "review_status": "draft",
-      "draft_owner": "Nicol Cortese",
-      "draft_label": "photograph supplied by Anne-marie; for Nicol's approval",
       "content": {
         "production": "The Thrill of Love (2014)",
         "quote": "Nicol Cortese played Vicki Martin in The Thrill of Love in 2014. Tonight, she plays Emily Bront\u00eb.",

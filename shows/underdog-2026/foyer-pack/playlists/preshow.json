@@ -201,11 +201,8 @@
         "eyebrow": "Behind tonight's show",
         "headline": "Not everything is what it looks like",
         "body": "Some of what reaches the stage tonight was made by hand, in a workshop, to look convincing from your seat.",
-        "footline": "Props by Claire McDermott, Erica Young and team"
-      },
-      "review_status": "draft",
-      "draft_owner": "Erica Young / Claire McDermott",
-      "draft_label": "photograph of Erica Young - subject to her approval"
+        "footline": "Props by Claire McDermott (i/c), Erica Young, Kelly Davidson and Bill Young"
+      }
     },
     {
       "kind": "wildcard",
@@ -219,11 +216,8 @@
         "eyebrow": "Behind tonight's show",
         "headline": "Someone drew this first",
         "body": "The world you're about to walk into began as a drawing, and then got built.",
-        "footline": "Set design by Simon Sharpe - photographed during the build"
-      },
-      "review_status": "draft",
-      "draft_owner": "Simon Sharpe",
-      "draft_label": "build photograph and wording, for Simon Sharpe's approval"
+        "footline": "Set design by Simon Sharpe; build team led by Mark Ward"
+      }
     },
     {
       "kind": "wildcard",
@@ -372,7 +366,7 @@
       "weight": 1,
       "dwell_seconds": 18,
       "review_status": "draft",
-      "draft_owner": "bar team",
+      "draft_owner": "Dave Cornish",
       "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "At the bar",
@@ -413,7 +407,7 @@
       "weight": 1,
       "dwell_seconds": 21,
       "review_status": "draft",
-      "draft_owner": "bar team",
+      "draft_owner": "Dave Cornish",
       "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "On the handpump",
@@ -454,7 +448,7 @@
       "weight": 1,
       "dwell_seconds": 21,
       "review_status": "draft",
-      "draft_owner": "bar team",
+      "draft_owner": "Dave Cornish",
       "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "At the bar tonight",
@@ -495,7 +489,7 @@
       "weight": 1,
       "dwell_seconds": 21,
       "review_status": "draft",
-      "draft_owner": "bar team",
+      "draft_owner": "Dave Cornish",
       "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "At the bar tonight",
@@ -536,7 +530,7 @@
       "weight": 1,
       "dwell_seconds": 16,
       "review_status": "draft",
-      "draft_owner": "bar team",
+      "draft_owner": "Dave Cornish",
       "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "From the ice-cream fridge",

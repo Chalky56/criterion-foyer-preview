@@ -9,7 +9,7 @@
   "author": "Sarah Gordon",
   "director": "Anne-marie Greene",
   "assistant_director": "Ruth Miller",
-  "movement_director": "Debra Relton Elves",
+  "movement_director": "Deb Relton-Elves",
   "venue": "Criterion Theatre, Earlsdon, Coventry",
   "tagline": "This is {not} a story about well-behaved women.",
   "synopsis": "Charlotte Bront\u00eb has a confession: one sister became an idol, another became known as the third. You know the one. No, not that one. The other, other one - Anne. A sharp, funny retelling of the Bront\u00eb sisters from the edges.",
@@ -52,15 +52,7 @@
     },
     {
       "role": "Ensemble",
-      "actor": "Frank Needham"
-    },
-    {
-      "role": "Ensemble",
-      "actor": "Olivia Needham"
-    },
-    {
-      "role": "Ensemble",
-      "actor": "Rowan McDonnell"
+      "actor": "Roe McDonnell"
     },
     {
       "role": "Ensemble",
@@ -68,11 +60,15 @@
     },
     {
       "role": "Ensemble",
-      "actor": "Gisa Arumugarasa"
+      "actor": "Olivia Needham"
     },
     {
       "role": "Ensemble",
-      "actor": "Anne Collins"
+      "actor": "Frank Needham"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Gisa Arumugarasa"
     },
     {
       "role": "Ensemble",
@@ -81,20 +77,31 @@
     {
       "role": "Ensemble",
       "actor": "Zs\u00f3fia Hacsek"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Mike Skinner"
+    },
+    {
+      "role": "Ensemble",
+      "actor": "Anne Collins"
     }
   ],
-  "_cast_source": "Criterion production page, 8 September 2026. Individual image permissions and preferred credit treatment still to be collected.",
+  "_cast_source": "Production Information Sheet - Underdog, supplied by Simon Sharpe 17 September 2026, which David Chapman has ruled canonical for names. Replaces the Criterion production page list of 8 September, which omitted Mike Skinner and spelled Roe McDonnell as Rowan. The accent in Zs\u00f3fia Hacsek is kept from the production page; the sheet types it without one. Individual image permissions are tracked per card.",
   "credits": {
     "lines": [
       "Written by Sarah Gordon",
       "Directed by Anne-marie Greene",
       "Assistant Director Ruth Miller",
-      "Movement Director Debra Relton Elves",
-      "Lighting by Paul Harrison",
-      "Sound by Dave Cornish",
+      "Choreography and Movement Deb Relton-Elves",
+      "Lighting Design by Paul Harrison",
+      "Sound Design by Dave Cornish",
       "Set Design by Simon Sharpe",
-      "Wardrobe by Chris Ingall",
-      "Props by Claire McDermott"
+      "Set Build led by Mark Ward",
+      "Set Painting led by Paul Chokran and Judy Talbot",
+      "Wardrobe Design by Anne-marie Greene, Tilly McDermott and Chris Ingall",
+      "Props led by Claire McDermott",
+      "Stage Manager Erica Young"
     ],
     "photo_credit": "Production photographs by Chris Firth (dress rehearsal); early-rehearsal placeholders - photo credit to confirm"
   },

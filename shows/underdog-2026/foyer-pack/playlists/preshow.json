@@ -29,10 +29,7 @@
       "id": "show-info",
       "template": "show-info",
       "every_n": 3,
-      "dwell_seconds": 12,
-      "review_status": "draft",
-      "draft_owner": "Anne-marie Greene / stage management",
-      "draft_label": "estimated runtime and copied house-opening times"
+      "dwell_seconds": 12
     },
     {
       "kind": "anchor",
@@ -169,7 +166,7 @@
       },
       "review_status": "draft",
       "draft_owner": "Dave Cornish",
-      "draft_label": "image and wording, for Dave Cornish's approval"
+      "draft_label": "sound photographs to be reshot at the dress rehearsal"
     },
     {
       "kind": "wildcard",
@@ -350,12 +347,12 @@
       "content": {
         "eyebrow": "Before the show",
         "headline": "Order your interval drinks now",
-        "body": "Tell the bar what you'd like before curtain up, and it will be poured and waiting when the interval starts.",
+        "body": "Tell the bar what you'd like before curtain up, and it will be poured and waiting for you.",
         "footline": "Order at the bar, or ask front-of-house"
       },
       "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "interval pre-orders, for Dave Cornish's confirmation"
+      "draft_owner": "Nicole Firth",
+      "draft_label": "bar copy, for Nicole Firth's confirmation"
     },
     {
       "kind": "wildcard",
@@ -366,8 +363,8 @@
       "weight": 1,
       "dwell_seconds": 18,
       "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "draft_owner": "Nicole Firth",
+      "draft_label": "bar copy, for Nicole Firth's confirmation",
       "content": {
         "eyebrow": "At the bar",
         "headline": "An empty glass, and three minutes",
@@ -406,9 +403,6 @@
       "sales_intent": true,
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "On the handpump",
         "headline": "A different ale each visit",
@@ -449,11 +443,11 @@
       "dwell_seconds": 21,
       "review_status": "draft",
       "draft_owner": "Dave Cornish",
-      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "draft_label": "wording is Dave's own; he is supplying a white-wine photograph",
       "content": {
         "eyebrow": "At the bar tonight",
         "headline": "Wine by the glass",
-        "body": "Red, white and something with bubbles, opened and poured at the bar when you order it.",
+        "body": "We serve a variety of reds, whites, ros\u00e9 and Proseccos.",
         "footline": "Drinks are welcome in the auditorium - please bring your glass back to the bar afterwards",
         "frames": [
           {
@@ -489,12 +483,12 @@
       "weight": 1,
       "dwell_seconds": 21,
       "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "bar copy and stock, for the bar team's confirmation",
+      "draft_owner": "Nicole Firth",
+      "draft_label": "bar copy, for Nicole Firth's confirmation",
       "content": {
         "eyebrow": "At the bar tonight",
         "headline": "Bottles, spirits and snacks",
-        "body": "Bottled beers and lagers, gin, whisky and brandy, a full range of soft drinks - and something to go with them.",
+        "body": "Bottled beers, lagers and ciders. Low and zero alcohol options. A wide range of spirits and mixers, soft drinks and juices.",
         "footline": "Interval drinks can be ordered before the show - just ask",
         "frames": [
           {
@@ -529,9 +523,6 @@
       "sales_intent": true,
       "weight": 1,
       "dwell_seconds": 16,
-      "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "bar copy and stock, for the bar team's confirmation",
       "content": {
         "eyebrow": "From the ice-cream fridge",
         "headline": "Criterion ice cream",

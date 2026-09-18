@@ -169,9 +169,6 @@
       "tag": "making",
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Anne-marie Greene / Tilly McDermott",
-      "draft_label": "images and captions, for Anne-marie Greene's approval",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "How the Bront\u00ebs got dressed",
@@ -209,9 +206,6 @@
       "tag": "making",
       "weight": 2,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Anne-marie Greene / Tilly McDermott",
-      "draft_label": "new costume images, for Anne-marie Greene's confirmation",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "Charity shop, then scissors",
@@ -368,11 +362,11 @@
       "dwell_seconds": 21,
       "review_status": "draft",
       "draft_owner": "Dave Cornish",
-      "draft_label": "cue count is David's own count from the SCS screen, awaiting Dave's confirmation",
+      "draft_label": "sound photographs to be reshot at the dress rehearsal",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "How a sound reaches you",
-        "body": "Around 65 sound cues, fired by hand, one at a time, all evening.",
+        "body": "Around 65 sound cues this evening, fired by hand, one at a time.",
         "frames": [
           {
             "source": "assets/sound/story-cues.jpg",
@@ -396,7 +390,7 @@
             "motion": true
           }
         ],
-        "footline": "Sound by Dave Cornish - cue count provisional, awaiting confirmation"
+        "footline": "Sound by Dave Cornish"
       }
     },
     {
@@ -523,9 +517,6 @@
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 14,
-      "review_status": "draft",
-      "draft_owner": "Anne-marie Greene",
-      "draft_label": "wording is Anne-marie's own; photograph supplied by her",
       "content": {
         "production": "The Memory of Water (2008)",
         "quote": "I had to go into the wardrobe at one point and burst out when the phone rang. One night the phone did not ring, and after what seemed like a very long time one of the other actors proclaimed, very loudly, \u2018You can come out now!\u2019",
@@ -574,9 +565,6 @@
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 14,
-      "review_status": "draft",
-      "draft_owner": "Simon Sharpe / Dave Cornish / props team",
-      "draft_label": "for Simon / Dave / props team's approval",
       "content": {
         "production": "The Gift (2022)",
         "quote": "The Gift in 2022 brought together the people who build the worlds on stage: set, sound and props.",

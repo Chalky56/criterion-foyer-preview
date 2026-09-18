@@ -1572,25 +1572,58 @@ body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
   flex: 1 1 auto;
 }
 
+/* ---- Overnight holding: a dark screen, not a display ----
+   The foyer screen faces the street and the building is not highly secure, so
+   between performances the panel goes black and advertises nothing: no ambient
+   wash, no poster colours, no show wordmark, no Criterion mark. What is left is
+   one small white status line in the top-left corner, for whoever is locking up.
+   This is the one place in the pack where the design contract's 56px floor and
+   10:1 body contrast are deliberately set aside, because nobody is reading this
+   from six metres - and a screen bright enough to read from the pavement is the
+   thing being avoided. Every element hidden here is hidden by name: a new shell
+   element will show through until it is added to this list, the same trap the
+   phase-intensity rules above carry. Rebuilt 18 September 2026 to David's brief;
+   the old centred wordmark-and-message card is in git history if it is wanted
+   back. */
+body.nextgen-foyer[data-phase="holding"],
+body.nextgen-foyer[data-phase="holding"] .ng-shell,
+body.nextgen-foyer[data-phase="holding"] .ng-stage {
+  background: #000;
+}
+body.nextgen-foyer[data-phase="holding"] .ng-ambient,
+body.nextgen-foyer[data-phase="holding"] .ng-watermark,
+body.nextgen-foyer[data-phase="holding"] .ng-topline,
+body.nextgen-foyer[data-phase="holding"] .ng-caption,
+body.nextgen-foyer[data-phase="holding"] .criterion-mark {
+  display: none;
+}
+body.nextgen-foyer[data-phase="holding"] .ng-stage {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  display: block;
+}
 .nextgen-foyer .holding-slide {
-  text-align: center;
+  position: absolute;
+  top: 20px;
+  left: 26px;
+  margin: 0;
+  text-align: left;
 }
-.nextgen-foyer .holding-slide .headline {
-  font-size: clamp(48px, 7vw, 120px);
-}
-.nextgen-foyer .holding-message {
-  margin-top: 28px;
-  font-family: var(--font-headline);
-  font-size: min(2.4vw, 3.4vh);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--colour-accent);
-}
-.nextgen-foyer .holding-sub {
-  margin-top: 14px;
-  font-family: var(--font-body);
-  font-size: min(1.3vw, 1.9vh);
-  color: var(--cream-2);
+.nextgen-foyer .holding-status {
+  margin: 0;
+  /* Deliberately NOT the show's body face: the overnight line carries no
+     branding at all, and the serif renders old-style figures, so "18m" came out
+     with a lowercase-looking 1. Tabular lining digits also stop the line
+     twitching as the countdown ticks down each minute. */
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: clamp(13px, 0.95vw, 18px);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-shadow: none;
+  color: rgba(255, 255, 255, 0.62);
 }
 
 /* Phase tonal overrides, expressed entirely in theme tokens: ground comes from

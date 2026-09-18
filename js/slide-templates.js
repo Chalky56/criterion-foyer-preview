@@ -1344,18 +1344,18 @@ export const slideTemplates = {
       ${tour.footline ? `<p class="footline">${tour.footline}</p>` : ""}`;
   },
 
-  // Holding card — blank the foyer during a performance. The sub-line resolves
-  // sub_countdown / sub_final / sub per the helpers above; the countdown value
-  // is recomputed on every render, so the playlist's re-dwell ticks it.
+  // Holding card — the overnight state, and deliberately not a display. The
+  // foyer screen is visible from the street long after the building is locked,
+  // so this renders one small white status line in the top-left of an otherwise
+  // black screen: no venue, no show title, no brand mark. A lit, branded screen
+  // at two in the morning advertises an empty building. The wording lives in the
+  // playlist so it can be changed without touching the engine, and the countdown
+  // value is recomputed on every render, so the playlist's re-dwell ticks it.
+  // The blackout itself is CSS, on body[data-phase="holding"].
   "holding": (item, ctx) => {
-    const show = ctx.show || {};
-    const message = item?.message || "Performance in progress";
-    const sub = holdingSubLine(item, ctx);
+    const line = holdingSubLine(item, ctx) || item?.message || "";
     return `<div class="holding-slide">
-        <p class="eyebrow">${show.venue || "Criterion Theatre"}</p>
-        <h2 class="headline small">${upper(show.title) || "TONIGHT"}</h2>
-        <p class="holding-message">${message}</p>
-        ${sub ? `<p class="holding-sub">${sub}</p>` : ""}
+        ${line ? `<p class="holding-status">${line}</p>` : ""}
       </div>`;
   },
 };

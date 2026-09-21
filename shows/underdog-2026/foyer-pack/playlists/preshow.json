@@ -145,10 +145,7 @@
         "headline": "Somebody made that",
         "body": "Charity shops, Vinted and the hire rail - then unpicked, cut about and rebuilt by volunteers in this building.",
         "footline": "Wardrobe by Chris Ingall and team"
-      },
-      "review_status": "draft",
-      "draft_owner": "Chris Ingall",
-      "draft_label": "image selection, for Chris Ingall's approval"
+      }
     },
     {
       "kind": "wildcard",

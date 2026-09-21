@@ -68,8 +68,6 @@
       "tag": "making",
       "weight": 2,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Chris Ingall",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "Many hands, one wardrobe",
@@ -322,7 +320,7 @@
       "dwell_seconds": 21,
       "review_status": "draft",
       "draft_owner": "Paul Harrison",
-      "draft_label": "images and cue count, for Paul Harrison's approval",
+      "draft_label": "new third photograph (20 September) and cue count, for Paul Harrison's approval",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "Nothing you saw was lit by accident",
@@ -343,9 +341,9 @@
             "motion": true
           },
           {
-            "source": "assets/lighting/laser.jpg",
+            "source": "assets/lighting/stage-lit.jpg",
             "caption": "Then it reaches the stage",
-            "alt": "Laser light traced across the stage floor",
+            "alt": "Coloured lanterns on the rig throwing blue and green light across the stage",
             "cover": true,
             "motion": true
           }
@@ -532,9 +530,6 @@
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 14,
-      "review_status": "draft",
-      "draft_owner": "Chris Ingall",
-      "draft_label": "for Chris Ingall's approval",
       "content": {
         "production": "The Curious Incident of the Dog in the Night-time (2025)",
         "quote": "Chris Ingall directed this production in 2025. For Underdog, her work continues in wardrobe.",

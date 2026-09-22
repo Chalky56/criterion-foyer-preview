@@ -301,9 +301,9 @@
             "motion": true
           },
           {
-            "source": "assets/craft/build-ready.jpg",
-            "caption": "Furniture in",
-            "alt": "The painted moor cloth with a stepladder, table and chairs in place",
+            "source": "assets/craft/build-finished.jpg",
+            "caption": "Finished",
+            "alt": "The finished Underdog set: painted moor cloth, dry-stone flats, table, benches and hanging costumes",
             "cover": true,
             "motion": true
           }
@@ -495,21 +495,6 @@
     },
     {
       "kind": "wildcard",
-      "id": "publicity-film-postshow",
-      "template": "publicity-film-placeholder",
-      "tag": "theatre",
-      "weight": 1,
-      "dwell_seconds": 10,
-      "review_status": "draft",
-      "draft_owner": "Chris Firth",
-      "draft_label": "optional - shown only if a film is supplied",
-      "content": {
-        "phase": "Postshow",
-        "body": "A short publicity film for Underdog could appear here if footage is supplied."
-      }
-    },
-    {
-      "kind": "wildcard",
       "id": "archive-memory-of-water",
       "template": "archive-memory",
       "tag": "theatre",
@@ -568,5 +553,31 @@
         "image_local": "assets/archive/the-gift-4160.jpg"
       }
     }
-  ]
+  ],
+  "_removed_items": {
+    "_why": "Removed 22 September 2026: no publicity film has been supplied and the placeholder card was reaching the audience as an empty promise. Chris Firth owns the film. If footage arrives before or during the run, paste the item below back into `items` at the recorded index and re-publish - nothing else needs to change.",
+    "_removed_on": "2026-09-22",
+    "_reinstate": [
+      {
+        "former_index": 18,
+        "after_id": "bar-stays-open",
+        "before_id": "archive-memory-of-water",
+        "item": {
+          "kind": "wildcard",
+          "id": "publicity-film-postshow",
+          "template": "publicity-film-placeholder",
+          "tag": "theatre",
+          "weight": 1,
+          "dwell_seconds": 10,
+          "review_status": "draft",
+          "draft_owner": "Chris Firth",
+          "draft_label": "optional - shown only if a film is supplied",
+          "content": {
+            "phase": "Postshow",
+            "body": "A short publicity film for Underdog could appear here if footage is supplied."
+          }
+        }
+      }
+    ]
+  }
 }

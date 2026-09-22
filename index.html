@@ -178,6 +178,59 @@
     }
   }
 
+  // --- Motion policy -----------------------------------------------------
+  // A foyer screen is a broadcast surface, not a personal device: nobody
+  // set the host's OS accessibility toggle with a theatre audience in mind.
+  // The 21 September 2026 AURORA defect was exactly that - Windows
+  // "Animation effects" off surfaced as prefers-reduced-motion: reduce and
+  // flattened every story reveal. So when nothing asks otherwise the
+  // default is `full`, not `system` (decided 22 September 2026 - do not
+  // "fix" it back). `?motion=system` still honours the OS preference and
+  // `?motion=reduced` forces stills.
+  const motionMediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function requestedMotionMode() {
+    // The preview bar's select drives once it exists; setupPreview seeds it
+    // from ?motion=, so an explicit URL still wins on first resolution.
+    const select = document.getElementById("ngp-motion");
+    if (preview && select) {
+      return select.value;
+    }
+    const fromUrl = params.get("motion");
+    if (["full", "reduced", "system"].includes(fromUrl)) {
+      return fromUrl;
+    }
+    return "full";
+  }
+
+  function updateMotionPreference() {
+    const requested = requestedMotionMode();
+    document.body.classList.remove("motion-full", "motion-reduced");
+    let mode = "Full";
+    if (requested === "full") {
+      document.body.classList.add("motion-full");
+    } else if (requested === "reduced") {
+      document.body.classList.add("motion-reduced");
+      mode = "Reduced";
+    } else if (motionMediaQuery.matches) {
+      document.body.classList.add("motion-reduced");
+      mode = "Reduced (system)";
+    } else {
+      mode = "Full (system)";
+    }
+    const readout = document.getElementById("ngp-motion-mode");
+    if (readout) {
+      readout.textContent = mode;
+    }
+    setStoryPaused(previewPaused);
+    updateMotionNotice();
+  }
+
+  // Resolve on every load - broadcast included - and re-resolve if the
+  // OS-level preference changes under a `system` mode.
+  motionMediaQuery.addEventListener("change", updateMotionPreference);
+  updateMotionPreference();
+
   function scheduleCurrent() {
     if (preview && previewPaused) return;
     playbackDeadline = performance.now() + remainingMs;
@@ -603,32 +656,6 @@
     document.getElementById("ngp-motion-preview").textContent = reduced ? "Preview animations" : "Resume playback";
   }
 
-  function updateMotionPreference() {
-    const select = document.getElementById("ngp-motion");
-    if (!select) {
-      return;
-    }
-    document.body.classList.remove("motion-full", "motion-reduced");
-    let mode = "Full";
-    if (select.value === "full") {
-      document.body.classList.add("motion-full");
-    } else if (select.value === "reduced") {
-      document.body.classList.add("motion-reduced");
-      mode = "Reduced";
-    } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.body.classList.add("motion-reduced");
-      mode = "Reduced (system)";
-    } else {
-      mode = "Full (system)";
-    }
-    const readout = document.getElementById("ngp-motion-mode");
-    if (readout) {
-      readout.textContent = mode;
-    }
-    setStoryPaused(previewPaused);
-    updateMotionNotice();
-  }
-
   function previewPlay() {
     clearTimer();
     previewPaused = false;
@@ -883,8 +910,8 @@
       </label>
       <label class="ngp-field">Motion
         <select class="ngp-select" id="ngp-motion">
-          <option value="system" selected>System</option>
-          <option value="full">Full motion</option>
+          <option value="system">System</option>
+          <option value="full" selected>Full motion</option>
           <option value="reduced">Reduced</option>
         </select>
         <span class="ngp-stamp" id="ngp-motion-mode" title="Effective motion mode">auto</span>
@@ -926,7 +953,6 @@
       }
       previewPlay();
     });
-    window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", updateMotionPreference);
     updateMotionPreference();
     loadBuildStamp(document.getElementById("ngp-stamp")).finally(fitPreviewCanvas);
     fitPreviewCanvas();

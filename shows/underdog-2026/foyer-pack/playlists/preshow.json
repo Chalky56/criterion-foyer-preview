@@ -293,21 +293,6 @@
     },
     {
       "kind": "wildcard",
-      "id": "publicity-film-preshow",
-      "template": "publicity-film-placeholder",
-      "tag": "theatre",
-      "weight": 1,
-      "dwell_seconds": 10,
-      "review_status": "draft",
-      "draft_owner": "Chris Firth",
-      "draft_label": "optional - shown only if a film is supplied",
-      "content": {
-        "phase": "Preshow",
-        "body": "A short general Criterion publicity film could appear here if footage is supplied."
-      }
-    },
-    {
-      "kind": "wildcard",
       "id": "next-production",
       "template": "next-production",
       "sales_intent": true,
@@ -346,10 +331,7 @@
         "headline": "Order your interval drinks now",
         "body": "Tell the bar what you'd like before curtain up, and it will be poured and waiting for you.",
         "footline": "Order at the bar, or ask front-of-house"
-      },
-      "review_status": "draft",
-      "draft_owner": "Nicole Firth",
-      "draft_label": "bar copy, for Nicole Firth's confirmation"
+      }
     },
     {
       "kind": "wildcard",
@@ -359,9 +341,6 @@
       "sales_intent": true,
       "weight": 1,
       "dwell_seconds": 18,
-      "review_status": "draft",
-      "draft_owner": "Nicole Firth",
-      "draft_label": "bar copy, for Nicole Firth's confirmation",
       "content": {
         "eyebrow": "At the bar",
         "headline": "An empty glass, and three minutes",
@@ -438,9 +417,6 @@
       "sales_intent": true,
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "wording is Dave's own; he is supplying a white-wine photograph",
       "content": {
         "eyebrow": "At the bar tonight",
         "headline": "Wine by the glass",
@@ -479,9 +455,6 @@
       "sales_intent": true,
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Nicole Firth",
-      "draft_label": "bar copy, for Nicole Firth's confirmation",
       "content": {
         "eyebrow": "At the bar tonight",
         "headline": "Bottles, spirits and snacks",
@@ -543,5 +516,31 @@
         ]
       }
     }
-  ]
+  ],
+  "_removed_items": {
+    "_why": "Removed 22 September 2026: no publicity film has been supplied and the placeholder card was reaching the audience as an empty promise. Chris Firth owns the film. If footage arrives before or during the run, paste the item below back into `items` at the recorded index and re-publish - nothing else needs to change.",
+    "_removed_on": "2026-09-22",
+    "_reinstate": [
+      {
+        "former_index": 20,
+        "after_id": "ticket-sales-anchor",
+        "before_id": "next-production",
+        "item": {
+          "kind": "wildcard",
+          "id": "publicity-film-preshow",
+          "template": "publicity-film-placeholder",
+          "tag": "theatre",
+          "weight": 1,
+          "dwell_seconds": 10,
+          "review_status": "draft",
+          "draft_owner": "Chris Firth",
+          "draft_label": "optional - shown only if a film is supplied",
+          "content": {
+            "phase": "Preshow",
+            "body": "A short general Criterion publicity film could appear here if footage is supplied."
+          }
+        }
+      }
+    ]
+  }
 }

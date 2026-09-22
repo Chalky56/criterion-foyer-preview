@@ -1178,6 +1178,23 @@
       "output_height": 636,
       "output_bytes": 98017,
       "output_sha256": "e58358578e4715a97a4d44625b9e451af9ae62ca11926892729df3618566e045"
+    },
+    {
+      "slot_id": "craft/build-finished",
+      "source_local": "originals/crops-2026-09-22/build-finished.jpg",
+      "output": "craft/build-finished.jpg",
+      "max_width": 1400,
+      "max_height": 640,
+      "quality": 85,
+      "credit": "The finished Underdog set - painted moor cloth, dry-stone flats, the table, benches and bentwood chairs in, with the costume pieces hung on the walls. Supplied by David Chapman on 22 September 2026; photographer to confirm. No people in frame. Source 1599x744; cropped to 2.2:1 from the top only, matching craft/build-flats, build-table and build-ready so the three montage frames share one geometry. The lighting rig is retained along the top edge - it reads as the theatre rather than as clutter on a card about building the thing. Ask for a harder top crop if it should go.",
+      "source_url": null,
+      "source_page": null,
+      "photo_id": null,
+      "prototype_status": "draft",
+      "output_width": 1400,
+      "output_height": 636,
+      "output_bytes": 175502,
+      "output_sha256": "07d1dfe33750f21fecc25d8ca83fc6e332b8dc5f5b6550a26aaf4817eacd8c55"
     }
   ],
   "authored_assets": [
@@ -1252,8 +1269,8 @@
       "prototype_status": "draft"
     }
   ],
-  "generated_at": "2026-09-17T17:06:12Z",
-  "total_output_bytes": 12062099,
+  "generated_at": "2026-09-22T16:18:40Z",
+  "total_output_bytes": 12237601,
   "_note_2026_09_10": "Bar, ice-cream and sound records added 10 September 2026. Sources are JPEG crops of the iPhone HEIC originals in originals/criterion-bar-2026-09-09/; prepare_foyer_images.py cannot read HEIC (no pillow-heif), so the crop step converts first. Re-running the script on a full checkout regenerates every record from its own source.",
   "_note_leonardo_2026_09_10": "Three AI-edited product derivatives added 10 September 2026. Sources in originals/leonardo-2026-09-10/. See docs/asset-provenance.md for what was edited and why the ice-cream frames are cropped to the lids.",
   "_note_lx_2026_09_12": "Lighting montage derivatives added 12 September 2026 from a theatre visit. Sources in originals/lx-2026-09-12/.",

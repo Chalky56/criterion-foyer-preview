@@ -98,9 +98,6 @@
       "tag": "production",
       "weight": 1,
       "dwell_seconds": 15,
-      "review_status": "draft",
-      "draft_owner": "Chris Firth",
-      "draft_label": "later rehearsal and dress photographs to follow",
       "content": {
         "eyebrow": "In rehearsal",
         "headline": "A play takes shape",
@@ -115,21 +112,23 @@
             "motion": true
           },
           {
-            "source": "assets/placeholders/later-rehearsal-photo.svg",
+            "source": "assets/photos/rehearsal-late-01.jpg",
             "stage": "developing",
             "caption": "Finding the scene",
-            "alt": "Later rehearsal photo to follow",
-            "motion": false
+            "alt": "The Underdog company at the table by candlelight, one of the sisters writing",
+            "motion": true,
+            "cover": true
           },
           {
-            "source": "assets/placeholders/dress-rehearsal-photo.svg",
+            "source": "assets/photos/rehearsal-late-02.jpg",
             "stage": "dress",
             "caption": "Ready for tonight",
-            "alt": "Dress rehearsal photo to follow",
-            "motion": false
+            "alt": "The full Underdog stage under a warm state, a figure standing on the table before the painted moor",
+            "motion": true,
+            "cover": true
           }
         ],
-        "footline": "Early rehearsal photographs \u2014 draft selection"
+        "footline": "Rehearsal photographs by Chris Firth"
       }
     },
     {
@@ -160,10 +159,7 @@
         "headline": "Listen for the ones you don't notice",
         "body": "Every sound in tonight's play is fired by hand, cue by cue, from the back of the room.",
         "footline": "Sound by Dave Cornish"
-      },
-      "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "sound photographs to be reshot at the dress rehearsal"
+      }
     },
     {
       "kind": "wildcard",
@@ -178,10 +174,7 @@
         "headline": "Nothing is lit by accident",
         "body": "Every lighting state you'll see tonight was drawn on paper, programmed at the desk, then played live.",
         "footline": "Lighting by Paul Harrison - the rig, photographed during the build"
-      },
-      "review_status": "draft",
-      "draft_owner": "Paul Harrison",
-      "draft_label": "rig photograph and wording, for Paul Harrison's approval"
+      }
     },
     {
       "kind": "wildcard",

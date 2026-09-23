@@ -114,8 +114,7 @@
     "director": {
       "quote": "Everyone knows Wuthering Heights. Everyone knows Jane Eyre. This is a play about the Bront\u00eb sister you can't quite name \u2014 and about what her family did to make sure of that.",
       "attribution": "Anne-marie Greene, director",
-      "image_local": "assets/people/anne-marie-greene.jpg",
-      "draft_owner": "Anne-marie Greene"
+      "image_local": "assets/people/anne-marie-greene.jpg"
     },
     "about_play": {
       "headline": "The other, other Bront\u00eb",
@@ -156,14 +155,14 @@
     "cast_gallery": {
       "eyebrow": "Tonight's company",
       "headline": "The cast of Underdog",
-      "footline": "Early rehearsal photographs \u2014 draft selection",
-      "source_pattern": "assets/photos/performance-0N.jpg",
+      "footline": "Production photographs by Chris Firth",
+      "source_pattern": "assets/photos/company-0N.jpg",
       "note": "production image"
     },
     "production_gallery": {
       "eyebrow": "In rehearsal",
       "headline": "Making Underdog",
-      "footline": "Early rehearsal photographs \u2014 draft selection",
+      "footline": "Rehearsal photographs by Chris Firth",
       "source_pattern": "assets/photos/rehearsal-0N.jpg",
       "note": "rehearsal shot"
     },
@@ -178,7 +177,7 @@
       "headline": "Content notice",
       "detail": "Explicit language; themes of grief and death; a depiction of an attempted suicide; haze and strobe effects; suitable for ages 14 and above. The Criterion advises caution but does not enforce an age limit.",
       "tier": "top",
-      "confidence": "draft"
+      "confidence": "high"
     }
   ],
   "phase_policy": {

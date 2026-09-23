@@ -40,9 +40,9 @@
       "content": {
         "eyebrow": "Tonight's company",
         "headline": "The cast of Underdog",
-        "footline": "Early rehearsal photographs \u2014 draft selection",
-        "source_pattern": "assets/photos/performance-0N.jpg",
-        "note": "production image"
+        "footline": "Production photographs by Chris Firth",
+        "source_pattern": "assets/photos/company-0N.jpg",
+        "note": "production photograph"
       }
     },
     {
@@ -56,9 +56,9 @@
       "content": {
         "eyebrow": "Tonight's company",
         "headline": "The cast of Underdog",
-        "footline": "Early rehearsal photographs \u2014 draft selection",
-        "source_pattern": "assets/photos/performance-0N.jpg",
-        "note": "production image"
+        "footline": "Production photographs by Chris Firth",
+        "source_pattern": "assets/photos/company-0N.jpg",
+        "note": "production photograph"
       }
     },
     {
@@ -278,9 +278,6 @@
       "tag": "making",
       "weight": 2,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Simon Sharpe / Mark Ward",
-      "draft_label": "photograph consents being gathered",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "Someone built all of this",
@@ -318,9 +315,6 @@
       "tag": "making",
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Paul Harrison",
-      "draft_label": "new third photograph (20 September) and cue count, for Paul Harrison's approval",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "Nothing you saw was lit by accident",
@@ -358,9 +352,6 @@
       "tag": "making",
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Dave Cornish",
-      "draft_label": "sound photographs to be reshot at the dress rehearsal",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "How a sound reaches you",
@@ -398,9 +389,6 @@
       "tag": "making",
       "weight": 1,
       "dwell_seconds": 21,
-      "review_status": "draft",
-      "draft_owner": "Chris Firth",
-      "draft_label": "later rehearsal and dress photographs to follow",
       "content": {
         "eyebrow": "Behind the scenes",
         "headline": "From rehearsal to the stage",
@@ -415,21 +403,23 @@
             "motion": true
           },
           {
-            "source": "assets/placeholders/later-rehearsal-photo.svg",
+            "source": "assets/photos/rehearsal-late-01.jpg",
             "stage": "developing",
             "caption": "Taking shape",
-            "alt": "Later rehearsal photo to follow",
-            "motion": false
+            "alt": "The Underdog company at the table by candlelight, one of the sisters writing",
+            "motion": true,
+            "cover": true
           },
           {
-            "source": "assets/placeholders/dress-rehearsal-photo.svg",
+            "source": "assets/photos/rehearsal-late-02.jpg",
             "stage": "dress",
             "caption": "On stage",
-            "alt": "Dress rehearsal photo to follow",
-            "motion": false
+            "alt": "The full Underdog stage under a warm state, a figure standing on the table before the painted moor",
+            "motion": true,
+            "cover": true
           }
         ],
-        "footline": "Early rehearsal photographs \u2014 draft selection"
+        "footline": "Rehearsal photographs by Chris Firth"
       }
     },
     {
@@ -444,9 +434,7 @@
         "headline": "What stayed with you?",
         "body": "Which sister did you believe? Did the ending land the way you expected? And what did you make of that set? Whoever you came with saw a different play - talk it over at the bar.",
         "image_local": "assets/posters/underdog-2026.jpg"
-      },
-      "review_status": "draft",
-      "draft_owner": "Anne-marie Greene"
+      }
     },
     {
       "kind": "anchor",

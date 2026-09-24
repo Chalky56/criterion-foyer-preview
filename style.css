@@ -2161,3 +2161,24 @@ body.nextgen-foyer.ng-preview .ng-shell {
   text-transform: none;
 }
 #ngp-motion-preview { border: 1px solid #d9a94e; }
+
+/* ---------- NO HOUSE-COLOUR FLASH ON RELOAD (2026-09-24) ----------
+   OBS reloads a foyer browser source each time its scene becomes active.
+   Until now the first frames painted the Criterion house navy (#02101e) -
+   first from this sheet, then from HOUSE_THEME in theme-loader.js - before the
+   show's theme.json arrived, which read as a ~0.5 s blue flash on the ME55C.
+   Now nextgen-foyer.html paints plain black with the shell hidden until the
+   show palette is applied (html[data-theme-ready], set in boot()). The CSS-only
+   failsafe reveals the shell after 3 s whatever happens, so a failed theme
+   load can never leave the foyer blank. */
+html.ng-page:not([data-theme-ready]),
+html.ng-page:not([data-theme-ready]) body.nextgen-foyer {
+  background: #000;
+}
+html.ng-page:not([data-theme-ready]) body.nextgen-foyer .ng-shell {
+  visibility: hidden;
+  animation: ng-theme-failsafe 0s linear 3s forwards;
+}
+@keyframes ng-theme-failsafe {
+  to { visibility: visible; }
+}

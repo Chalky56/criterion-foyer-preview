@@ -5,6 +5,36 @@
   "_times_status": "Curtain times are published. The 20-minute interval is confirmed, but its actual start is not; interval_at_estimated and act_2_at_estimated therefore remain null. House opening is copied as 19:00 evenings / 16:30 Sunday and needs an Underdog-specific check. Evening bar close is copied as 23:00; Sunday bar close remains specifically TBC. estimated_finish added 10 September 2026: curtain plus the 140-minute estimate (two roughly hour-long acts, confirmed by Anne-marie Greene, plus the confirmed 20-minute interval). It is an estimate, not a published finish time, and no current template renders it.",
   "performances": [
     {
+      "id": "underdog-2026-dress-1",
+      "date": "2026-09-24",
+      "weekday": "Thursday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "interval_at_estimated": null,
+      "act_2_at_estimated": null,
+      "bar_close": "23:00",
+      "press_night": false,
+      "matinee": false,
+      "notes": "Dress rehearsal, added 24 September 2026 so that ARM on the first dress night proves the Autopilot run-mode end to end before opening (David's decision). Treated exactly as an evening performance. Remove after the run if it matters to anything reading this file.",
+      "estimated_finish": "21:50",
+      "dress_rehearsal": true
+    },
+    {
+      "id": "underdog-2026-dress-2",
+      "date": "2026-09-25",
+      "weekday": "Friday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "interval_at_estimated": null,
+      "act_2_at_estimated": null,
+      "bar_close": "23:00",
+      "press_night": false,
+      "matinee": false,
+      "notes": "Dress rehearsal, added 24 September 2026 so that ARM on the first dress night proves the Autopilot run-mode end to end before opening (David's decision). Treated exactly as an evening performance. Remove after the run if it matters to anything reading this file.",
+      "estimated_finish": "21:50",
+      "dress_rehearsal": true
+    },
+    {
       "id": "underdog-2026-night-1",
       "date": "2026-09-26",
       "weekday": "Saturday",
@@ -102,5 +132,6 @@
       "notes": "Closing night. Curtain published; house opening and bar close copied from Popcorn at David's request.",
       "estimated_finish": "21:50"
     }
-  ]
+  ],
+  "_dress_rehearsals": "24 and 25 September 2026 are dress rehearsals, listed first so the run can be armed on 24 September. Nothing in the foyer renders a performance list; this file drives the Autopilot and the holding countdown only."
 }

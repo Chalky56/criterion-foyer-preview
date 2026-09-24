@@ -168,13 +168,14 @@
       "tag": "production",
       "weight": 1,
       "dwell_seconds": 14,
-      "source": "assets/lighting/tease-rig.jpg",
+      "source": "assets/lighting/rig-lit.jpg",
       "content": {
         "eyebrow": "Behind tonight's show",
         "headline": "Nothing is lit by accident",
         "body": "Every lighting state you'll see tonight was drawn on paper, programmed at the desk, then played live.",
-        "footline": "Lighting by Paul Harrison - the rig, photographed during the build"
-      }
+        "footline": "Lighting by Paul Harrison - the rig, lit during the tech"
+      },
+      "_note": "24 September 2026: image changed from the dark, unlit tease-rig.jpg to rig-lit.jpg - lanterns lit in colour, no lit stage, so no reveal (Paul Harrison)."
     },
     {
       "kind": "wildcard",
@@ -336,33 +337,34 @@
       "dwell_seconds": 18,
       "content": {
         "eyebrow": "At the bar",
-        "headline": "An empty glass, and three minutes",
+        "headline": "Poured by the people who run the show",
         "body": "The foyer bar is run by members of this theatre, the same as everything else here.",
         "frames": [
           {
-            "source": "assets/bar/story-glass.jpg",
-            "caption": "An empty glass",
-            "alt": "An empty glass on the bar",
-            "cover": true,
-            "motion": true
-          },
-          {
-            "source": "assets/bar/story-pull.jpg",
+            "source": "assets/bar/dave-pull.jpg",
             "caption": "Pulled by hand",
-            "alt": "A pint being pulled on the handpump",
+            "alt": "A volunteer pulling a pint on the handpump at the foyer bar",
             "cover": true,
             "motion": true
           },
           {
-            "source": "assets/bar/story-pint.jpg",
-            "caption": "Yours",
-            "alt": "A full glass of cask ale",
+            "source": "assets/bar/dave-close.jpg",
+            "caption": "No button for it",
+            "alt": "A hand on the handpump, the glass filling beneath",
+            "cover": true,
+            "motion": true
+          },
+          {
+            "source": "assets/bar/dave-wine.jpg",
+            "caption": "Or a glass of white",
+            "alt": "A glass of white wine being poured at the bar",
             "cover": true,
             "motion": true
           }
         ],
         "footline": "The foyer bar - volunteer-run, like everything here"
-      }
+      },
+      "_note": "24 September 2026: frames replaced with three shots of Dave Cornish (sound designer, volunteer) at the bar, with his permission; no on-screen name. The previous story-glass/pull/pint frames are now unreferenced - tidy after the run."
     },
     {
       "kind": "wildcard",

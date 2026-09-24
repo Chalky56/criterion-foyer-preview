@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="ng-page">
 <head>
   <meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Criterion Foyer Display</title>
-<link rel="stylesheet" href="style.css?v=20260909motion3">
+<link rel="stylesheet" href="style.css?v=20260924flash1">
 </head>
 <body class="nextgen-foyer" data-phase="preshow">
 <div class="ng-shell">
@@ -965,7 +965,13 @@
   let resolvedTheme = null;
 
   async function boot() {
-    resolvedTheme = await loadTheme();
+    try {
+      resolvedTheme = await loadTheme();
+    } finally {
+      // Reveal the shell only once the show palette is on it (style.css,
+      // "no house-colour flash"). Set even if the theme load failed.
+      document.documentElement.dataset.themeReady = "1";
+    }
     if (preview) {
       setupPreview();
     }

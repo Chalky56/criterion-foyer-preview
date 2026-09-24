@@ -424,6 +424,24 @@
     },
     {
       "kind": "wildcard",
+      "id": "cast-gallery-3",
+      "template": "cast-gallery",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 18,
+      "limit": 3,
+      "offset": 6,
+      "content": {
+        "eyebrow": "In rehearsal",
+        "headline": "The cast of Underdog",
+        "footline": "Rehearsal photographs by Kelly Davidson",
+        "source_pattern": "assets/photos/company-0N.jpg",
+        "note": "rehearsal photograph"
+      },
+      "_note": "Added 24 September 2026: three solo rehearsal shots by Kelly Davidson (company-07..09) of company members not already in company-01..06; credit to Kelly Davidson is required. Deliberately a 'making' WILDCARD, not a third anchor: anchors share one round-robin cursor with next-production (scheduler.js), so a third cast anchor would have cut the next-production sales card from 1 in 3 anchor slots to 1 in 4. As a wildcard it joins the behind-the-scenes rotation at weight 1 and leaves the anchor balance exactly as it was."
+    },
+    {
+      "kind": "wildcard",
       "id": "conversation",
       "template": "did-you-know",
       "tag": "theatre",

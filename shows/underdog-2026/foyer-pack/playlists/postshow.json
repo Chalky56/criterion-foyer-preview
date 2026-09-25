@@ -365,9 +365,9 @@
             "motion": true
           },
           {
-            "source": "assets/sound/story-desk.jpg",
+            "source": "assets/sound/story-desk-live.jpg",
             "caption": "It passes through the desk",
-            "alt": "The X32 mixing desk in its flight case",
+            "alt": "The X32 mixing desk live, faders up and channel meters lit",
             "cover": true,
             "motion": true
           },

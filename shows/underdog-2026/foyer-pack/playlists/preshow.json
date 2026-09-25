@@ -153,7 +153,7 @@
       "tag": "production",
       "weight": 1,
       "dwell_seconds": 14,
-      "source": "assets/sound/tease-desk.jpg",
+      "source": "assets/sound/tease-desk-live.jpg",
       "content": {
         "eyebrow": "Behind tonight's show",
         "headline": "Listen for the ones you don't notice",

@@ -442,6 +442,24 @@
     },
     {
       "kind": "wildcard",
+      "id": "cast-gallery-4",
+      "template": "cast-gallery",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 18,
+      "limit": 3,
+      "offset": 9,
+      "content": {
+        "eyebrow": "In rehearsal",
+        "headline": "The cast of Underdog",
+        "footline": "Rehearsal photographs by Kelly Davidson",
+        "source_pattern": "assets/photos/company-0N.jpg",
+        "note": "rehearsal photograph"
+      },
+      "_note": "Added 25 September 2026: card B, three more solo rehearsal shots by Kelly Davidson (company-10..12); credit to Kelly Davidson is required. A 'making' WILDCARD like cast-gallery-3, for the same reason: anchors share one cursor with next-production, so a wildcard leaves the anchor balance unchanged."
+    },
+    {
+      "kind": "wildcard",
       "id": "conversation",
       "template": "did-you-know",
       "tag": "theatre",

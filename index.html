@@ -36,14 +36,17 @@ h1 {
   letter-spacing: 0.02em;
   margin: 0 0 0.5rem;
 }
+.lede { margin: 0 0 0.4rem; }
 .note { color: var(--muted); margin: 0 0 2rem; }
 ul.shows { list-style: none; margin: 0; padding: 0; }
 ul.shows li { padding: 0.9rem 0; border-top: 1px solid rgba(243, 239, 210, 0.18); }
 a.show { color: var(--accent); font-family: "Oswald", sans-serif; font-size: 1.25rem; }
 a.show:hover, a.show:focus { color: var(--text); }
-.stamp { color: var(--muted); font-size: 0.95rem; margin-left: 0.5rem; }
 a.looks { color: var(--link); font-size: 0.95rem; margin-left: 0.75rem; }
 a.looks:hover, a.looks:focus { color: var(--text); }
+.sub { display: block; margin-top: 0.15rem; }
+.sep, .director { color: var(--muted); }
+.meta { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.15rem; }
 .empty { color: var(--muted); }
 .foot { color: var(--muted); font-size: 0.85rem; margin-top: 2.5rem; }
 </style>
@@ -51,13 +54,14 @@ a.looks:hover, a.looks:focus { color: var(--text); }
 <body>
 <main>
 <h1>Criterion foyer previews</h1>
+<p class="lede">The foyer screen as it ran for each Criterion production - each link is the real display, frozen as it was.</p>
 <p class="note">Older links to this address now land here: pick the show below.</p>
 <ul class="shows">
-    <li><a class="show" href="underdog-2026/?preview=1">Underdog</a> <span class="stamp">2026-09-26-r1</span></li>
-    <li><a class="show" href="lovett-2026/?preview=1">Lovett</a> <span class="stamp">2026-08-13</span></li>
-    <li><a class="show" href="popcorn-2026/?preview=1">Popcorn</a> <span class="stamp">2026-06-26</span></li>
+    <li><a class="show" href="underdog-2026/?preview=1">Underdog</a><span class="sub">26 Sep &ndash; 3 Oct 2026 <span class="sep">&#8226;</span> <span class="director">directed by Anne-marie Greene</span></span><span class="meta">2026-09-26-r1</span></li>
+    <li><a class="show" href="lovett-2026/?preview=1">Lovett</a><span class="sub">14 &ndash; 15 Aug 2026 <span class="sep">&#8226;</span> <span class="director">directed by Jamie Firth</span></span><span class="meta">2026-08-13</span></li>
+    <li><a class="show" href="popcorn-2026/?preview=1">Popcorn</a><span class="sub">27 Jun &ndash; 4 Jul 2026 <span class="sep">&#8226;</span> <span class="director">directed by Dean Sheridan</span></span><span class="meta">2026-06-26</span></li>
 </ul>
-<p class="foot">Generated 2026-10-08 18:52 UTC by publish-preview.ps1.</p>
+<p class="foot">Generated 2026-10-08 21:46 UTC by publish-preview.ps1.</p>
 </main>
 </body>
 </html>

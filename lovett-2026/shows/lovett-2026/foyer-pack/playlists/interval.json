@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "phase": "interval",
+  "show_id": "lovett-2026",
+  "_notes": "DELIBERATELY UNUSED. Lovett runs straight through with no interval (confirmed by Jamie Firth, 2026-08-01, and reflected in show.json interval_minutes: 0). This file exists only because FOYER-PACK-CONTRACT.md requires all three playlists to be present, and an absent file would be indistinguishable from a mistake. The Autopilot timeline never routes the interval phase; the interval countdown must never start. If someone routes ?phase=interval by hand - for a test, or in error - these three slides are honest and harmless rather than a SCENE UNAVAILABLE card or, worse, a countdown to an interval that does not exist. DO NOT add content here to 'make use of it': if this playlist is ever seen by an audience, something has gone wrong and it should look boring.",
+  "policy": {
+    "min_dwell_seconds": 10,
+    "max_dwell_seconds": 14,
+    "max_words_per_screen": 40,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 36,
+    "audio_allowed": false
+  },
+  "items": [
+    {
+      "kind": "wildcard",
+      "id": "no-interval",
+      "template": "show-info",
+      "tag": "fallback",
+      "weight": 1,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-story",
+      "template": "did-you-know-criterion",
+      "tag": "fallback",
+      "weight": 1,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production",
+      "template": "next-production",
+      "tag": "fallback",
+      "weight": 1,
+      "production_ref": "next_productions.json#underdog-2026",
+      "dwell_seconds": 12
+    }
+  ]
+}

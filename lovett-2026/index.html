@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criterion Foyer Display</title>
+<link rel="stylesheet" href="style.css?v=20260802">
+</head>
+<body class="nextgen-foyer" data-phase="preshow">
+<div class="ng-shell">
+  <div class="ng-watermark" aria-hidden="true"></div>
+
+  <!-- Theme-driven, non-content ambient layer. -->
+  <div class="ng-ambient" aria-hidden="true">
+    <div class="ng-texture"></div>
+  </div>
+
+  <div class="ng-topline">
+    <div class="ng-phase" id="phase-label">Loading</div>
+    <div class="ng-show" id="show-label">Criterion Theatre</div>
+  </div>
+  <div class="ng-stage" id="stage"></div>
+  <div class="ng-caption" id="caption"></div>
+
+  <div class="criterion-mark" title="The Criterion Theatre, Earlsdon" aria-hidden="true"></div>
+</div>
+
+<script type="module">
+  import { getActiveShow, getVisitingCompany, startShowPolling } from "./js/show-resolver.js?v=20260802";
+  import { loadTheme } from "./js/theme-loader.js?v=20260802";
+  import { Scheduler } from "./js/scheduler.js?v=20260802";
+  import { renderSlideHTML, canRenderSlide } from "./js/slide-templates.js?v=20260802";
+
+  const params = new URLSearchParams(window.location.search);
+  const dwellSeconds = params.get("dwell");
+  function resolveRoute(searchParams) {
+    const raw = (searchParams.get("phase") || searchParams.get("scene") || "preshow")
+      .trim()
+      .toLowerCase();
+    const phases = new Set(["preshow", "interval", "postshow"]);
+    const singleRoutes = {
+      welcome: "welcome",
+      tonight: "show-info",
+    };
+    if (raw === "coming-soon") {
+      return {
+        name: raw,
+        phase: "preshow",
+        template: null,
+        heldTemplates: ["next-production", "next-production-2"],
+      };
+    }
+    if (phases.has(raw)) {
+      return { name: raw, phase: raw, template: null };
+    }
+    if (singleRoutes[raw]) {
+      return { name: raw, phase: "preshow", template: singleRoutes[raw] };
+    }
+    return null;
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[character]);
+  }
+
+  function referenceId(ref) {
+    if (!ref) {
+      return null;
+    }
+    const hashIndex = ref.indexOf("#");
+    return hashIndex >= 0 ? ref.slice(hashIndex + 1) : ref;
+  }
+
+  let route = resolveRoute(params);
+  let phase = route?.name || null;
+  const houseOpen = params.get("houseOpen") === "1";
+
+  // --- Preview / review mode (?preview=1) state. Inert in broadcast. ---
+  const preview = params.get("preview") === "1";
+  let previewPaused = false;
+  let previewDwellOverride = null;
+  const previewHistory = [];
+  let previewIndex = -1;
+  let previewBarBuilt = false;
+  let currentPlaylistItems = [];
+  const stage = document.getElementById("stage");
+  const caption = document.getElementById("caption");
+  const showLabel = document.getElementById("show-label");
+  const phaseLabel = document.getElementById("phase-label");
+  document.body.dataset.phase = route?.phase || "unavailable";
+  let scheduler = null;
+  let timer = null;
+  let countdownTimer = null;
+  let showInfo = null;
+  let ctx = null;
+  const missingSources = new Set();
+
+  async function fetchJson(url) {
+    const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Failed to load ${url}`);
+    }
+    return response.json();
+  }
+
+  function describeItem(item) {
+    if (!item) {
+      return null;
+    }
+    if (item.template) {
+      return item.template;
+    }
+    if (!item.source) {
+      return item.tag || null;
+    }
+    try {
+      const path = new URL(item.source).pathname;
+      return path.split("/").slice(-2).join("/");
+    } catch (error) {
+      return item.source;
+    }
+  }
+
+  async function updateState(current, next) {
+    await fetch("api/state", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        show: showInfo?.id || null,
+        phase,
+        item: describeItem(current),
+        next_item: describeItem(next),
+      }),
+    });
+  }
+
+  function setCaption(item) {
+    caption.textContent = item?.tag
+      ? `${item.tag.replace(/_/g, " ")}`
+      : "";
+  }
+
+  function clearTimer() {
+    if (timer) {
+      window.clearTimeout(timer);
+      timer = null;
+    }
+    if (countdownTimer) {
+      window.clearInterval(countdownTimer);
+      countdownTimer = null;
+    }
+  }
+
+  function renderMissing(item) {
+    if (!item?.source || missingSources.has(item.source)) {
+      return;
+    }
+    missingSources.add(item.source);
+    console.warn("Missing foyer asset:", item.source);
+  }
+
+  function renderSlide(entry) {
+    document.body.classList.remove("media-active");
+    ctx.countdown = getCountdownState();
+    stage.innerHTML = renderSlideHTML(entry, ctx);
+    if (entry.template === "countdown") {
+      updateCountdown();
+      countdownTimer = window.setInterval(updateCountdown, 60 * 1000);
+    }
+  }
+
+  function renderVideo(item) {
+    document.body.classList.add("media-active");
+    stage.innerHTML = "";
+    const video = document.createElement("video");
+    video.className = "ng-media";
+    video.autoplay = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.src = `${ctx.foyerPackBase.replace(/\/$/, "")}/${item.source.replace(/^\//, "")}`;
+    video.onerror = () => {
+      renderMissing(item);
+      if (!(preview && previewPaused)) {
+        advance();
+      }
+    };
+    video.onended = () => {
+      if (!(preview && previewPaused)) {
+        advance();
+      }
+    };
+    const videoMeta = ctx.videoItems[item.source] || item;
+    if (videoMeta.captions?.required && videoMeta.captions?.verified !== true) {
+      console.warn(
+        "Spoken-word foyer video requires burnt-in open captions; playback is not blocked in Phase 1:",
+        item.source,
+      );
+    }
+    stage.appendChild(video);
+  }
+
+  function isVideo(item) {
+    return Boolean(item?.source && /\.mp4($|\?)/i.test(item.source));
+  }
+
+  function dateAtTime(dateText, timeText) {
+    if (!dateText || !/^\d{2}:\d{2}$/.test(timeText || "")) {
+      return null;
+    }
+    const [year, month, day] = dateText.split("-").map(Number);
+    const [hour, minute] = timeText.split(":").map(Number);
+    return new Date(year, month - 1, day, hour, minute, 0, 0);
+  }
+
+  function minutesBetween(startText, endText) {
+    const start = dateAtTime("2000-01-01", startText);
+    let end = dateAtTime("2000-01-01", endText);
+    if (!start || !end) {
+      return null;
+    }
+    if (end < start) {
+      end = new Date(end.getTime() + 24 * 60 * 60 * 1000);
+    }
+    return Math.round((end - start) / 60000);
+  }
+
+  function selectPerformance(performances) {
+    const list = performances?.performances || [];
+    const requestedDay = params.get("day");
+    const today = new Date();
+    const localDay = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0"),
+    ].join("-");
+    return list.find(entry => entry.date === requestedDay)
+      || list.find(entry => entry.date === localDay)
+      || list.find(entry => entry.date >= localDay)
+      || list[list.length - 1]
+      || null;
+  }
+
+  function countdownTarget(performance, showMeta) {
+    if (!performance) {
+      return null;
+    }
+    const intervalSignal = params.get("intervalNow") || params.get("now");
+    const intervalMinutes = minutesBetween(
+      performance.interval_at_estimated,
+      performance.act_2_at_estimated,
+    ) || Number(showMeta?.interval_minutes) || 20;
+    if (intervalSignal) {
+      const startedAt = dateAtTime(performance.date, intervalSignal);
+      return startedAt
+        ? new Date(startedAt.getTime() + intervalMinutes * 60000)
+        : null;
+    }
+    return null;
+  }
+
+  function getCountdownState() {
+    const target = ctx?.countdownTarget;
+    if (!target) {
+      return { minutes: null, state: "clear" };
+    }
+    const remainingMs = target.getTime() - Date.now();
+    const countdownWindowMs = ((ctx.countdownWindowMinutes || 20) + 5) * 60000;
+    if (remainingMs > 0) {
+      if (remainingMs > countdownWindowMs) {
+        return { minutes: null, state: "clear" };
+      }
+      return { minutes: Math.max(1, Math.ceil(remainingMs / 60000)), state: "counting" };
+    }
+    if (remainingMs >= -5 * 60000) {
+      return { minutes: 0, state: "now" };
+    }
+    return { minutes: 0, state: "clear" };
+  }
+
+  function updateCountdown() {
+    if (!ctx) {
+      return;
+    }
+    const countdown = getCountdownState();
+    ctx.countdown = countdown;
+    const display = document.getElementById("countdown-display");
+    const message = document.getElementById("countdown-caption");
+    if (!display || !message) {
+      return;
+    }
+    display.textContent = countdown.state === "counting"
+      ? `${countdown.minutes} MIN`
+      : (countdown.state === "now" ? "ACT II" : `~${ctx.countdownWindowMinutes} MIN INTERVAL`);
+    display.classList.toggle("is-label", countdown.state === "clear");
+    message.textContent = countdown.state === "counting"
+      ? "Please make your way back to your seats when you hear the bell."
+      : (countdown.state === "now"
+        ? "Please take your seats. Act II is about to begin."
+        : "Please enjoy the interval.");
+  }
+
+  async function advance() {
+    clearTimer();
+    if (!scheduler) {
+      return;
+    }
+    const current = scheduler.next();
+    const next = scheduler.previewNext();
+    if (!current) {
+      return;
+    }
+    setCaption(current);
+    if (preview) {
+      recordPreviewHistory(current);
+    }
+    if (isVideo(current)) {
+      renderVideo(current);
+    } else {
+      renderSlide(current);
+      if (!(preview && previewPaused)) {
+        const dwell = (preview && previewDwellOverride) ? previewDwellOverride : (current.dwell_seconds || 5);
+        timer = window.setTimeout(() => advance(), dwell * 1000);
+      }
+    }
+    if (preview) {
+      updatePreviewNowShowing(current);
+    }
+    await updateState(current, next);
+  }
+
+  async function renderSingleRoute() {
+    const current = { kind: "single", template: route.template, tag: route.name };
+    setCaption(current);
+    renderSlide(current);
+    if (preview) {
+      updatePreviewNowShowing(current);
+    }
+    await updateState(current, null);
+  }
+
+  function heldRoutePlaylist(route, nextProductions) {
+    const productionCount = nextProductions?.productions?.length || 0;
+    return {
+      items: (route.heldTemplates || [])
+        .slice(0, productionCount)
+        .map((template) => ({
+          kind: "anchor",
+          every_n: 1,
+          template,
+          tag: route.name,
+          dwell_seconds: 11,
+        })),
+    };
+  }
+
+  async function buildScheduler() {
+    showInfo = await getActiveShow();
+    if (!showInfo?.paths?.foyerPack) {
+      return;
+    }
+    const foyerPackBase = showInfo.paths.foyerPack;
+    const showMeta = await fetchJson(`${foyerPackBase}/show.json`);
+    let playlist = { items: [] };
+    if (!route.template && !route.heldTemplates) {
+      playlist = await fetchJson(`${foyerPackBase}/playlists/${route.phase}.json`);
+    }
+    let nextProductions = { productions: [] };
+    let archiveMemories = { memories: [] };
+    let performances = { performances: [] };
+    let visitingCompany = null;
+    try {
+      nextProductions = await fetchJson(`${foyerPackBase}/next_productions.json`);
+    } catch (error) {
+      console.warn("next_productions.json unavailable:", error);
+    }
+    try {
+      archiveMemories = await fetchJson(`${foyerPackBase}/archive_memories.json`);
+    } catch (error) {
+      console.warn("archive_memories.json unavailable:", error);
+    }
+    try {
+      performances = await fetchJson(`${foyerPackBase}/performances.json`);
+    } catch (error) {
+      console.warn("performances.json unavailable:", error);
+    }
+    try {
+      visitingCompany = await getVisitingCompany();
+    } catch (error) {
+      console.warn("visiting_company.json unavailable:", error);
+    }
+    if (route.heldTemplates) {
+      playlist = heldRoutePlaylist(route, nextProductions);
+    }
+    const performance = selectPerformance(performances);
+    const countdownWindowMinutes = minutesBetween(
+      performance?.interval_at_estimated,
+      performance?.act_2_at_estimated,
+    ) || Number(showMeta?.interval_minutes) || 20;
+    ctx = {
+      show: showMeta,
+      nextProductions,
+      archiveMemories,
+      performances,
+      performance,
+      visitingCompany,
+      videoItems: Object.fromEntries(
+        (playlist.items || [])
+          .filter(item => isVideo(item))
+          .map(item => [item.source, item]),
+      ),
+      countdownTarget: countdownTarget(performance, showMeta),
+      countdownWindowMinutes,
+      countdown: { minutes: null, state: "clear" },
+      foyerPackBase,
+    };
+    showLabel.textContent = showMeta.title || showInfo.id;
+    phaseLabel.textContent = route.name;
+    if (!route.template) {
+      scheduler = new Scheduler(playlist, {
+        dwellSeconds,
+        activeTriggers: houseOpen ? ["house-open"] : [],
+        canRender: (item) => canRenderSlide(item, ctx),
+      });
+      await scheduler.init();
+    }
+    currentPlaylistItems = playlist.items || [];
+  }
+
+  function renderUnavailableRoute() {
+    const requested = escapeHTML(params.get("phase") || params.get("scene") || "unknown");
+    phaseLabel.textContent = "Unavailable";
+    caption.textContent = "";
+    stage.innerHTML = `<div class="slide active">
+      <p class="eyebrow alert">Foyer scene not built</p>
+      <h2 class="headline small">SCENE UNAVAILABLE</h2>
+      <p class="body">No foyer phase is registered for <b style="color:var(--poster-yellow);">${requested}</b>.</p>
+    </div>`;
+  }
+
+  // =====================================================================
+  // Preview / review controller (?preview=1). Builds on the engine hooks
+  // above (advance / renderSlide / renderVideo / setCaption / clearTimer /
+  // buildScheduler). None of this runs or mutates state in broadcast mode.
+  // =====================================================================
+  function previewProductionId(item) {
+    return item?.production_id || referenceId(item?.production_ref) || null;
+  }
+
+  function previewSlideName(item) {
+    const productionId = previewProductionId(item);
+    const productions = ctx?.nextProductions?.productions || [];
+    const production = productionId
+      ? productions.find(candidate => candidate.id === productionId)
+      : null;
+    return production?.title
+      || item?.label
+      || item?.template
+      || (item?.source ? item.source.split("/").pop() : (item?.tag || "?"));
+  }
+
+  function previewSlideLabel(item) {
+    const id = item?.id || "current slide";
+    return `${id} \u2014 ${previewSlideName(item)}`;
+  }
+
+  function updatePreviewNowShowing(item) {
+    const target = document.getElementById("ngp-now");
+    if (target) {
+      target.textContent = item ? previewSlideLabel(item) : "No slide";
+    }
+  }
+
+  function renderPreviewEntry(entry) {
+    setCaption(entry);
+    if (isVideo(entry)) {
+      renderVideo(entry);
+    } else {
+      renderSlide(entry);
+    }
+    updatePreviewNowShowing(entry);
+  }
+
+  function recordPreviewHistory(entry) {
+    previewHistory.push(entry);
+    previewIndex = previewHistory.length - 1;
+  }
+
+  function updatePreviewPlayButton() {
+    const btn = document.getElementById("ngp-play");
+    if (btn) {
+      btn.textContent = previewPaused ? "\u25B6 Play" : "\u275A\u275A Pause";
+    }
+  }
+
+  function previewPlay() {
+    previewPaused = false;
+    updatePreviewPlayButton();
+    advance();
+  }
+
+  function previewPause() {
+    previewPaused = true;
+    clearTimer();
+    updatePreviewPlayButton();
+  }
+
+  function previewTogglePlay() {
+    if (previewPaused) {
+      previewPlay();
+    } else {
+      previewPause();
+    }
+  }
+
+  async function previewStep() {
+    previewPaused = false;
+    await advance();
+    previewPause();
+  }
+
+  function previewPrev() {
+    if (previewIndex <= 0) {
+      return;
+    }
+    clearTimer();
+    previewPaused = true;
+    previewIndex -= 1;
+    renderPreviewEntry(previewHistory[previewIndex]);
+    updatePreviewPlayButton();
+  }
+
+  function previewJump(itemId) {
+    const item = (currentPlaylistItems || []).find(candidate => candidate.id === itemId);
+    if (!item) {
+      return;
+    }
+    const entry = {
+      ...item,
+      template: item.template || null,
+      source: item.source || null,
+      production_id: referenceId(item.production_ref),
+      dwell_seconds: item.dwell_seconds || 6,
+    };
+    clearTimer();
+    previewPaused = true;
+    recordPreviewHistory(entry);
+    renderPreviewEntry(entry);
+    updatePreviewPlayButton();
+  }
+
+  async function previewSetPhase(name) {
+    const phaseParams = new URLSearchParams();
+    phaseParams.set("phase", name);
+    const nextRoute = resolveRoute(phaseParams);
+    if (!nextRoute) {
+      return;
+    }
+    route = nextRoute;
+    phase = route?.name || null;
+    document.body.dataset.phase = route.phase || "unavailable";
+    clearTimer();
+    scheduler = null;
+    previewHistory.length = 0;
+    previewIndex = -1;
+    previewPaused = false;
+    await buildScheduler();
+    await advance();
+    refreshPreviewControls();
+  }
+
+  function refreshPreviewControls() {
+    if (!preview || !previewBarBuilt) {
+      return;
+    }
+    document.querySelectorAll("#ngp-phases .ngp-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.phase === route?.phase);
+    });
+    const select = document.getElementById("ngp-jump");
+    if (select) {
+      const options = ['<option value="">Jump to slide\u2026</option>'].concat(
+        (currentPlaylistItems || [])
+          .filter(item => item.id)
+          .map(item => {
+            return `<option value="${escapeHTML(item.id)}">${escapeHTML(previewSlideLabel(item))}</option>`;
+          }),
+      );
+      select.innerHTML = options.join("");
+    }
+    updatePreviewNowShowing(previewHistory[previewIndex]);
+    updatePreviewPlayButton();
+  }
+
+  async function loadBuildStamp(target) {
+    if (!target) {
+      return;
+    }
+    try {
+      const response = await fetch(`build-info.json?t=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error("build-info.json unavailable");
+      }
+      const info = await response.json();
+      const builtAt = info.built_at ? new Date(info.built_at).toLocaleString() : "unknown";
+      target.textContent = `${info.version || "dev"} \u00B7 built ${builtAt}`;
+    } catch (error) {
+      target.textContent = "local / dev";
+    }
+  }
+
+  function fitPreviewCanvas() {
+    if (!preview) {
+      return;
+    }
+    const bar = document.querySelector(".ng-preview-bar");
+    const barHeight = bar ? bar.getBoundingClientRect().height : 0;
+    const availH = Math.max(0, window.innerHeight - barHeight);
+    const scale = Math.min(window.innerWidth / 1920, availH / 1080);
+    const scaledW = 1920 * scale;
+    const scaledH = 1080 * scale;
+    const left = Math.max(0, (window.innerWidth - scaledW) / 2);
+    const top = barHeight + Math.max(0, (availH - scaledH) / 2);
+    document.body.style.setProperty("--preview-scale", String(scale));
+    document.body.style.setProperty("--preview-left", `${left}px`);
+    document.body.style.setProperty("--preview-top", `${top}px`);
+  }
+
+  function setupPreview() {
+    if (previewBarBuilt) {
+      fitPreviewCanvas();
+      return;
+    }
+    previewBarBuilt = true;
+    document.body.classList.add("ng-preview");
+    const bar = document.createElement("div");
+    bar.className = "ng-preview-bar";
+    bar.setAttribute("aria-label", "Engine review controls");
+    bar.innerHTML = `
+      <div class="ngp-brand">
+        <span class="ngp-title">ENGINE REVIEW</span>
+        <span class="ngp-stamp" id="ngp-stamp">\u2026</span>
+      </div>
+      <div class="ngp-group" id="ngp-phases" role="tablist">
+        <button class="ngp-btn" data-phase="preshow">Preshow</button>
+        <button class="ngp-btn" data-phase="interval">Interval</button>
+        <button class="ngp-btn" data-phase="postshow">Postshow</button>
+      </div>
+      <div class="ngp-group">
+        <button class="ngp-btn" id="ngp-prev" title="Previous shown slide">\u25C0 Prev</button>
+        <button class="ngp-btn" id="ngp-play" title="Play / pause">\u275A\u275A Pause</button>
+        <button class="ngp-btn" id="ngp-next" title="Next slide, then pause">Next \u25B6</button>
+      </div>
+      <label class="ngp-field">Jump
+        <select class="ngp-select" id="ngp-jump"></select>
+      </label>
+      <label class="ngp-field">Now showing
+        <span class="ngp-stamp" id="ngp-now">No slide</span>
+      </label>
+      <label class="ngp-field">Dwell
+        <input type="number" class="ngp-input" id="ngp-dwell" min="2" max="60" step="1" placeholder="auto">s
+      </label>
+    `;
+    document.body.appendChild(bar);
+    bar.querySelectorAll("#ngp-phases .ngp-btn").forEach(btn => {
+      btn.addEventListener("click", () => previewSetPhase(btn.dataset.phase));
+    });
+    document.getElementById("ngp-prev").addEventListener("click", previewPrev);
+    document.getElementById("ngp-play").addEventListener("click", previewTogglePlay);
+    document.getElementById("ngp-next").addEventListener("click", previewStep);
+    document.getElementById("ngp-jump").addEventListener("change", event => {
+      if (event.target.value) {
+        previewJump(event.target.value);
+      }
+    });
+    document.getElementById("ngp-dwell").addEventListener("change", event => {
+      const value = Number(event.target.value);
+      previewDwellOverride = Number.isFinite(value) && value > 0 ? value : null;
+    });
+    loadBuildStamp(document.getElementById("ngp-stamp")).finally(fitPreviewCanvas);
+    fitPreviewCanvas();
+    window.addEventListener("resize", fitPreviewCanvas);
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(fitPreviewCanvas).observe(bar);
+    }
+  }
+
+  async function boot() {
+    await loadTheme();
+    if (preview) {
+      setupPreview();
+    }
+    if (!route) {
+      renderUnavailableRoute();
+      return;
+    }
+    await buildScheduler();
+    if (route.template) {
+      await renderSingleRoute();
+    } else {
+      await advance();
+    }
+    if (preview) {
+      refreshPreviewControls();
+    }
+  }
+
+  document.addEventListener("show:changed", async () => {
+    clearTimer();
+    await boot();
+  });
+
+  startShowPolling();
+  boot();
+</script>
+</body>
+</html>

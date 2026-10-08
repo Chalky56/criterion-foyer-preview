@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "show_id": "popcorn-2026",
+  "_notes": "Templates obs-operator reads to render the FoH announcement UI buttons. Slot fields are filled by FoH at press time. Shape matches 02-architecture.md section 7.",
+  "templates": [
+    {
+      "id": "house-opens-soon",
+      "label": "Auditorium opens in N minutes",
+      "body": "The auditorium will open in {minutes} minutes.",
+      "countdown": true,
+      "countdown_body": "Auditorium opens in {minutes} minute{plural}.",
+      "open_body": "The auditorium is now open. Please take your seats.",
+      "open_dwell_seconds": 45,
+      "slots": [
+        { "id": "minutes", "type": "int", "min": 1, "max": 30, "default": 10 }
+      ],
+      "foh_allowed": true,
+      "dwell_seconds": 30,
+      "style": "calm"
+    },
+    {
+      "id": "house-open-now",
+      "label": "Auditorium is now open",
+      "body": "The auditorium is now open. Please take your seats.",
+      "slots": [],
+      "foh_allowed": true,
+      "dwell_seconds": 45,
+      "style": "calm",
+      "side_effect": "trigger:house-open-content-warning-oneshot"
+    },
+    {
+      "id": "curtain-soon",
+      "label": "Curtain in N minutes",
+      "body": "The performance will begin in {minutes} minutes. Please take your seats.",
+      "countdown": true,
+      "countdown_body": "Curtain in {minutes} minute{plural}. Please take your seats.",
+      "open_body": "The performance is beginning. Please take your seats.",
+      "open_dwell_seconds": 45,
+      "slots": [
+        { "id": "minutes", "type": "int", "min": 1, "max": 15, "default": 5 }
+      ],
+      "foh_allowed": true,
+      "dwell_seconds": 30,
+      "style": "alert"
+    },
+    {
+      "id": "interval-now",
+      "label": "Interval (N min)",
+      "body": "Interval. The bar is open. Act II begins in approximately {minutes} minutes.",
+      "countdown": true,
+      "countdown_body": "Interval — the bar is open. Act II begins in {minutes} minute{plural}.",
+      "open_body": "Act II begins now. Please take your seats.",
+      "open_dwell_seconds": 45,
+      "slots": [
+        { "id": "minutes", "type": "int", "min": 5, "max": 30, "default": 20 }
+      ],
+      "foh_allowed": true,
+      "dwell_seconds": 60,
+      "style": "calm",
+      "side_effect": "transition:preshow->interval"
+    },
+    {
+      "id": "interval-ending",
+      "label": "Act II begins in N minutes",
+      "body": "Act II begins in {minutes} minutes. Please return to your seats.",
+      "countdown": true,
+      "countdown_body": "Act II begins in {minutes} minute{plural}. Please return to your seats.",
+      "open_body": "Act II begins now. Please take your seats.",
+      "open_dwell_seconds": 45,
+      "slots": [
+        { "id": "minutes", "type": "int", "min": 1, "max": 20, "default": 5 }
+      ],
+      "foh_allowed": true,
+      "dwell_seconds": 45,
+      "style": "alert"
+    },
+    {
+      "id": "performance-ended",
+      "label": "Performance has ended",
+      "body": "Thank you. The bar is open until {close_time}. Travel safe, see you soon.",
+      "slots": [
+        { "id": "close_time", "type": "text", "default": "23:00" }
+      ],
+      "foh_allowed": true,
+      "dwell_seconds": 90,
+      "style": "warm",
+      "side_effect": "transition:interval->postshow"
+    },
+    {
+      "id": "doctor-in-the-house",
+      "label": "Medical emergency - silent",
+      "body": "If there is a doctor or first aider in the audience, please make yourself known to a member of staff.",
+      "slots": [],
+      "foh_allowed": false,
+      "operator_only": true,
+      "dwell_seconds": 60,
+      "style": "alert",
+      "_notes": "Operator-only. Not visible to FoH UI."
+    },
+    {
+      "id": "lost-property",
+      "label": "Lost something",
+      "body": "Lost property — please ask at the bar after the show.",
+      "slots": [],
+      "foh_allowed": true,
+      "dwell_seconds": 30,
+      "style": "calm"
+    },
+    {
+      "id": "tonight-sold-out",
+      "label": "Tonight is SOLD OUT",
+      "body": "Tonight is sold out — ask at reception about returns.",
+      "slots": [],
+      "foh_allowed": true,
+      "dwell_seconds": 30,
+      "style": "alert",
+      "side_effect": "overlay:tickets-slide-replace-with-soldout",
+      "_notes": "When fired, obs-helper replaces the regular tickets-walkins slide (P13) with a SOLD-OUT overlay until cleared. Until cleared, that slot in the rotation skips the prices."
+    },
+    {
+      "id": "tonight-few-tickets",
+      "label": "Tonight: limited tickets",
+      "body": "Tonight's performance has a few tickets left. Ask at reception.",
+      "slots": [],
+      "foh_allowed": true,
+      "dwell_seconds": 30,
+      "style": "alert",
+      "_notes": "Soft scarcity message. Less urgent than tonight-sold-out."
+    }
+  ]
+}

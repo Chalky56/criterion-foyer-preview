@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "_source": "Scraped verbatim from https://criteriontheatre.co.uk/archive/find/memory on 2026-05-21. Curated subset of memories whose tone matches Popcorn (warm, theatrical, slightly mischievous, no spoilers, no sensitivity issues). All quotes attributed to their original authors.",
+  "_curation_principle": "Prefer memories that (a) name a real production with archive evidence, (b) carry a story arc rather than a one-liner, (c) honour the volunteer ethos of the Criterion, and (d) read well at 5-6 metres in 10-13 seconds of dwell. Avoid anything that requires the patron to know who the named people are.",
+  "memories": [
+    {
+      "id": "crime-and-punishment-1971-nails",
+      "production": "Crime And Punishment (1971)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/112",
+      "author": "Karl Stafford",
+      "role": "Set construction",
+      "quote": "Assisting Jeff Hadley with the set construction. In those days, money was tight and materials short, so there was a lot of what we now know as recycling. All nails were recovered and straightened, screws were few and far between, and the wooden beer crates were repurposed for all manner of uses on stage.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/112/400",
+      "image_local":  "assets/archive/crime-and-punishment-1971.jpg",
+      "preview_ref":  "popcorn-foyer-preview.html#X03",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "single-spies-2012-snowstorm",
+      "production": "Single Spies (2012)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/416",
+      "author": "Phil Reynolds",
+      "role": "Cast (Guy Burgess)",
+      "quote": "I played Guy Burgess in the first of the two plays, and Elliot Relton-Williams was my Russian boyfriend, Tolya. On the opening night there was a severe snowstorm; Elliot had been having a quick ciggie outside the back door of the theatre wearing his heavy Russian overcoat and fur hat, and made his first entrance into my Moscow flat covered in real snow!",
+      "image_remote": "https://criteriontheatre.co.uk/poster/416/400",
+      "image_local":  "assets/archive/single-spies-2012.jpg",
+      "preview_ref":  "popcorn-foyer-preview.html#X06",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "funny-peculiar-1981-ice-water",
+      "production": "Funny Peculiar (1981)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/188",
+      "author": "Terry Nicholls",
+      "role": "Cast",
+      "quote": "Mr. Ruscoe decided to put ice water in the bottle he squirted down my trousers during the fight on the last night of the run. I had my revenge for the final scene of the play. John had to play it completely immobilised in a hospital bed — about ten seconds before he jumped in, I emptied a bottle of ice water onto the mattress.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/188/400",
+      "image_local":  "assets/archive/funny-peculiar-1981.jpg",
+      "preview_ref":  "popcorn-foyer-preview.html#X07",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "arsenic-and-old-lace-1997-countries",
+      "production": "Arsenic And Old Lace (1997)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/311",
+      "author": "Nicole Firth",
+      "role": "Cast",
+      "quote": "The wonderful Doug Griffiths had to recite a list of countries every night… never quite got them in the same order or indeed the same list. Brings a smile to my face remembering this one.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/311/400",
+      "image_local":  "assets/archive/arsenic-and-old-lace-1997.jpg",
+      "preview_ref":  "popcorn-foyer-preview.html#X08",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "babes-in-the-wood-1988-ironing-fairy",
+      "production": "The Babes In The Wood (1988)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/253",
+      "author": "Chris Firth",
+      "role": "Cast",
+      "quote": "My first time in a production at the Criterion. At the end of the final dress rehearsal, I had bundled up my costume and stored it under a table. Linda Holmes, doing wardrobe, was not very happy with this. 'Who do you think is going to be ironing this costume?' At the time I thought there was an ironing fairy. My mum, as it turned out.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/253/400",
+      "image_local":  "assets/archive/babes-in-the-wood-1988.jpg",
+      "preview_ref":  "popcorn-foyer-preview.html#X09",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "guys-and-dolls-1973-ring-box",
+      "production": "Guys And Dolls (1973)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/128",
+      "author": "Marcus Pugh",
+      "role": "Aged 11 at the time",
+      "quote": "My father played Sky Masterson. One night, a ring box was needed for the proposal scene. 'I have a ring box,' I enthusiastically chirped from the back of the rehearsal. 'A ring box?' — disbelievingly from the stage. 'Yes, an old-fashioned one with a catch and everything.' So my ring box took a central part in the proposal. Ring boxes, I am sure, were not in short supply in Coventry.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/128/400",
+      "image_local":  "assets/archive/guys-and-dolls-1973.jpg",
+      "preview_ref":  "popcorn-foyer-preview.html#X10",
+      "dwell_seconds": 13
+    },
+    {
+      "id": "inherit-the-wind-1962-first-visit",
+      "production": "Inherit The Wind (1962)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/26",
+      "author": "Geoff Firth",
+      "role": "Audience member, later acting member",
+      "quote": "My elder sister persuaded me to accompany her to see this production. I was reluctant and had pretty low expectations of a little bunch of amateurs in an old disused chapel. I was so wrong. Little did I know then that six years later, I would be persuaded to return and join as an acting member. The rest is history.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/26/400",
+      "image_local":  "assets/archive/inherit-the-wind-1962.jpg",
+      "_notes": "Not yet wired into the preview but available for postshow rotation. Touches the 'first time at the Criterion' note nicely.",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "return-to-forbidden-planet-2005-wardrobe",
+      "production": "Return To The Forbidden Planet (2005)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/364",
+      "author": "Anne-marie Greene",
+      "role": "Cast",
+      "quote": "Drying our sweaty costumes in the sun between matinee and evening, and my skirt falling down mid dance because the glue on the belt failed because of the heat. And of course the amazing robot line dance to WipeOut.",
+      "image_remote": "https://criteriontheatre.co.uk/poster/364/400",
+      "image_local":  "assets/archive/return-to-the-forbidden-planet-2005.jpg",
+      "_notes": "Connects to current Popcorn wardrobe team — Anne-marie Greene is wardrobe I/C on Popcorn 2026. Could play a nice card if the in-show pool tags allow that connection.",
+      "dwell_seconds": 12
+    }
+  ]
+}

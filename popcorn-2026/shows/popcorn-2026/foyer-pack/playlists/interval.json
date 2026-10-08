@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "phase": "interval",
+  "show_id": "popcorn-2026",
+  "policy": {
+    "min_dwell_seconds": 7,
+    "max_dwell_seconds": 10,
+    "max_words_per_screen": 30,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 60,
+    "audio_allowed": false,
+    "_dwell_notes": "min_dwell raised 5->7 on 2026-06-24 (Chris). Interval stays the shortest phase (transit dwell)."
+  },
+  "_notes": "Interval is transit-dwell. Live HTML templates replace rendered PNGs; countdown re-renders on the minute from performances.json plus the FoH interval-now signal. Preview refs retargeted 2026-06-24 to the canonical popcorn-foyer.html.",
+  "items": [
+    {
+      "kind": "anchor",
+      "id": "bar-spotlight",
+      "template": "bar-spotlight",
+      "every_n": 4,
+      "dwell_seconds": 8,
+      "placeholder": true,
+      "placeholder_owner": "Bar team",
+      "preview_ref": "popcorn-foyer.html#I01",
+      "_notes": "Now carries the real foyer-bar photo (assets/images/bar-foyer.jpg). Featured drink + price still owed by the bar team."
+    },
+    {
+      "kind": "wildcard",
+      "id": "interval-countdown",
+      "template": "countdown",
+      "tag": "countdown",
+      "weight": 2,
+      "dwell_seconds": 7,
+      "_notes": "Generated at runtime - countdown re-renders every 60s. obs-helper computes 'Act II begins in N min' from performances.json + the operator's interval-start press. NOTE 2026-06-24: the static preview slide (I02) was retired from popcorn-foyer.html; the FoH announcement band (announcements/templates.json interval-ending / interval-now) owns the live countdown, so there is no preview_ref here."
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-interval",
+      "template": "next-production-interval",
+      "tag": "next_production",
+      "weight": 2,
+      "production_ref": "next_productions.json#underdog-2026",
+      "dwell_seconds": 10,
+      "preview_ref": "popcorn-foyer.html#I03",
+      "_notes": "Underdog weighted 2x at interval - the immediate next sale leads."
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-interval-easy3",
+      "template": "next-production-interval",
+      "tag": "next_production",
+      "weight": 2,
+      "production_ref": "next_productions.json#easy-3-2026",
+      "dwell_seconds": 10,
+      "preview_ref": "popcorn-foyer.html#I03",
+      "_notes": "Added 2026-06-26 (David): Easy 3 jazz night (10 Jul) is the soonest event - feature it in the interval mix with image + QR. Weighted 2x as the nearest on-sale."
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-interval-shakespeare",
+      "template": "next-production-interval",
+      "tag": "next_production",
+      "weight": 1,
+      "production_ref": "next_productions.json#shakespeare-in-love-2026",
+      "dwell_seconds": 10,
+      "preview_ref": "popcorn-foyer.html#I03b",
+      "_notes": "Added 2026-06-10 (David): with only two productions left in 2026, advertise both at interval. Revisit in January when a full season programme exists - the original 'Underdog only' rationale will apply again."
+    },
+    {
+      "kind": "wildcard",
+      "id": "volunteer-call-interval",
+      "template": "volunteer",
+      "tag": "volunteer",
+      "weight": 1,
+      "dwell_seconds": 8,
+      "_notes": "Reuses preshow volunteer slide but rotated to a different position in this loop so it doesn't feel like a repeat."
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-charity",
+      "template": "criterion-charity",
+      "tag": "charity",
+      "weight": 1,
+      "dwell_seconds": 8,
+      "_notes": "'Did you know the Criterion is registered charity 1161430' + JustGiving QR."
+    }
+  ]
+}

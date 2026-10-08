@@ -1,0 +1,35 @@
+{
+  "_what_this_is": "Per-show usage log for archive_memories.json items. obs-helper writes to this file at runtime; the build tools read it to filter the pool for the NEXT show. The convention: each show's foyer-pack contains its OWN archive-rotation-state.json that it writes to during the run.",
+
+  "_where_it_lives": "criterion-av/shows/<show-id>/foyer-pack/archive-rotation-state.json",
+
+  "_lifecycle": [
+    "1. New show starts. archive-rotation-state.json begins empty.",
+    "2. obs-helper picks archive items from archive_memories.json (the static library), filtered by the global cross-show log (see below).",
+    "3. Each time an archive item plays, obs-helper writes an entry to this file with timestamp and night id.",
+    "4. After the show closes, the build tools COPY this file's used IDs into a GLOBAL log (see global-archive-history.json) before the next show starts authoring.",
+    "5. The next show's archive_memories.json filter is: 'exclude any id present in global-archive-history.json from the last N shows'."
+  ],
+
+  "schema_version": 1,
+  "show_id": "popcorn-2026",
+  "started_at": "2026-06-27T19:30:00+01:00",
+  "ended_at":   null,
+
+  "items_used": [
+    {
+      "memory_id":   "crime-and-punishment-1971-nails",
+      "first_shown_at": "2026-06-27T19:08:14+01:00",
+      "play_count": 3,
+      "nights":     ["popcorn-2026-night-1", "popcorn-2026-night-2", "popcorn-2026-night-3"]
+    },
+    {
+      "memory_id":   "single-spies-2012-snowstorm",
+      "first_shown_at": "2026-06-27T19:14:02+01:00",
+      "play_count": 5,
+      "nights":     ["popcorn-2026-night-1", "popcorn-2026-night-2", "popcorn-2026-night-3", "popcorn-2026-night-4", "popcorn-2026-night-5"]
+    }
+  ],
+
+  "_example_only": "This file is illustrative — obs-helper would generate it at runtime. The real file would not be hand-edited."
+}

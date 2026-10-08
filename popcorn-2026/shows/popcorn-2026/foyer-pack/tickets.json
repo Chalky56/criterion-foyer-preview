@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "show_id": "popcorn-2026",
+  "_source": "Scraped from https://criteriontheatre.co.uk/tickets on 2026-05-21. Static snapshot — refresh manually before each show week if prices or category labels change.",
+  "_runtime_state_note": "The 'tonight_state' field below is the per-performance availability state. FoH operator toggles it via the announcement templates (tonight-sold-out / tonight-few-tickets). Default is 'available'. obs-helper reads this when rendering the tickets-walkins slide (preview id P13) and substitutes the appropriate overlay treatment.",
+
+  "prices": [
+    { "id": "standard", "label": "Standard",  "price_gbp": 15.00, "label_short": "£15"    },
+    { "id": "member",   "label": "Member",    "price_gbp": 12.50, "label_short": "£12.50" },
+    { "id": "under25",  "label": "Under 25",  "price_gbp": 10.00, "label_short": "£10"    }
+  ],
+
+  "booking": {
+    "page_url":     "https://criteriontheatre.co.uk/tickets",
+    "box_office":   "in person at the foyer, or via website",
+    "walk_ins":     "welcomed unless tonight_state is 'sold-out'"
+  },
+
+  "tonight_state": "available",
+  "tonight_state_allowed_values": ["available", "limited", "sold-out"],
+
+  "_per_performance_event_ids": {
+    "_notes": "Direct booking links per night. Useful for QR codes on the next-production slides. Scraped from the seat-selection anchors on /tickets.",
+    "2026-06-27": "https://criteriontheatre.co.uk/seats/10070",
+    "2026-06-28": "https://criteriontheatre.co.uk/seats/10069",
+    "2026-06-30": "https://criteriontheatre.co.uk/seats/10068",
+    "2026-07-01": "https://criteriontheatre.co.uk/seats/10067",
+    "2026-07-02": "https://criteriontheatre.co.uk/seats/10066",
+    "2026-07-03": "https://criteriontheatre.co.uk/seats/10065",
+    "2026-07-04": "https://criteriontheatre.co.uk/seats/10064"
+  }
+}

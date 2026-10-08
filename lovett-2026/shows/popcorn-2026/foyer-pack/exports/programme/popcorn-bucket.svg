@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Popcorn bucket — Criterion Theatre 2026">
+  <title>Popcorn — stylised bucket motif</title>
+  <defs>
+    <linearGradient id="wmGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#FF1A75"/>
+      <stop offset="100%" stop-color="#B43BFF"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#wmGrad)" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Overflowing popcorn (drawn first so the rim sits in front) -->
+    <circle cx="31" cy="41" r="5"/>
+    <circle cx="41" cy="38" r="5.5"/>
+    <circle cx="52" cy="39" r="5.5"/>
+    <circle cx="62" cy="38" r="5.5"/>
+    <circle cx="71" cy="41" r="5"/>
+    <circle cx="44" cy="27" r="5.5"/>
+    <circle cx="55" cy="27" r="5.5"/>
+    <circle cx="50" cy="18" r="4.5"/>
+    <!-- Flared tub -->
+    <path d="M 27 56 L 32 112 L 68 112 L 73 56"/>
+    <!-- Concession stripes -->
+    <line x1="40" y1="61" x2="42" y2="112"/>
+    <line x1="50" y1="61" x2="50" y2="112"/>
+    <line x1="60" y1="61" x2="58" y2="112"/>
+    <!-- Rolled rim band (ink fill) tucks popcorn + sides behind the lip -->
+    <rect x="20" y="46" width="60" height="10" rx="5" fill="#1A0E2A"/>
+  </g>
+</svg>

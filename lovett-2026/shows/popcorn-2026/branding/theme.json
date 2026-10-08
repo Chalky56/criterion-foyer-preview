@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "name": "popcorn-2026",
+  "label": "Popcorn 2026 — Neon Noir",
+  "description": "Hollywood-thriller neon palette for Ben Elton's Popcorn. Ink-violet ground; magenta dominant in preshow, cyan-dominant in interval, dimmed and reflective in postshow. Poster-tied yellow + red used sparingly as warning/alert accents to maintain visual continuity with the printed Popcorn poster.",
+  "colours": {
+    "ink":            "#0A0612",
+    "ink_2":          "#1A0E2A",
+    "ink_3":          "#25143C",
+    "neon_magenta":   "#FF1A75",
+    "neon_cyan":      "#00E5FF",
+    "neon_violet":    "#B43BFF",
+    "poster_yellow":  "#FFD434",
+    "poster_red":     "#B11D2E",
+    "cream":          "#F4E5C2",
+    "cream_2":        "#BFB39F",
+    "lavender":       "#C8B9D8",
+    "white":          "#FFFFFF",
+    "dim":            "#6A5E7E",
+
+    "primary":         "#FF1A75",
+    "primary_text":    "#FFFFFF",
+    "accent":          "#00E5FF",
+    "background":      "#0A0612",
+    "background_text": "#F4E5C2"
+  },
+  "fonts": {
+    "headline":  "Anton",
+    "subhead":   "Bebas Neue",
+    "body":      "Inter",
+    "mono":      "JetBrains Mono",
+    "fallbacks": {
+      "headline": "Impact, sans-serif",
+      "subhead":  "Impact, sans-serif",
+      "body":     "system-ui, -apple-system, Segoe UI, sans-serif",
+      "mono":     "ui-monospace, monospace"
+    },
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+  },
+  "watermark": {
+    "image":    "popcorn-bucket-neon.svg",
+    "opacity":  0.16,
+    "position": "bottom-right",
+    "size":     "110x130",
+    "notes":    "Neon-outline popcorn bucket with kernels above the rim. Single-colour stroke (gradient magenta→violet). Replaceable with a PNG of the actual poster bucket if preferred."
+  },
+  "effects": {
+    "scanlines": true,
+    "scanline_opacity": 0.025,
+    "vignette":  true,
+    "drifting_kernels": true,
+    "kernel_count": 6,
+    "kernel_opacity": 0.18,
+    "on_air_pulse": true
+  },
+  "phase_overrides": {
+    "preshow":  { "dominant_neon": "magenta", "ambient_intensity": 1.0 },
+    "interval": { "dominant_neon": "cyan",    "ambient_intensity": 0.85 },
+    "postshow": { "dominant_neon": "muted",   "ambient_intensity": 0.45 }
+  },
+  "notes_for_engine": [
+    "Map the named colours to CSS custom properties on :root (--ink, --neon-magenta, etc.).",
+    "Apply phase_overrides.dominant_neon as a body[data-phase] selector override on .headline text-shadow.",
+    "The watermark.image path is relative to branding/. If missing, fall back to the inline SVG used in popcorn-foyer-preview.html.",
+    "Google Fonts URL above is what the preview uses; for runtime, self-host the .woff2 files to avoid LAN-egress dependency."
+  ]
+}

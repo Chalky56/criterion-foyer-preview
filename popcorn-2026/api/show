@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "id": "popcorn-2026",
+  "paths": {
+    "branding": "shows/popcorn-2026/branding",
+    "foyerPack": "shows/popcorn-2026/foyer-pack",
+    "slides": "shows/popcorn-2026/foyer-pack/slides",
+    "videos": "shows/popcorn-2026/foyer-pack/videos"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "_generated": "2026-08-02",
+  "_purpose": "Lovett - BoonDog Theatre, visiting the Criterion 14-15 August 2026. A VISITING production: the Criterion is the host venue, not the producer. Company detail lives in visiting_company.json; this file carries the production itself.",
+  "_copy_status": "DRAFT pending Boondog approval. Every line of foyer copy is in shows/lovett-2026/docs/lovett-copy-for-approval.md, sent to Jamie Firth for editing. Do not treat director_quote or content_warnings as approved.",
+  "id": "lovett-2026",
+  "title": "Lovett",
+  "author": "Lucy Roslyn",
+  "director": "Jamie Firth",
+  "venue": "Criterion Theatre, Earlsdon, Coventry",
+  "tagline": "You may think you already know Mrs Lovett.",
+  "run_dates": {
+    "first": "2026-08-14",
+    "last": "2026-08-15"
+  },
+  "running_time_minutes": 70,
+  "interval_minutes": 0,
+  "_interval_note": "ZERO on purpose. Lovett runs straight through - confirmed by Jamie Firth, 2026-08-01. The interval playlist exists to satisfy the pack contract but is never routed.",
+  "house_opens_minutes_before_curtain": 15,
+  "image_local": "assets/derived/poster-portrait.jpg",
+  "_image_note": "Dark-ground show poster (artwork by Madison Coby). Portrait, for the engine's split-layout poster frame. There is deliberately no full-bleed 16:9 hero - see docs/asset-provenance.md.",
+  "tickets_url": "https://criteriontheatre.co.uk/event/10652",
+  "tickets_on_sale": true,
+  "synopsis": "Newly widowed, Mrs Lovett needs to find a way to survive. Using skills learned from a whaler father, a courtesan mother and a butcher husband, Eleanor \"recalibrates\" her life - and her relationship with God. An origin story set before her infamous partnership with Sweeney Todd.",
+  "cast": [
+    {
+      "actor": "Lucy Roslyn",
+      "name": "Lucy Roslyn",
+      "role": "Eleanor Lovett",
+      "image_local": "assets/derived/photo-lean-portrait.jpg",
+      "note": "Written and performed by. Co-founder and Creative Director of BoonDog Theatre."
+    }
+  ],
+  "_cast_note": "The `cast` template reads member.role and member.actor - NOT member.name. Both are set here so the slide renders and the data stays readable. A one-person cast list is a thin slide, so the preshow uses the writer template (about-ben, which reads foyer_content.writer) for Lucy instead; `cast` is kept correct in case anything else reads it.",
+  "_content_warnings_note": "STRUCTURE MATTERS: warning-top3 filters on tier == 'top' and reads .headline and .detail; warning-full selects by .id via item.content.warning_ids. A flat array of strings renders an EMPTY list - it was flat until 2026-08-03 and the slide was silently blank. Keep this shape.",
+  "_content_warnings_status": "APPROVED. Supplied verbatim by Jamie Firth 2026-08-13 (copy deck B10, 'Just this I think') and set to confidence 'high'. That matters for more than provenance: slide-templates.js warningLine() renders a 'tbc' PILL beside any warning whose confidence is not 'high', so the whole set was rendering with a tbc pill on the public foyer screen while it was draft. Do not reintroduce 'draft' on a live show. DROPPED with Jamie's list: age-guidance (our invention, not his), sex-work and religious-content (subsumed into his own wording). opening-darkness and no-interval are VENUE notices, not company content warnings, and are kept deliberately - both are practical and both are factual.",
+  "content_warnings": [
+    {
+      "id": "violence",
+      "headline": "Violence",
+      "detail": "Descriptions of some violent acts.",
+      "tier": "top",
+      "confidence": "high"
+    },
+    {
+      "id": "abuse-coercion-mental-illness",
+      "headline": "Sexual abuse, coercion and mental illness",
+      "detail": "References to sexual abuse, coercion, and mental illness.",
+      "tier": "top",
+      "confidence": "high"
+    },
+    {
+      "id": "strong-language",
+      "headline": "Strong language",
+      "detail": "Contains strong language.",
+      "tier": "top",
+      "confidence": "high"
+    },
+    {
+      "id": "poverty-and-prejudice",
+      "headline": "Poverty and prejudice",
+      "detail": "Descriptions of poverty and prejudice towards the poor.",
+      "tier": "secondary",
+      "confidence": "high"
+    },
+    {
+      "id": "bereavement",
+      "headline": "Bereavement",
+      "detail": "References to bereavement of both a parent and a spouse.",
+      "tier": "secondary",
+      "confidence": "high"
+    },
+    {
+      "id": "haze",
+      "headline": "Haze",
+      "detail": "Theatrical haze is used during the performance.",
+      "tier": "secondary",
+      "confidence": "high"
+    },
+    {
+      "id": "opening-darkness",
+      "headline": "Opens in darkness",
+      "detail": "The performance begins in a full blackout, with sound only, for around a minute.",
+      "tier": "secondary",
+      "confidence": "high",
+      "_note": "Not a content warning so much as a sensory one - useful for anxious patrons and for anyone arriving late. Jamie may prefer it cut so the opening lands cold; it is flagged as optional in the copy deck."
+    },
+    {
+      "id": "no-interval",
+      "headline": "No interval",
+      "detail": "The play runs straight through for approximately 70 minutes.",
+      "tier": "secondary",
+      "confidence": "high"
+    }
+  ],
+  "foyer_content": {
+    "writer": {
+      "body": "Co-founder and Creative Director of <b>BoonDog Theatre</b>. <i>Lovett</i> premiered at the Edinburgh Festival Fringe in 2025 and has toured the UK ever since - including a preview at the Belgrade, just down the road, in July 2025.",
+      "footline": "Written and performed by Lucy Roslyn",
+      "image_local": "assets/derived/photo-lean-portrait.jpg"
+    },
+    "director": {
+      "quote": "Everyone arrives thinking they know who Mrs Lovett is. The play happens in the gap between that and who she actually was.",
+      "attribution": "Jamie Firth, director",
+      "image_local": "assets/derived/photo-hands-portrait.jpg",
+      "_status": "APPROVED by Jamie Firth 2026-08-13. He selected option 1 of the three offered in the copy deck (B6) and asked for the other two to be deleted. This is his chosen wording and is cleared to go on screen."
+    },
+    "about_play": {
+      "headline": "Morality becomes a moveable feast",
+      "body": "You may think you already know Mrs Lovett, but this new play explores what made her: the brutal choices and disappointments of a life in poverty. When the difference is life or death, morality becomes a moveable feast - and Eleanor is getting hungry...",
+      "image_local": "assets/derived/photo-red-portrait.jpg"
+    },
+    "staging": {
+      "headline": "One performer",
+      "body": "A butcher's block, a whetstone, a knife, a cup, a hunk of bread. Everything else is Eleanor.",
+      "image_local": "assets/derived/photo-block-portrait.jpg"
+    },
+    "venue": {
+      "body": "The Criterion has staged <b>over 450 productions</b> since 1955, in a building that is <b>over 140 years old</b> - an 1884 Methodist chapel that became a theatre in 1960. It is run entirely by its members: <b>no paid employees</b>, on stage or off.",
+      "footline": "Registered charity 1161430 <span class=\"sep\">&#8226;</span> A volunteer-run theatre in Earlsdon, Coventry"
+    },
+    "volunteer": {
+      "body": "Actors, makers, technicians, front-of-house, bar and box office - every part of the Criterion is volunteer-run, and new members are always welcome. No experience needed to get involved on stage, backstage, or around the building.",
+      "footline": "Ask front-of-house, or visit criteriontheatre.co.uk/join"
+    },
+    "_visiting_overrides_note": "The three blocks below override engine defaults that are written for a Criterion-produced show and are WRONG for a visiting professional company. Added 2026-08-03 after the final Popcorn sweep made them pack-overridable. Without them the postshow tells a BoonDog audience that 'every production is made by volunteers' (untrue on these two nights) and invites them to 'say hello to the cast' (a one-woman touring show). See docs/cascade-prompts/2026-08-final-popcorn-sweep.md section 3.",
+    "thank_you": {
+      "eyebrow": "From everyone at the Criterion",
+      "headline": "Thank you for coming",
+      "body": "Touring theatre only reaches Coventry when people turn out for it. Thank you for giving <i>Lovett</i> your evening - and for giving a visiting company a full house to play to.",
+      "footline": "Lovett <span class=\"sep\">&#8226;</span> BoonDog Theatre <span class=\"sep\">&#8226;</span> 14-15 August 2026"
+    },
+    "criterion_charity": {
+      "body": "The Criterion is a registered charity with no paid employees - the building, the bar and the box office are run entirely by its members. Hosting touring work like tonight's is part of how we keep a stage open in Earlsdon."
+    },
+    "bar": {
+      "body": "The bar is open until <b>{{bar_close}}</b>. Stay a while - have a drink and talk it over before you head off into the night."
+    }
+  },
+  "press_quotes": [
+    {
+      "quote": "One of the most relentless, compelling pieces of work at the Fringe... An extraordinarily powerful hour.",
+      "source": "Broadway Baby"
+    },
+    {
+      "quote": "An entirely disarming performance, precise, committed and unflinching... This production is one that you can really sink your teeth into.",
+      "source": "Binge Fringe"
+    },
+    {
+      "quote": "This brilliant script, paired with even more powerful acting, had me mesmerised... As exciting and captivating as the biggest of productions.",
+      "source": "Radio Exe"
+    }
+  ],
+  "_press_quotes_note": "Exact wording lifted from the Criterion event page (criteriontheatre.co.uk/event/10652), where the venue is already using them - i.e. cleared for promotional use.",
+  "credits": {
+    "lines": [
+      "Written and performed by Lucy Roslyn",
+      "Directed by Jamie Firth",
+      "Sound design by Annie May Fletcher",
+      "Artwork by Madison Coby"
+    ],
+    "photo_credit": "Production photographs by BoonDog Theatre (Andrew Perry, Clive Boursnell)"
+  },
+  "phase_policy": {
+    "foh_allowed_phase_nudges": [],
+    "audio_allowed": false,
+    "silent_first": true,
+    "audio_allowed_note": "Silent by default, per house convention. An X32 route to feed RNID hearing-loop mic audio to the Samsung is being built by Dave C for the performance-phase camera scene only. If it is not ready, the camera runs silent and nothing else changes. No foyer SLIDE ever carries audio."
+  },
+  "branding_pack_ref": "../branding/theme.json",
+  "next_productions_ref": "next_productions.json",
+  "performances_ref": "performances.json",
+  "visiting_company_ref": "visiting_company.json",
+  "_archive_memories_note": "Deliberately absent. The postshow 'from the archives' rotation is replaced for this show by a BoonDog promotion block - David's decision, 2026-08-01. A visiting company's postshow should sell the visiting company.",
+  "_auth_comment": "Carried across from _criterion-default on 2026-08-03, VERBATIM and byte-identical (popcorn-2026 carries the same three hashes, so the usual passcodes work unchanged). The operator resolves auth from the ACTIVE-SHOW pack, so a pack with no auth block means no login path at all: every passcode returns 'Invalid passcode' from server.py's /api/auth, because auth_config is an empty dict and no branch can match. This was predicted as a deploy-day trap and then hit for real on AURORA on 2026-08-03, the moment active-show.txt was switched to lovett-2026 for the Autopilot bench test - the 2026-07-16 lifecycle-smoke Finding 1 repeating for the second time. Fixed here in the pack rather than as a deploy-day step so it cannot be forgotten on 13 August. If the house passcodes are ever rotated, all three packs must change together.",
+  "auth": {
+    "operator_passcode_hash": "pbkdf2_sha256$200000$b3BlcmF0b3Itc2FsdC0xMjM=$UyMNA0hpSUO+Sq8Io6bnYN1JMLlc0JHIYQdOSOhIPxg=",
+    "cue_trigger_passcode_hash": "pbkdf2_sha256$200000$Y3VlLXRyaWdnZXItc2FsdC0wMQ==$Cbi70TQ87+q8xNi/5zzPv8Rr3R33VyPiPk+aKdUboes=",
+    "foh_passcode_hash": "pbkdf2_sha256$200000$Zm9oLXNhbHQtMTIzNDU2Nw==$tBuXteWCpBn9KWxYchTQOI0wkBD0EYe/swjAE5zff5Q="
+  }
+}

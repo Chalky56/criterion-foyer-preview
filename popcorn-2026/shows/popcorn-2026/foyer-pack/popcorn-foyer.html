@@ -1,0 +1,1921 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Popcorn 2026 — foyer rolling display preview (Neon Noir)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     POPCORN 2026 — Neon Noir foyer theme
+     Standalone preview file. No build step. Open in any browser.
+     ===================================================================== */
+
+  :root {
+    /* core ink */
+    --ink:           #0A0612;
+    --ink-2:         #1A0E2A;
+    --ink-3:         #25143C;
+
+    /* neon signals */
+    --neon-magenta:  #FF1A75;
+    --neon-cyan:     #00E5FF;
+    --neon-violet:   #B43BFF;
+
+    /* poster-tied accents */
+    --poster-yellow: #FFD434;
+    --poster-red:    #B11D2E;
+
+    /* type */
+    --cream:         #F4E5C2;
+    --cream-2:       #BFB39F;
+    --lavender:      #C8B9D8;
+    --white:         #FFFFFF;
+    --dim:           #6A5E7E;
+
+    /* glows — toned down 2026-06-24 (Chris feedback: bloom was overpowering
+       and hurt title legibility, esp. the cyan coming-soon slides). Keep a
+       crisp neon edge, cut the wide outer halo. */
+    --glow-magenta:  0 0 3px rgba(255, 26, 117, 0.85), 0 0 11px rgba(255, 26, 117, 0.40), 0 0 22px rgba(255, 26, 117, 0.20);
+    --glow-cyan:     0 0 3px rgba(0, 229, 255, 0.80), 0 0 11px rgba(0, 229, 255, 0.38), 0 0 20px rgba(0, 229, 255, 0.18);
+    --glow-yellow:   0 0 3px rgba(255, 212, 52, 0.80), 0 0 9px rgba(255, 212, 52, 0.38);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #050308;
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* =====================================================================
+     PREVIEW CHROME — the operator controls. Not part of the actual foyer
+     theme; this is the rig that holds the slides for review.
+     ===================================================================== */
+
+  .preview-header {
+    padding: 14px 22px;
+    background: #0B0710;
+    border-bottom: 1px solid #1F1530;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .preview-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--white);
+    margin: 0;
+  }
+  .preview-title .accent { color: var(--neon-magenta); }
+  .preview-subtitle {
+    font-size: 12px;
+    color: var(--cream-2);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+  }
+  .preview-controls {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .ctrl-group {
+    display: flex;
+    background: #15101F;
+    border: 1px solid #2A1F40;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  /* Broadcast mode (the default; the dev gallery is opt-in via ?preview=1):
+     hide every piece of dev chrome and let the stage fill the full
+     1920x1080 OBS canvas with no letterbox. */
+  body.obs-chrome .preview-header { display: none !important; }
+  body.obs-chrome .strip-wrap     { display: none !important; }
+  body.obs-chrome .notes          { display: none !important; }
+  body.obs-chrome .stage-wrap     { padding: 0 !important; }
+  body.obs-chrome .stage {
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    aspect-ratio: auto !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .ctrl-btn {
+    background: transparent;
+    color: var(--cream-2);
+    border: none;
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .ctrl-btn:hover { background: #1F1730; color: var(--white); }
+  .ctrl-btn.active {
+    background: var(--neon-magenta);
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .ctrl-btn[data-phase="interval"].active { background: var(--neon-cyan); }
+  .ctrl-btn[data-phase="postshow"].active { background: var(--lavender); }
+
+  .dwell-input {
+    background: #15101F;
+    color: var(--cream);
+    border: 1px solid #2A1F40;
+    border-radius: 4px;
+    padding: 7px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    width: 60px;
+  }
+
+  /* =====================================================================
+     STAGE — the 16:9 foyer-screen analogue
+     ===================================================================== */
+
+  .stage-wrap {
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .stage {
+    width: 100%;
+    max-width: 1280px;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    border: 1px solid #2A1F40;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255, 26, 117, 0.08),
+      0 24px 80px rgba(0, 0, 0, 0.8);
+  }
+
+  /* The ambient background — ink with a violet vignette */
+  .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 25%, rgba(180, 59, 255, 0.18), transparent 70%),
+      radial-gradient(ellipse 70% 70% at 75% 80%, rgba(255, 26, 117, 0.12), transparent 70%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+    z-index: 0;
+  }
+
+  /* Faint scanlines for CRT/CCTV feel */
+  .stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    z-index: 12;
+    mix-blend-mode: overlay;
+  }
+
+  /* Popcorn-bucket silhouette watermark — large, centred, BEHIND slide content */
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42%;
+    aspect-ratio: 5 / 6;
+    opacity: 0.13;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Criterion theatre triangular mark — small, bottom-right */
+  .criterion-mark {
+    position: absolute;
+    bottom: 16px;
+    right: 22px;
+    width: 68px;
+    height: 56px;
+    opacity: 0.6;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .criterion-mark svg { display: block; width: 100%; height: 100%; }
+
+  /* Tint criterion mark to match phase */
+  body[data-phase="preshow"]  .criterion-mark { filter: drop-shadow(0 0 6px rgba(255, 26, 117, 0.35)); }
+  body[data-phase="interval"] .criterion-mark { filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.35)); }
+  body[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
+
+  /* ON-AIR indicator — pulses subtly. Only visible in preshow/interval. */
+  .on-air {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--cream-2);
+    z-index: 5;
+    opacity: 0.55;
+  }
+  .on-air-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--neon-magenta);
+    box-shadow: var(--glow-magenta);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.45; }
+    50%      { opacity: 1.0; }
+  }
+  body[data-phase="interval"] .on-air-dot { background: var(--neon-cyan); box-shadow: var(--glow-cyan); }
+  body[data-phase="postshow"] .on-air { display: none; }
+
+  /* Drifting popcorn kernels — subtle ambient motion */
+  .kernel {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50% 60% 50% 70% / 60% 50% 70% 50%;
+    background: var(--poster-yellow);
+    opacity: 0.2;
+    box-shadow: 0 0 11px rgba(255, 212, 52, 0.34);
+    z-index: 1;
+    animation: drift linear infinite;
+  }
+  @keyframes drift {
+    0%   { transform: translate(0, -10vh) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.18; }
+    90%  { opacity: 0.18; }
+    100% { transform: translate(8px, 110vh) rotate(360deg); opacity: 0; }
+  }
+  .k1 { left: 8%;  width: 9px;  height: 9px;  animation-duration: 28s; animation-delay: 0s;  }
+  .k2 { left: 22%; width: 12px; height: 12px; animation-duration: 34s; animation-delay: -8s; }
+  .k3 { left: 41%; width: 8px;  height: 8px;  animation-duration: 40s; animation-delay: -22s;}
+  .k4 { left: 58%; width: 14px; height: 14px; animation-duration: 26s; animation-delay: -14s;}
+  .k5 { left: 73%; width: 10px; height: 10px; animation-duration: 36s; animation-delay: -3s; }
+  .k6 { left: 89%; width: 11px; height: 11px; animation-duration: 31s; animation-delay: -18s;}
+
+  /* =====================================================================
+     SLIDE BASE
+     ===================================================================== */
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 8% 8% 9% 8%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 700ms ease;
+  }
+  .slide.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  /* Eyebrow (small uppercase label above headline) */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+    margin: 0 0 22px 0;
+    text-shadow: var(--glow-cyan);
+  }
+  .eyebrow.warn   { color: var(--poster-yellow); text-shadow: var(--glow-yellow); }
+  .eyebrow.alert  { color: var(--poster-red);    text-shadow: 0 0 6px rgba(177, 29, 46, 0.8), 0 0 16px rgba(177, 29, 46, 0.5); }
+  .eyebrow.calm   { color: var(--lavender);      text-shadow: none; }
+
+  /* Headline — the loudest type */
+  .headline {
+    font-family: 'Anton', sans-serif;
+    font-size: min(9vw, 12vh);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin: 0 0 24px 0;
+    text-shadow: var(--glow-magenta);
+    text-transform: uppercase;
+  }
+  .headline.small  { font-size: min(6vw, 8.5vh); }
+  .headline.medium { font-size: min(7.5vw, 10.5vh); }
+
+  /* Outline-only style — used to vary cadence. A faint fill + slightly thinner
+     stroke (2026-06-24) keeps long titles like SHAKESPEARE IN LOVE legible. */
+  .headline.outline {
+    color: rgba(244, 229, 194, 0.10);
+    -webkit-text-stroke: 1.6px var(--neon-magenta);
+    text-shadow: none;
+  }
+
+  /* Cyan variant — for interval/coming-soon */
+  .headline.cyan { text-shadow: var(--glow-cyan); }
+  .headline.cyan.outline { -webkit-text-stroke-color: var(--neon-cyan); }
+
+  /* Subhead — second tier */
+  .subhead {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3vw;
+    letter-spacing: 4px;
+    color: var(--cream);
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+  }
+  .subhead.cyan { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
+
+  /* Body */
+  .body {
+    font-family: 'Inter', sans-serif;
+    font-size: min(1.6vw, 2.3vh);
+    line-height: 1.5;
+    color: var(--cream);
+    max-width: 76%;
+    margin: 0 0 18px 0;
+  }
+  .body.small { font-size: min(1.38vw, 2vh); max-width: 72%; }
+  .body.mono  { font-family: 'JetBrains Mono', monospace; font-size: min(1.25vw, 1.8vh); letter-spacing: 1.5px; color: var(--lavender); }
+
+  /* Footer line — production credit, date, etc. */
+  .footline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: min(1.18vw, 1.65vh);
+    color: var(--cream-2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 32px;
+  }
+  .footline .sep { color: var(--neon-magenta); margin: 0 12px; }
+
+  /* Two-column layout for cast / dates / warnings list */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 6%;
+    row-gap: 12px;
+    margin-top: 12px;
+  }
+  .cast-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(200, 185, 216, 0.15);
+    font-size: min(1.5vw, 2.2vh);
+  }
+  .cast-role {
+    color: var(--lavender);
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 2px;
+  }
+  .cast-actor {
+    color: var(--white);
+    font-weight: 500;
+    text-align: right;
+  }
+
+  /* Warning chips */
+  .warning-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 12px;
+    max-width: 88%;
+  }
+  .warning-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .warning-tag {
+    flex-shrink: 0;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.6vw;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--poster-yellow);
+    border: 1.5px solid var(--poster-yellow);
+    padding: 6px 14px;
+    border-radius: 3px;
+    box-shadow: var(--glow-yellow);
+    min-width: 230px;
+    text-align: center;
+  }
+  .warning-detail {
+    font-size: min(1.32vw, 1.9vh);
+    color: var(--cream);
+    line-height: 1.4;
+  }
+
+  /* Lower-third — TV-news style — for content warning top-three */
+  .lower-third {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 12%;
+    padding: 0 8%;
+  }
+  .lower-third-bar {
+    display: flex;
+    align-items: stretch;
+    border: 2px solid var(--poster-yellow);
+    background: rgba(10, 6, 18, 0.85);
+    box-shadow: var(--glow-yellow);
+  }
+  .lower-third-tag {
+    background: var(--poster-yellow);
+    color: var(--ink);
+    font-family: 'Anton', sans-serif;
+    font-size: 1.7vw;
+    letter-spacing: 3px;
+    padding: 16px 24px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+  .lower-third-body {
+    flex: 1;
+    padding: 16px 24px;
+    color: var(--cream);
+    font-size: min(1.38vw, 2vh);
+    align-self: center;
+  }
+
+  /* Hero title — full-stage POPCORN */
+  .hero-title {
+    text-align: center;
+  }
+  .hero-title .headline {
+    font-size: 16vw;
+    letter-spacing: 6px;
+    text-align: center;
+    margin: 0;
+    color: var(--white);
+    text-shadow: var(--glow-magenta);
+  }
+  .hero-title .author {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4vw;
+    color: var(--neon-cyan);
+    text-shadow: var(--glow-cyan);
+    letter-spacing: 8px;
+    margin-top: -8px;
+  }
+
+  /* Phase tonal overrides
+     INTERVAL — cyan-dominant, cooler */
+  body[data-phase="interval"] .slide .headline { text-shadow: var(--glow-cyan); }
+  body[data-phase="interval"] .slide .eyebrow:not(.warn):not(.alert):not(.calm) { color: var(--poster-yellow); text-shadow: var(--glow-yellow); }
+  body[data-phase="interval"] .stage::before {
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 30%, rgba(0, 229, 255, 0.18), transparent 70%),
+      radial-gradient(ellipse 70% 70% at 25% 75%, rgba(180, 59, 255, 0.10), transparent 70%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  }
+
+  /* POSTSHOW — dimmer, more contemplative */
+  body[data-phase="postshow"] .slide .headline { text-shadow: 0 0 4px rgba(255, 255, 255, 0.4), 0 0 18px rgba(200, 185, 216, 0.2); }
+  body[data-phase="postshow"] .stage::before {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 60%, rgba(180, 59, 255, 0.08), transparent 70%),
+      linear-gradient(180deg, #060309 0%, #100820 100%);
+  }
+  body[data-phase="postshow"] .kernel { opacity: 0.10; }
+
+  /* =====================================================================
+     POSTERS — image frames, neon edges, fallback cards
+     ===================================================================== */
+
+  .poster-frame {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255, 26, 117, 0.15), rgba(0, 229, 255, 0.10));
+    border: 1.5px solid var(--neon-magenta);
+    box-shadow:
+      0 0 0 1px rgba(255, 26, 117, 0.4),
+      0 0 24px rgba(255, 26, 117, 0.35),
+      0 14px 40px rgba(0, 0, 0, 0.7);
+    border-radius: 2px;
+  }
+  .poster-frame.cyan {
+    border-color: var(--neon-cyan);
+    box-shadow:
+      0 0 0 1px rgba(0, 229, 255, 0.4),
+      0 0 24px rgba(0, 229, 255, 0.35),
+      0 14px 40px rgba(0, 0, 0, 0.7);
+  }
+  .poster-frame.muted {
+    border-color: rgba(200, 185, 216, 0.45);
+    box-shadow:
+      0 0 0 1px rgba(200, 185, 216, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.6);
+  }
+  /* In-world Popcorn film/media posters: warm red+gold frame, distinct from
+     the cyan "coming soon" and muted "archive" frames. */
+  .poster-frame.feature {
+    border-color: var(--poster-yellow);
+    box-shadow:
+      0 0 0 1px rgba(255, 212, 52, 0.5),
+      0 0 26px rgba(177, 29, 46, 0.45),
+      0 14px 40px rgba(0, 0, 0, 0.7);
+  }
+  /* Postshow at-a-glance category badges — early feedback said archive and
+     coming-soon were too easy to confuse. Colour + icon prefix on the eyebrow. */
+  .slide[data-kind="archive-memory"] .eyebrow::before {
+    content: "\25C8  ARCHIVE  \00B7  ";
+    color: var(--poster-yellow); font-weight: 700; letter-spacing: 2px;
+  }
+  .slide[data-kind^="next-production"] .eyebrow::before {
+    content: "\25B8  COMING SOON  \00B7  ";
+    color: var(--neon-cyan); font-weight: 700; letter-spacing: 2px;
+  }
+  .slide[data-kind="popcorn-feature"] .eyebrow::before {
+    content: "\2605  FROM THE PLAY  \00B7  ";
+    color: var(--poster-red); font-weight: 700; letter-spacing: 2px;
+  }
+  .poster-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Archive images come in varied aspect ratios. Use contain + a quiet ink
+     backdrop so letterbox bands look intentional. Frame keeps neon edge. */
+  .poster-frame.contain img {
+    object-fit: contain;
+    background: linear-gradient(135deg, #100822 0%, #1A0E2A 100%);
+  }
+  .poster-frame .fallback {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cream-2);
+    letter-spacing: 2px;
+  }
+  .poster-frame .fallback strong {
+    display: block;
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--neon-magenta);
+    margin-bottom: 8px;
+  }
+  .poster-frame.missing img      { display: none; }
+  .poster-frame.missing .fallback { display: flex; }
+
+  /* Split layout — type left, poster right */
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.85fr;
+    gap: 6%;
+    align-items: center;
+    height: 100%;
+  }
+  .split-layout .poster-frame {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    justify-self: end;
+    max-width: 480px;
+  }
+  .split-text > * { margin-left: 0; }
+
+  /* Small corner poster thumbnail. Nudged down 2026-06-24 so it can't collide
+     with the ON-AIR badge in the top-right; the badge is also hidden on any
+     slide that carries a corner poster (see the :has rule below). */
+  .corner-poster {
+    position: absolute;
+    top: 13%;
+    right: 6%;
+    width: 12vw;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    z-index: 4;
+  }
+  /* Belt-and-braces: when the live slide has a corner poster, retire the
+     ON-AIR badge so the two never overlap (only P02 today). :has() is
+     supported by the CEF/Chromium that OBS and modern browsers use. */
+  .stage:has(.slide.active .corner-poster) .on-air { display: none; }
+
+  /* Photo gallery grid — rehearsal (preshow) + cast-montage (postshow)
+     placeholders for Chris's photos. Each frame shows a neon "photo pending"
+     card until the matching file lands in assets/photos/. */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5%;
+    margin-top: 22px;
+  }
+  /* Cells are 4:3 landscape — that's the ideal crop for Chris's photos.
+     Other ratios still letterbox cleanly inside the neon frame (contain). */
+  .photo-grid .poster-frame {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Inline archive thumbnail — used inside archive memory slides */
+  .archive-thumb-wrap {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 5%;
+    align-items: center;
+    margin-top: 18px;
+  }
+  .archive-thumb-wrap .poster-frame {
+    /* Drop the fixed aspect — archive posters vary (some square, some 3:4,
+       some 4:3, even landscape). Box is sized by max-width + max-height
+       and the image is contained inside. */
+    width: 100%;
+    max-width: 260px;
+    max-height: 320px;
+    aspect-ratio: 3 / 4;
+    justify-self: end;
+  }
+  .archive-text .body {
+    max-width: none;
+  }
+  /* Archive slides carry long titles + long quotes - scale the type, widen the
+     text column, and trim padding so nothing clips the fixed stage. */
+  .slide[data-kind="archive-memory"]                     { padding-top: 5%; padding-bottom: 5%; }
+  .slide[data-kind="archive-memory"] .eyebrow            { margin-bottom: 12px; }
+  .slide[data-kind="archive-memory"] .headline           { font-size: min(4.2vw, 6vh); margin-bottom: 14px; }
+  .slide[data-kind="archive-memory"] .archive-thumb-wrap { grid-template-columns: 1.5fr 0.9fr; margin-top: 10px; }
+  .slide[data-kind="archive-memory"] .body               { font-size: min(1.34vw, 2.1vh); line-height: 1.42; }
+  /* Coming-soon slides: long titles like "SHAKESPEARE IN LOVE" need a slightly
+     smaller headline to sit cleanly inside the text column. */
+  .slide[data-kind^="next-production"] .headline         { font-size: min(4.8vw, 7vh); }
+  .archive-attribution {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: min(1.08vw, 1.55vh);
+    color: var(--cream-2);
+    letter-spacing: 2px;
+    margin-top: 10px;
+  }
+  .archive-attribution .attr-name {
+    color: var(--neon-cyan);
+  }
+
+  /* Review quote treatment — italic, with cyan opening mark */
+  .review-quote {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: min(1.45vw, 2.1vh);
+    line-height: 1.5;
+    color: var(--cream);
+    border-left: 2px solid var(--neon-cyan);
+    padding-left: 18px;
+    margin: 10px 0;
+    max-width: 90%;
+  }
+  .review-quote .source {
+    display: block;
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: min(1.08vw, 1.55vh);
+    color: var(--cream-2);
+    margin-top: 8px;
+    letter-spacing: 2px;
+  }
+
+  /* =====================================================================
+     SLIDE STRIP — thumbnails the operator can click
+     ===================================================================== */
+
+  .strip-wrap {
+    padding: 0 24px 32px;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .strip-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 2px;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+  }
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  .thumb {
+    background: #0F0A18;
+    border: 1px solid #2A1F40;
+    border-radius: 4px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cream-2);
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .thumb:hover { border-color: var(--neon-magenta); color: var(--white); }
+  .thumb.active { border-color: var(--neon-magenta); background: rgba(255, 26, 117, 0.08); color: var(--white); }
+  .thumb .id {
+    color: var(--neon-magenta);
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+  .thumb .kind {
+    color: var(--dim);
+    font-size: 8.5px;
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Dwell progress bar */
+  .dwell-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--neon-magenta);
+    box-shadow: 0 0 8px var(--neon-magenta);
+    width: 0%;
+    z-index: 20;
+    transition: width linear;
+  }
+  body[data-phase="interval"] .dwell-bar { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+  body[data-phase="postshow"] .dwell-bar { background: var(--lavender); box-shadow: none; opacity: 0.6; }
+
+  /* Notes panel */
+  .notes {
+    max-width: 1320px;
+    margin: 0 auto 40px;
+    padding: 16px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cream-2);
+    line-height: 1.65;
+    letter-spacing: 0.5px;
+    border-top: 1px solid #1F1530;
+  }
+  .notes b { color: var(--neon-magenta); font-weight: 700; }
+  .notes .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(255, 212, 52, 0.12);
+    color: var(--poster-yellow);
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-right: 6px;
+  }
+
+  /* Responsive scaling for small screens — preserves 16:9 readability */
+  @media (max-width: 900px) {
+    .preview-controls { width: 100%; margin-left: 0; }
+  }
+</style>
+</head>
+<body data-phase="preshow">
+
+  <header class="preview-header">
+    <div>
+      <h1 class="preview-title">POPCORN <span class="accent">&#8226;</span> FOYER PREVIEW</h1>
+      <div class="preview-subtitle">NEON NOIR THEME &nbsp;|&nbsp; v0.2 &nbsp;|&nbsp; 2026-06-24 review</div>
+    </div>
+
+    <div class="preview-controls">
+      <div class="ctrl-group" role="tablist" aria-label="Phase">
+        <button class="ctrl-btn active" data-phase="preshow">Preshow</button>
+        <button class="ctrl-btn" data-phase="interval">Interval</button>
+        <button class="ctrl-btn" data-phase="postshow">Postshow</button>
+      </div>
+
+      <div class="ctrl-group">
+        <button class="ctrl-btn" id="btn-prev" title="Previous slide">&#9664; Prev</button>
+        <button class="ctrl-btn" id="btn-play" title="Play / pause">&#9208; Pause</button>
+        <button class="ctrl-btn" id="btn-next" title="Next slide">Next &#9654;</button>
+      </div>
+
+      <label class="preview-subtitle" style="display:flex;align-items:center;gap:6px;" title="Spot-check override only. Leave blank to use each slide's real per-slide dwell time.">
+        Dwell
+        <input type="number" id="dwell" class="dwell-input" value="" placeholder="auto" min="2" max="60" step="1">
+        s
+      </label>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage" id="stage">
+
+      <!-- Ambient layers -->
+      <div class="kernel k1"></div>
+      <div class="kernel k2"></div>
+      <div class="kernel k3"></div>
+      <div class="kernel k4"></div>
+      <div class="kernel k5"></div>
+      <div class="kernel k6"></div>
+
+      <!-- Watermark: popcorn-bucket silhouette in neon outline — large, centred, behind content -->
+      <svg class="watermark" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="wmGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#FF1A75"/>
+            <stop offset="100%" stop-color="#B43BFF"/>
+          </linearGradient>
+        </defs>
+        <g fill="none" stroke="url(#wmGrad)" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+          <!-- Overflowing popcorn (drawn FIRST so the rim sits in front of it) -->
+          <circle cx="31" cy="41" r="5"/>
+          <circle cx="41" cy="38" r="5.5"/>
+          <circle cx="52" cy="39" r="5.5"/>
+          <circle cx="62" cy="38" r="5.5"/>
+          <circle cx="71" cy="41" r="5"/>
+          <circle cx="44" cy="27" r="5.5"/>
+          <circle cx="55" cy="27" r="5.5"/>
+          <circle cx="50" cy="18" r="4.5"/>
+          <!-- Tub: flared cup, sides start just under the rim so nothing pokes through -->
+          <path d="M 27 56 L 32 112 L 68 112 L 73 56"/>
+          <!-- Concession stripes, starting below the lip -->
+          <line x1="40" y1="61" x2="42" y2="112"/>
+          <line x1="50" y1="61" x2="50" y2="112"/>
+          <line x1="60" y1="61" x2="58" y2="112"/>
+          <!-- Rolled rim band LAST, filled with the ink ground so popcorn + sides
+               tuck behind the lip (the green cut-line / yellow nubs you marked). -->
+          <rect x="20" y="46" width="60" height="10" rx="5" fill="#1A0E2A"/>
+        </g>
+      </svg>
+
+      <!-- Criterion Theatre logo — font-based twin-neon PNG (2026-06-10), the same
+           asset the live engine uses (engine copy: platform/obs-helper/assets/;
+           this show-pack copy keeps the review page self-contained for sharing). -->
+      <div class="criterion-mark" title="The Criterion Theatre, Earlsdon">
+        <img src="assets/images/criterion-logo-neon.png" alt="Criterion Theatre" style="width:100%; height:auto; display:block;">
+      </div>
+
+      <!-- ==================================================================
+           SLIDES — each carries data-phase + data-id + data-dwell (sec)
+           ================================================================== -->
+
+      <!-- ============ PRESHOW ============ -->
+
+      <section class="slide" data-phase="preshow" data-id="P01" data-dwell="10" data-kind="welcome">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow">Tonight at the Criterion</p>
+            <h2 class="headline" style="font-size:11vw; letter-spacing:6px;">POPCORN</h2>
+            <p class="author" style="font-family:'Bebas Neue',sans-serif; font-size:2.3vw; color:var(--neon-cyan); letter-spacing:8px; text-shadow:var(--glow-cyan); margin-top:-6px;">BY BEN ELTON</p>
+            <p class="footline" style="margin-top:32px;">
+              Sat 27 Jun <span class="sep">/</span> Sat 4 Jul 2026
+            </p>
+          </div>
+          <div class="poster-frame" data-poster="popcorn">
+            <img src="assets/posters/popcorn-2026.jpg" alt="Popcorn poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback">
+              <strong>POPCORN</strong>
+              <span>Poster asset not yet downloaded.<br>Run <code style="color:var(--neon-cyan)">download-assets.py</code></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P02" data-dwell="10" data-kind="show-info">
+        <div class="poster-frame corner-poster" data-poster="popcorn">
+          <img src="assets/posters/popcorn-2026.jpg" alt="" onerror="this.parentElement.classList.add('missing')">
+          <div class="fallback"><strong>POPCORN</strong><span>poster</span></div>
+        </div>
+        <p class="eyebrow">Tonight's production</p>
+        <h2 class="headline medium">POPCORN</h2>
+        <p class="subhead">A play by Ben Elton &mdash; directed by Dean Sheridan</p>
+        <p class="body" style="max-width: 60%;">
+          Running time approximately <b>2 hours 10 minutes</b> including one <b>20-minute interval</b>.
+          Curtain at <b>19:30</b>.
+        </p>
+        <p class="footline">House opens 19:00 <span class="sep">&#8226;</span> Curtain 19:30 <span class="sep">&#8226;</span> Interval ~20:30</p>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P03" data-dwell="12" data-kind="cast">
+        <p class="eyebrow">Tonight's cast</p>
+        <h2 class="headline small">THE COMPANY</h2>
+        <div class="two-col">
+          <div class="cast-row"><span class="cast-role">Bruce Delamitri</span><span class="cast-actor">Dave Crossfield</span></div>
+          <div class="cast-row"><span class="cast-role">Karl Brezner</span><span class="cast-actor">Chris Revill</span></div>
+          <div class="cast-row"><span class="cast-role">Farrah Delamitri</span><span class="cast-actor">Donna Davenport</span></div>
+          <div class="cast-row"><span class="cast-role">Velvet Delamitri</span><span class="cast-actor">Millie Revill</span></div>
+          <div class="cast-row"><span class="cast-role">Wayne Hudson</span><span class="cast-actor">Connor Bailey</span></div>
+          <div class="cast-row"><span class="cast-role">Scout</span><span class="cast-actor">Kelly Davidson</span></div>
+          <div class="cast-row"><span class="cast-role">Brooke Daniels</span><span class="cast-actor">Paige Phelps</span></div>
+          <div class="cast-row"><span class="cast-role">Kirsten</span><span class="cast-actor">Morgan Blundell-Smith</span></div>
+          <div class="cast-row"><span class="cast-role">Bill</span><span class="cast-actor">Rowan McDonnell</span></div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P04" data-dwell="11" data-kind="warning-top3">
+        <p class="eyebrow warn">Content Notice</p>
+        <h2 class="headline small">BEFORE YOU TAKE YOUR SEAT</h2>
+        <!-- Two-column table: equal-width yellow tags (grid column 1) + left-aligned details (column 2). -->
+        <div class="warning-list" style="margin-top:18px; display:grid; grid-template-columns:minmax(230px,16vw) 1fr; column-gap:3%; row-gap:16px; align-items:center; max-width:94%;">
+          <div class="warning-tag">Loud gunshots</div>
+          <div class="warning-detail">Sudden loud noises (gunshot effects).</div>
+          <div class="warning-tag">Strong language</div>
+          <div class="warning-detail">Frequent throughout, including offensive slurs and sexual terms.</div>
+          <div class="warning-tag">Age guidance 15+</div>
+          <div class="warning-detail">Recommended for ages 15 and above. The Criterion does not enforce age but advises caution.</div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P05" data-dwell="14" data-kind="warning-full" data-once="house-open">
+        <p class="eyebrow warn">Full Content Advisory</p>
+        <h2 class="headline small">CONTENT &amp; ACCESSIBILITY</h2>
+        <p class="body small">This production contains the following. Please speak to a member of front-of-house if you have any concerns.</p>
+        <div class="two-col" style="margin-top:14px;">
+          <div>
+            <p class="body small"><b style="color:var(--poster-yellow);">Strong language.</b> Frequent throughout, including offensive slurs and sexual terms.</p>
+            <p class="body small"><b style="color:var(--poster-yellow);">Simulated violence.</b> Hostage-taking, physical threats, and guns used to intimidate people.</p>
+            <p class="body small"><b style="color:var(--poster-yellow);">Loud gunshot effects.</b> Sudden loud noises (gunshot effects).</p>
+          </div>
+          <div>
+            <p class="body small"><b style="color:var(--poster-yellow);">Mature themes.</b> Adult themes around media violence, celebrity culture, and the sexualisation of crime.</p>
+            <p class="body small"><b style="color:var(--poster-yellow);">Flashing lights.</b> Camera flashes and rapid light changes in the Oscar / TV scenes.</p>
+            <p class="body small"><b style="color:var(--poster-yellow);">Age guidance.</b> Recommended for ages 15 and above.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P06" data-dwell="9" data-kind="safety">
+        <p class="eyebrow">Before curtain</p>
+        <h2 class="headline small">PHONES OFF &mdash; NO PHOTOGRAPHY</h2>
+        <p class="body">
+          Please silence your phones completely &mdash; vibrate is loud on stage.
+          Photography and recording are not permitted during the performance.
+        </p>
+        <p class="body" style="color:var(--lavender);">
+          Fire exits are clearly marked. In an emergency, follow the staff and leave by the nearest exit.
+        </p>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P07" data-dwell="11" data-kind="about-ben">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow">About the writer</p>
+            <h2 class="headline small">BEN ELTON</h2>
+            <p class="body" style="max-width:none;">
+              Stand-up comedian, novelist, screenwriter. Co-creator of <em>The Young Ones</em> and <em>Blackadder</em>;
+              writer of <em>Popcorn</em> as a novel in 1996 and as the stage play that has toured since 2000.
+              The play won the <b>Olivier Award for Best New Comedy</b>.
+            </p>
+            <p class="footline">Born 3 May 1959 <span class="sep">&#8226;</span> Fitzrovia, London</p>
+          </div>
+          <!-- Photo slot — David to choose from commons.wikimedia.org/wiki/Category:Ben_Elton
+               and drop into assets/people/ben-elton.jpg. Until then, a styled fallback. -->
+          <div class="poster-frame contain" data-poster="ben-elton">
+            <img src="assets/people/ben-elton-topaz-upscale-4x-face.jpg" alt="" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback">
+              <strong>BEN ELTON</strong>
+              <span>Photo pending<br>(Wikimedia Commons<br>has CC-licensed options)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P08" data-dwell="11" data-kind="about-play">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow">About the play</p>
+            <h2 class="headline small">ART, CELEBRITY, RESPONSIBILITY.</h2>
+            <p class="body" style="max-width:none;">
+              Hollywood film director Bruce Delamitri's Oscar-night triumph is cut short when two violent
+              intruders &mdash; fans who claim his movies inspired their crimes &mdash; invade his home.
+              A sharp, darkly comic thriller about a culture addicted to spectacle and violence.
+            </p>
+          </div>
+          <div class="poster-frame" data-poster="popcorn">
+            <img src="assets/posters/popcorn-2026.jpg" alt="" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>POPCORN</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P09" data-dwell="12" data-kind="director-quote">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">From the director</p>
+            <h2 class="headline small outline">DIRECTOR'S NOTE</h2>
+            <p class="body" style="font-style:italic; color:var(--cream); max-width:none;">
+              "We're quick to blame films, games and books when something terrible happens &mdash; anything
+              but the person who chose to watch. Ben Elton wrote <em>Popcorn</em> in the nineties; it feels
+              written for now. It holds a mirror up to all of us &mdash; and if you don't like the
+              reflection, well&hellip; it's not my fault. <b>Everybody is responsible but me.</b>"
+            </p>
+            <p class="footline">Dean Sheridan <span class="sep">&#8226;</span> Director</p>
+          </div>
+          <div class="poster-frame" data-poster="dean">
+            <img src="assets/people/dean-sheridan-square.jpg" alt="Dean Sheridan, director" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>DEAN<br>SHERIDAN</strong><span>Director</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P10" data-dwell="10" data-kind="did-you-know">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow">Did you know</p>
+            <h2 class="headline small">THE OSCARS</h2>
+            <p class="body" style="max-width:none;">
+              The Academy Awards have been broadcast on television every year since 1953.
+              The first ceremony, in 1929, lasted just <b>15 minutes</b>. The winners had been
+              announced in the newspapers three months earlier &mdash; so it was less a competition
+              than a victory dinner.
+            </p>
+          </div>
+          <div class="poster-frame contain" data-poster="oscar">
+            <img src="assets/images/Oscar_square.png" alt="Academy Award statuette" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>THE<br>OSCARS</strong><span>since 1929</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P10b" data-dwell="10" data-kind="did-you-know-criterion">
+        <p class="eyebrow">Did you know</p>
+        <h2 class="headline small">THE CRITERION</h2>
+        <p class="body">
+          The Criterion has staged <b>over 450 productions</b> since 1955. Two of them were world premieres.
+          Members have played <b>more than 6,000 parts</b> and crewed <b>8,000 backstage roles</b>.
+          The building you're standing in is <b>over 140 years old</b> &mdash; an 1884 Methodist chapel that
+          became a theatre in 1960.
+        </p>
+        <p class="footline">200 Company members <span class="sep">&#8226;</span> 400 supporting members <span class="sep">&#8226;</span> 0 paid employees</p>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P11" data-dwell="12" data-kind="next-production">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Coming up next at the Criterion</p>
+            <h2 class="headline small cyan">UNDERDOG</h2>
+            <p class="subhead cyan" style="font-size:2.2vw; letter-spacing:3px;">The Other Other Bronte</p>
+            <p class="body" style="max-width:none;">
+              Charlotte Bront&euml; has a confession about how one sister became an idol, and the other became
+              known as <em>the third sister</em>. You know the one. No, not that one. The other, other one&hellip; Anne.
+              Sarah Gordon's irreverent retelling of the Bront&euml; legend.
+            </p>
+            <p class="footline">Sat 26 Sep <span class="sep">/</span> Sat 3 Oct 2026 <span class="sep">/</span> Book at criteriontheatre.co.uk/tickets</p>
+          </div>
+          <div class="poster-frame cyan" data-poster="underdog">
+            <img src="assets/posters/underdog-2026.jpg" alt="Underdog poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>UNDERDOG</strong><span>poster will appear once<br>download-assets.py runs</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P11b" data-dwell="11" data-kind="next-production-2">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">And then this Christmas</p>
+            <h2 class="headline small cyan">SHAKESPEARE IN LOVE</h2>
+            <p class="body" style="max-width:none; margin-top:18px;">
+              Based on the Academy Award-winning film. William Shakespeare hasn't written a hit in years &mdash;
+              until he hears his lines spoken with great feeling by an unknown young actor. A romantic comedy
+              about the discovery of his muse, and the writing of <em>Romeo and Juliet</em>.
+            </p>
+            <p class="body small" style="color:var(--cream-2);">
+              By Marc Norman &amp; Tom Stoppard, adapted by Lee Hall. Directed by Hugh Sorrill.
+            </p>
+            <p class="footline">Sat 5 Dec <span class="sep">/</span> Sat 12 Dec 2026</p>
+          </div>
+          <div class="poster-frame cyan" data-poster="shakespeare">
+            <img src="assets/posters/shakespeare-in-love-2026.jpg" alt="Shakespeare in Love poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>SHAKESPEARE<br>IN LOVE</strong><span>poster pending download</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P12" data-dwell="9" data-kind="volunteer">
+        <p class="eyebrow">Join us</p>
+        <h2 class="headline small">VOLUNTEER AT THE CRITERION</h2>
+        <p class="body">
+          The Criterion is run entirely by volunteers &mdash; actors, technicians, front-of-house, builders, painters.
+          If you'd like to be part of it, speak to any of the front-of-house team tonight, or visit
+          <b style="color:var(--neon-cyan);">criteriontheatre.co.uk/join</b>.
+        </p>
+        <p class="footline">Registered charity 1161430</p>
+      </section>
+
+      <!-- Tickets & walk-ins slide. Source: scraped from /tickets on 2026-05-21.
+           A FoH "sold out tonight" announcement template can overlay this with
+           the SOLD-OUT treatment — see announcements/templates.json #tonight-sold-out. -->
+      <section class="slide" data-phase="preshow" data-id="P13" data-dwell="11" data-kind="tickets-walkins">
+        <p class="eyebrow">Tickets &amp; walk-ins</p>
+        <h2 class="headline small">TICKETS FROM &pound;10</h2>
+        <div style="display:flex; gap:4%; align-items:center; max-width:94%; margin-top:18px;">
+          <div style="flex:1 1 auto; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:3%;">
+            <div style="border:1.5px solid var(--neon-cyan); padding:18px 14px; border-radius:3px; background:rgba(0,229,255,0.06);">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.15vw,1.6vh); color:var(--neon-cyan); letter-spacing:3px; text-transform:uppercase;">Standard</div>
+              <div style="font-family:'Anton',sans-serif; font-size:4.2vw; color:var(--white); letter-spacing:2px; margin-top:4px;">&pound;15</div>
+            </div>
+            <div style="border:1.5px solid var(--neon-magenta); padding:18px 14px; border-radius:3px; background:rgba(255,26,117,0.06);">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.15vw,1.6vh); color:var(--neon-magenta); letter-spacing:3px; text-transform:uppercase;">Member</div>
+              <div style="font-family:'Anton',sans-serif; font-size:4.2vw; color:var(--white); letter-spacing:2px; margin-top:4px;">&pound;12.50</div>
+            </div>
+            <div style="border:1.5px solid var(--poster-yellow); padding:18px 14px; border-radius:3px; background:rgba(255,212,52,0.06);">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.15vw,1.6vh); color:var(--poster-yellow); letter-spacing:3px; text-transform:uppercase;">Under 25</div>
+              <div style="font-family:'Anton',sans-serif; font-size:4.2vw; color:var(--white); letter-spacing:2px; margin-top:4px;">&pound;10</div>
+            </div>
+          </div>
+          <!-- Tickets QR. Image is live in the pack but the destination URL is NOT
+               yet active — keep the "not yet live" caption until David confirms. -->
+          <div style="flex:0 0 auto; text-align:center;">
+            <div style="width:11vw; max-width:170px; aspect-ratio:1/1; background:#FFFFFF; border:2px solid var(--neon-cyan); border-radius:6px; box-shadow:var(--glow-cyan); padding:6%; display:flex; align-items:center; justify-content:center;">
+              <img src="assets/images/tickets-qr.png" alt="Scan to book tickets" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-family:Anton,sans-serif;color:#111;letter-spacing:2px;&quot;>QR</span>';">
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:min(1.05vw,1.5vh); color:var(--neon-cyan); letter-spacing:2px; margin-top:9px; text-transform:uppercase;">Scan to book</div>
+          </div>
+        </div>
+        <p class="body small" style="margin-top:20px; color:var(--lavender);">
+          Tonight's house is available unless otherwise announced. Walk-ins welcome at the box office.
+          Book online: <b style="color:var(--neon-cyan);">criteriontheatre.co.uk/tickets</b>.
+        </p>
+      </section>
+
+      <!-- In-world teasers in the PRESHOW loop (Chris's idea, David: both phases).
+           The "FROM THE FILM" eyebrow badge + red feature frame keep these clearly
+           in-world, so they don't read as real coming-soon adverts before curtain. -->
+      <section class="slide" data-phase="preshow" data-id="P14" data-dwell="10" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">A Bruce Delamitri picture</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">ORDINARY AMERICANS</h2>
+            <p class="body" style="max-width:none;">
+              The Oscar-winning film at the heart of tonight's story &mdash; Bruce Delamitri's blood-soaked
+              portrait of small-town America, and the movie two killers swear taught them everything.
+            </p>
+            <p class="footline" style="font-style:italic;">"Some people call it violence. He calls it truth."</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="ordinary-americans">
+            <img src="assets/posters/Ordinary_Americans_7_10.jpg" alt="Ordinary Americans film poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>ORDINARY<br>AMERICANS</strong><span>a Delamitri picture</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="preshow" data-id="P15" data-dwell="10" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Cover story</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">THE UNAMERICAN</h2>
+            <p class="body" style="max-width:none;">
+              Hollywood's most dangerous director, in his own words. The magazine profile behind
+              Bruce Delamitri's most explosive masterpiece &mdash; too slick, too violent, too honest?
+            </p>
+            <p class="footline">World-building from tonight's production</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="the-unamerican">
+            <img src="assets/posters/The_Unamerican_7_10.jpg" alt="The Unamerican magazine cover" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>THE<br>UNAMERICAN</strong><span>cover story</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rehearsal-photo gallery placeholder (preshow). Auto-fills from
+           assets/photos/rehearsal-0N.jpg when Chris's photos arrive. -->
+      <section class="slide" data-phase="preshow" data-id="P16" data-dwell="10" data-kind="production-gallery">
+        <p class="eyebrow">In rehearsal</p>
+        <h2 class="headline small">INSIDE THE REHEARSAL ROOM</h2>
+        <div class="photo-grid">
+          <div class="poster-frame contain"><img src="assets/photos/rehearsal-01.jpg" alt="" onerror="this.parentElement.classList.add('missing')"><div class="fallback"><strong>PHOTO</strong><span>rehearsal shot</span></div></div>
+          <div class="poster-frame contain"><img src="assets/photos/rehearsal-02.jpg" alt="" onerror="this.parentElement.classList.add('missing')"><div class="fallback"><strong>PHOTO</strong><span>rehearsal shot</span></div></div>
+          <div class="poster-frame contain"><img src="assets/photos/rehearsal-03.jpg" alt="" onerror="this.parentElement.classList.add('missing')"><div class="fallback"><strong>PHOTO</strong><span>rehearsal shot</span></div></div>
+        </div>
+      </section>
+
+      <!-- ============ INTERVAL ============ -->
+
+      <section class="slide" data-phase="interval" data-id="I01" data-dwell="8" data-kind="bar-spotlight">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow">At the bar tonight</p>
+            <h2 class="headline medium cyan">THE BAR IS OPEN</h2>
+            <p class="body" style="max-width:none;">
+              Beers, wines, soft drinks and snacks are being served now in the foyer bar.
+              Please head back to your seats when the bell sounds.
+            </p>
+          </div>
+          <div class="poster-frame cyan" data-poster="bar">
+            <img src="assets/images/bar-foyer.jpg" alt="The Criterion foyer bar" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>THE BAR</strong><span>foyer bar photo</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERVAL countdown slide (I02) retired 2026-05-29: the FoH announcement
+           band now owns the live "Act II begins in N min" countdown (see the
+           interval-ending / interval-now countdown templates in
+           announcements/templates.json). The onSlideEnter() 'countdown' branch
+           below is now dormant — kept harmless in case a future show re-adds one. -->
+
+      <section class="slide" data-phase="interval" data-id="I03" data-dwell="10" data-kind="next-production-interval">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Coming next</p>
+            <h2 class="headline small cyan">UNDERDOG</h2>
+            <p class="subhead cyan" style="font-size:1.7vw; letter-spacing:3px;">The Other Other Bronte</p>
+            <p class="body" style="max-width:none;">
+              Sarah Gordon's irreverent retelling of the Bront&euml; sisters &mdash; sibling rivalry, the power of words,
+              and the third sister you don't know about. <em>You know the one. No, not that one.</em>
+            </p>
+            <p class="footline">Sat 26 Sep <span class="sep">/</span> Sat 3 Oct 2026</p>
+          </div>
+          <div class="poster-frame cyan">
+            <img src="assets/posters/underdog-2026.jpg" alt="Underdog poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>UNDERDOG</strong><span>poster pending download</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="interval" data-id="I03b" data-dwell="10" data-kind="next-production-interval">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">This Christmas</p>
+            <h2 class="headline small cyan">SHAKESPEARE IN LOVE</h2>
+            <p class="subhead cyan" style="font-size:1.7vw; letter-spacing:3px;">Based on the Academy Award-winning film</p>
+            <p class="body" style="max-width:none;">
+              Will Shakespeare hasn't written a hit in years &mdash; until an unknown young actor speaks his
+              lines with great feeling. The romantic comedy behind <em>Romeo and Juliet</em>, adapted by Lee Hall.
+            </p>
+            <p class="footline">Sat 5 Dec <span class="sep">/</span> Sat 12 Dec 2026</p>
+          </div>
+          <div class="poster-frame cyan">
+            <img src="assets/posters/shakespeare-in-love-2026.jpg" alt="Shakespeare in Love poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>SHAKESPEARE<br>IN LOVE</strong><span>poster pending download</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ POSTSHOW ============ -->
+
+      <section class="slide" data-phase="postshow" data-id="X01" data-dwell="10" data-kind="bar-stays-open">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Thank you for being with us</p>
+            <h2 class="headline small">THE BAR STAYS OPEN</h2>
+            <p class="body" style="max-width:none;">
+              The bar is open until <b>23:00</b>. Stay a while &mdash; have a drink, talk it over,
+              and say hello to the cast.
+            </p>
+            <p class="footline">Tonight <span class="sep">&#8226;</span> 23:00 close</p>
+          </div>
+          <div class="poster-frame muted" data-poster="bar">
+            <img src="assets/images/bar-foyer.jpg" alt="The Criterion foyer bar" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>THE BAR</strong><span>foyer bar photo</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X02" data-dwell="10" data-kind="thank-you">
+        <p class="eyebrow calm">From everyone at the Criterion</p>
+        <h2 class="headline medium">THANK YOU</h2>
+        <p class="body">
+          For supporting amateur theatre in Coventry. For making the journey to Earlsdon. For sitting in the dark
+          with us. We hope to see you again soon.
+        </p>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X03" data-dwell="12" data-kind="archive-memory">
+        <p class="eyebrow calm">From the Criterion archive</p>
+        <h2 class="headline small outline">1971 &mdash; CRIME &amp; PUNISHMENT</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">
+              "Assisting Jeff Hadley with the set construction. In those days, money was tight and materials
+              short, so there was a lot of what we now know as recycling. All nails were recovered and
+              straightened, screws were few and far between, and the wooden beer crates were repurposed
+              for all manner of uses on stage."
+            </p>
+            <p class="archive-attribution">
+              <span class="attr-name">Karl Stafford</span> &mdash; Set construction
+            </p>
+          </div>
+          <div class="poster-frame muted contain">
+            <img src="assets/archive/crime-and-punishment-1971.jpg" alt="Crime and Punishment 1971" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>1971</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X06" data-dwell="12" data-kind="archive-memory">
+        <p class="eyebrow calm">From the Criterion archive</p>
+        <h2 class="headline small outline">2012 &mdash; SINGLE SPIES</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">
+              "I played Guy Burgess in the first of the two plays, and Elliot Relton-Williams was my Russian
+              boyfriend, Tolya. On the opening night there was a severe snowstorm; Elliot had been having a
+              quick ciggie outside the back door of the theatre wearing his heavy Russian overcoat and fur
+              hat, and made his first entrance into my Moscow flat <em>covered in real snow!</em>"
+            </p>
+            <p class="archive-attribution">
+              <span class="attr-name">Phil Reynolds</span> &mdash; Cast
+            </p>
+          </div>
+          <div class="poster-frame muted contain">
+            <img src="assets/archive/single-spies-2012.jpg" alt="Single Spies 2012" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>2012</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X07" data-dwell="12" data-kind="archive-memory">
+        <p class="eyebrow calm">From the Criterion archive</p>
+        <h2 class="headline small outline">1981 &mdash; FUNNY PECULIAR</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">
+              "Mr. Ruscoe decided to put ice water in the bottle he squirted down my trousers during the
+              fight on the last night of the run. I had my revenge for the final scene of the play. John
+              had to play it completely immobilised in a hospital bed &mdash; about ten seconds before he
+              jumped in, I emptied a bottle of ice water onto the mattress."
+            </p>
+            <p class="archive-attribution">
+              <span class="attr-name">Terry Nicholls</span> &mdash; Cast
+            </p>
+          </div>
+          <div class="poster-frame muted contain">
+            <img src="assets/archive/funny-peculiar-1981.jpg" alt="Funny Peculiar 1981" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>1981</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X08" data-dwell="12" data-kind="archive-memory">
+        <p class="eyebrow calm">From the Criterion archive</p>
+        <h2 class="headline small outline">1997 &mdash; ARSENIC &amp; OLD LACE</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">
+              "The wonderful Doug Griffiths had to recite a list of countries every night&hellip;
+              never quite got them in the same order or indeed the same list. Brings a smile to my face
+              remembering this one."
+            </p>
+            <p class="archive-attribution">
+              <span class="attr-name">Nicole Firth</span> &mdash; Cast
+            </p>
+          </div>
+          <div class="poster-frame muted contain">
+            <img src="assets/archive/arsenic-and-old-lace-1997.jpg" alt="Arsenic and Old Lace 1997" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>1997</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X09" data-dwell="12" data-kind="archive-memory">
+        <p class="eyebrow calm">From the Criterion archive</p>
+        <h2 class="headline small outline">1988 &mdash; BABES IN THE WOOD</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">
+              "My first time in a production at the Criterion. At the end of the final dress rehearsal,
+              I had bundled up my costume and stored it under a table. Linda Holmes, doing wardrobe,
+              was not very happy with this. <em>'Who do you think is going to be ironing this costume?'</em>
+              At the time I thought there was an ironing fairy. My mum, as it turned out."
+            </p>
+            <p class="archive-attribution">
+              <span class="attr-name">Chris Firth</span> &mdash; Cast
+            </p>
+          </div>
+          <div class="poster-frame muted contain">
+            <img src="assets/archive/babes-in-the-wood-1988.jpg" alt="Babes In The Wood 1988" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>1988</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X10" data-dwell="13" data-kind="archive-memory">
+        <p class="eyebrow calm">From the Criterion archive</p>
+        <h2 class="headline small outline">1973 &mdash; GUYS &amp; DOLLS</h2>
+        <div class="archive-thumb-wrap">
+          <div class="archive-text">
+            <p class="body">
+              "My father played Sky Masterson. One night, a ring box was needed for the proposal scene.
+              <em>'I have a ring box,'</em> I enthusiastically chirped from the back of the rehearsal.
+              <em>'A ring box?'</em> &mdash; disbelievingly from the stage. <em>'Yes, an old-fashioned one
+              with a catch and everything.'</em> So my ring box took a central part in the proposal.
+              Ring boxes, I am sure, were not in short supply in Coventry."
+            </p>
+            <p class="archive-attribution">
+              <span class="attr-name">Marcus Pugh</span> &mdash; Aged 11 at the time
+            </p>
+          </div>
+          <div class="poster-frame muted contain">
+            <img src="assets/archive/guys-and-dolls-1973.jpg" alt="Guys and Dolls 1973" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>1973</strong><span>poster</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- In-world Popcorn film/media posters — the fiction of tonight's show.
+           Sits between the real archive memories and the real coming-soon shows. -->
+      <section class="slide" data-phase="postshow" data-id="XP1" data-dwell="11" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">A Bruce Delamitri picture</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">ORDINARY AMERICANS</h2>
+            <p class="body" style="max-width:none;">
+              The Oscar-winning film at the heart of tonight's story. Bruce Delamitri's blood-soaked
+              portrait of small-town America &mdash; and the movie two killers swear taught them everything.
+            </p>
+            <p class="footline" style="font-style:italic;">"Some people call it violence. He calls it truth."</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="ordinary-americans">
+            <img src="assets/posters/Ordinary_Americans_7_10.jpg" alt="Ordinary Americans film poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>ORDINARY<br>AMERICANS</strong><span>a Delamitri picture</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="XP2" data-dwell="11" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Cover story</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">THE UNAMERICAN</h2>
+            <p class="body" style="max-width:none;">
+              Hollywood's most dangerous director, in his own words. The magazine profile behind
+              Bruce Delamitri's most explosive masterpiece &mdash; too slick, too violent, too honest?
+            </p>
+            <p class="footline">World-building from tonight's production</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="the-unamerican">
+            <img src="assets/posters/The_Unamerican_7_10.jpg" alt="The Unamerican magazine cover" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>THE<br>UNAMERICAN</strong><span>cover story</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="XP3" data-dwell="11" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Tonight's headlines</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">MALL MURDERERS</h2>
+            <p class="body" style="max-width:none;">
+              The killing spree America couldn't stop watching. Wayne and Scout &mdash; celebrity outlaws
+              in a culture addicted to the spectacle &mdash; claim Bruce Delamitri's films wrote their script.
+            </p>
+            <p class="footline">World-building from tonight's production</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="mall-murderers">
+            <img src="assets/posters/Mall_Murderers.jpg" alt="Mall Murderers poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>MALL<br>MURDERERS</strong><span>tonight's headlines</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="XP4" data-dwell="11" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Celebrity spotlight</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">BROOKE DANIELS</h2>
+            <p class="body" style="max-width:none;">
+              Model, actress, and the face on every newsstand. Brooke Daniels wants to be taken seriously
+              in a town that only takes pictures &mdash; and tonight, on Oscar night, she's about to land
+              the role of her life.
+            </p>
+            <p class="footline">World-building from tonight's production</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="brooke-daniels">
+            <img src="assets/posters/Brooke_Daniels.jpg" alt="Brooke Daniels magazine cover" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>BROOKE<br>DANIELS</strong><span>celebrity spotlight</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="XP5" data-dwell="11" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">On the cover</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">KARL BREZNER</h2>
+            <p class="body" style="max-width:none;">
+              The most powerful producer in Hollywood &mdash; the money and the muscle behind Bruce
+              Delamitri's pictures. From blockbusters to cult classics, Brezner makes the movies we
+              remember, and decides which ones we get to see.
+            </p>
+            <p class="footline" style="font-style:italic;">"Hollywood can't do without him. Neither can we."</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="karl-brezner">
+            <img src="assets/posters/karl-brezner.jpg" alt="Karl Brezner TIME cover" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>KARL<br>BREZNER</strong><span>on the cover</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="XP6" data-dwell="11" data-kind="popcorn-feature">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Exclusive</p>
+            <h2 class="headline small" style="color:var(--poster-yellow);">FARRAH DELAMITRI</h2>
+            <p class="body" style="max-width:none;">
+              Inside the Delamitri fallout. Bruce's ex-wife &mdash; done playing nice, and set to take him
+              for everything he's worth. The divorce that could be the most expensive in Hollywood history,
+              told from the other side of the marriage.
+            </p>
+            <p class="footline">World-building from tonight's production</p>
+          </div>
+          <div class="poster-frame feature contain" data-poster="farrah-delamitri">
+            <img src="assets/posters/farrah-delamitri-cover.jpg" alt="Farrah Delamitri Vanity Fair cover" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>FARRAH<br>DELAMITRI</strong><span>exclusive</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X04" data-dwell="10" data-kind="chris-video">
+        <p class="eyebrow calm">From the wings</p>
+        <h2 class="headline small cyan">CHRIS'S VIDEOS</h2>
+        <p class="body">
+          <span style="color:var(--neon-cyan)">[ VIDEO SLOT ]</span> &mdash; Chris's behind-the-scenes videos play full-frame here
+          without the Neon Noir overlay applied, per the architecture spec. Awaiting file list from Chris.
+        </p>
+        <p class="footline">Weighted 2&times; in postshow pool</p>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X05" data-dwell="12" data-kind="next-production-postshow">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Book your next visit</p>
+            <h2 class="headline small cyan">UNDERDOG</h2>
+            <p class="subhead" style="color:var(--lavender); font-size:1.9vw;">The Other Other Bronte &mdash; by Sarah Gordon</p>
+            <p class="review-quote">
+              An irreverent retelling of the life and legend of the Bront&euml; sisters &mdash; sibling power dynamics, the power of words.
+            </p>
+            <p class="footline">Sat 26 Sep <span class="sep">/</span> Sat 3 Oct 2026 <span class="sep">/</span> criteriontheatre.co.uk/tickets</p>
+          </div>
+          <div class="poster-frame cyan">
+            <img src="assets/posters/underdog-2026.jpg" alt="Underdog poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>UNDERDOG</strong><span>poster pending<br>download-assets.py</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-phase="postshow" data-id="X05b" data-dwell="12" data-kind="next-production-christmas">
+        <div class="split-layout">
+          <div class="split-text">
+            <p class="eyebrow calm">Christmas at the Criterion</p>
+            <h2 class="headline small cyan">SHAKESPEARE IN LOVE</h2>
+            <p class="subhead" style="color:var(--lavender); font-size:1.6vw;">Marc Norman &amp; Tom Stoppard &mdash; adapted by Lee Hall</p>
+            <p class="review-quote">
+              "A cracking love letter to theatre itself that strikes gold in its stage version."
+              <span class="source">WhatsOnStage</span>
+            </p>
+            <p class="footline">Sat 5 Dec <span class="sep">/</span> Sat 12 Dec 2026 <span class="sep">/</span> Directed by Hugh Sorrill</p>
+          </div>
+          <div class="poster-frame cyan">
+            <img src="assets/posters/shakespeare-in-love-2026.jpg" alt="Shakespeare in Love poster" onerror="this.parentElement.classList.add('missing')">
+            <div class="fallback"><strong>SHAKESPEARE<br>IN LOVE</strong><span>poster pending</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cast-montage gallery placeholder (postshow). Auto-fills from
+           assets/photos/performance-0N.jpg when Chris's photos arrive. -->
+      <section class="slide" data-phase="postshow" data-id="X11" data-dwell="12" data-kind="cast-gallery">
+        <p class="eyebrow calm">Tonight's company</p>
+        <h2 class="headline small">THE CAST OF POPCORN</h2>
+        <div class="photo-grid">
+          <div class="poster-frame muted contain"><img src="assets/photos/performance-01.jpg" alt="" onerror="this.parentElement.classList.add('missing')"><div class="fallback"><strong>PHOTO</strong><span>cast in performance</span></div></div>
+          <div class="poster-frame muted contain"><img src="assets/photos/performance-02.jpg" alt="" onerror="this.parentElement.classList.add('missing')"><div class="fallback"><strong>PHOTO</strong><span>cast in performance</span></div></div>
+          <div class="poster-frame muted contain"><img src="assets/photos/performance-03.jpg" alt="" onerror="this.parentElement.classList.add('missing')"><div class="fallback"><strong>PHOTO</strong><span>cast in performance</span></div></div>
+        </div>
+      </section>
+
+      <!-- Dwell progress bar -->
+      <div class="dwell-bar" id="dwell-bar"></div>
+
+    </div>
+  </div>
+
+  <div class="strip-wrap">
+    <p class="strip-label">SLIDES &mdash; click any to jump</p>
+    <div class="strip" id="strip"></div>
+  </div>
+
+  <div class="notes">
+    <p><b>Phase preview.</b> Switch between Preshow / Interval / Postshow at the top to see how the Neon Noir palette shifts. Preshow leans magenta + warm yellow accents; Interval shifts cyan-dominant (cooler, "off-air"); Postshow dims the neon and brings cream-on-black forward for reflective archive content.</p>
+    <p><b>Timing &amp; order.</b> Each slide now dwells for the time set in the JSON playlists
+       (roughly 9&ndash;13 seconds &mdash; raised this round on Chris's note). The Dwell box above is a
+       spot-check override only; leave it blank to watch the real per-slide timing. The engine also
+       <em>shuffles</em> wildcard slides and interleaves the anchors, so the running <em>order</em> on
+       this page is illustrative &mdash; not the order you'll see on the night.</p>
+    <p><b>Not a runtime stand-in.</b> This file is a static preview for aesthetic review. The actual obs-helper engine consumes the JSON files in <code>shows/popcorn-2026/foyer-pack/</code> (architecture doc &sect;7) and renders inside an OBS Browser Source. The bag-refill shuffle, HOUSE-OPEN one-shot logic, and dwell randomisation all happen there, not here.</p>
+  </div>
+
+<script>
+(() => {
+  'use strict';
+
+  const $stage   = document.getElementById('stage');
+  const $strip   = document.getElementById('strip');
+  const $dwellIn = document.getElementById('dwell');
+  const $btnPrev = document.getElementById('btn-prev');
+  const $btnNext = document.getElementById('btn-next');
+  const $btnPlay = document.getElementById('btn-play');
+  const $dwellBar= document.getElementById('dwell-bar');
+
+  const allSlides = Array.from(document.querySelectorAll('.slide'));
+  let currentPhase = 'preshow';
+  let currentIdx   = 0;
+  let playing      = true;
+  let dwellTimer   = null;
+  let progressTimer= null;
+  let dwellOverride= null; // if set, overrides per-slide data-dwell
+
+  function slidesForPhase(phase) {
+    return allSlides.filter(s => s.dataset.phase === phase);
+  }
+
+  function buildStrip() {
+    $strip.innerHTML = '';
+    const list = slidesForPhase(currentPhase);
+    list.forEach((s, i) => {
+      const t = document.createElement('div');
+      t.className = 'thumb';
+      t.dataset.idx = i;
+      t.innerHTML = `<div class="id">${s.dataset.id}</div>
+                     <div class="kind">${s.dataset.kind || ''}</div>`;
+      t.addEventListener('click', () => { jumpTo(i); });
+      $strip.appendChild(t);
+    });
+  }
+
+  function markStripActive() {
+    Array.from($strip.children).forEach((el, i) => {
+      el.classList.toggle('active', i === currentIdx);
+    });
+  }
+
+  function show(i) {
+    const list = slidesForPhase(currentPhase);
+    if (!list.length) return;
+    if (i < 0) i = list.length - 1;
+    if (i >= list.length) i = 0;
+    currentIdx = i;
+
+    // hide all phase slides, show this one
+    allSlides.forEach(s => s.classList.remove('active'));
+    const activeSlide = list[i];
+    activeSlide.classList.add('active');
+
+    // per-kind animations
+    onSlideEnter(activeSlide);
+
+    markStripActive();
+    resetDwell();
+  }
+
+  // ---- Per-slide on-enter animations -----------------------------------
+  let countdownTimer = null;
+  function onSlideEnter(slide) {
+    // stop any prior animation
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+
+    if (slide.dataset.kind === 'countdown') {
+      // Animate "Act II begins in N MIN" from the slide's data-start down to 0.
+      // In production this number is recomputed by obs-helper from
+      // performances.json + the FoH interval-start press; here we just simulate
+      // so David can see the visual treatment.
+      const display = slide.querySelector('#countdown-display');
+      const caption = slide.querySelector('#countdown-caption');
+      if (!display) return;
+      let mins = parseInt(display.dataset.start || '14', 10);
+
+      const render = () => {
+        if (mins > 1) {
+          display.textContent = mins + ' MIN';
+          if (caption) caption.textContent = 'Please make your way back to your seats when you hear the bell.';
+        } else if (mins === 1) {
+          display.textContent = '1 MIN';
+          if (caption) caption.textContent = 'Please take your seats. Act II begins shortly.';
+        } else if (mins === 0) {
+          display.textContent = 'NOW';
+          if (caption) caption.textContent = 'Act II begins now.';
+        } else {
+          display.textContent = '—';
+          if (caption) caption.textContent = '';
+        }
+      };
+      render();
+
+      // Tick once per second in the preview so the change is visible during
+      // dwell — at runtime obs-helper would tick once per real minute.
+      countdownTimer = setInterval(() => {
+        mins -= 1;
+        if (mins < 0) {
+          mins = parseInt(display.dataset.start || '14', 10); // loop for demo
+        }
+        render();
+      }, 1000);
+    }
+  }
+
+  function jumpTo(i) {
+    show(i);
+  }
+
+  function next() { show(currentIdx + 1); }
+  function prev() { show(currentIdx - 1); }
+
+  function getDwellMs() {
+    const list = slidesForPhase(currentPhase);
+    const s = list[currentIdx];
+    let secs;
+    if (dwellOverride !== null && !isNaN(dwellOverride) && dwellOverride > 0) {
+      secs = dwellOverride;
+    } else {
+      secs = parseFloat(s?.dataset.dwell || '7');
+    }
+    return secs * 1000;
+  }
+
+  function resetDwell() {
+    if (dwellTimer)   { clearTimeout(dwellTimer); dwellTimer = null; }
+    if (progressTimer){ clearInterval(progressTimer); progressTimer = null; }
+
+    $dwellBar.style.transition = 'none';
+    $dwellBar.style.width = '0%';
+
+    if (!playing) return;
+
+    const totalMs = getDwellMs();
+    // kick the transition next frame so width animates from 0 -> 100
+    requestAnimationFrame(() => {
+      $dwellBar.style.transition = `width ${totalMs}ms linear`;
+      $dwellBar.style.width = '100%';
+    });
+
+    dwellTimer = setTimeout(next, totalMs);
+  }
+
+  function setPhase(p) {
+    currentPhase = p;
+    document.body.dataset.phase = p;
+    document.querySelectorAll('.ctrl-btn[data-phase]').forEach(b => {
+      b.classList.toggle('active', b.dataset.phase === p);
+    });
+    currentIdx = 0;
+    buildStrip();
+    show(0);
+  }
+
+  function togglePlay() {
+    playing = !playing;
+    $btnPlay.textContent = playing ? '⏸ Pause' : '▶ Play';
+    if (playing) {
+      resetDwell();
+    } else {
+      if (dwellTimer)    { clearTimeout(dwellTimer); dwellTimer = null; }
+      if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+      $dwellBar.style.transition = 'none';
+    }
+  }
+
+  // wire controls
+  document.querySelectorAll('.ctrl-btn[data-phase]').forEach(btn => {
+    btn.addEventListener('click', () => setPhase(btn.dataset.phase));
+  });
+  $btnPrev.addEventListener('click', prev);
+  $btnNext.addEventListener('click', next);
+  $btnPlay.addEventListener('click', togglePlay);
+  $dwellIn.addEventListener('change', () => {
+    const v = parseFloat($dwellIn.value);
+    dwellOverride = (isNaN(v) || v <= 0) ? null : v;
+    resetDwell();
+  });
+
+  // keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === ' ')          { e.preventDefault(); togglePlay(); }
+    if (e.key === '1') setPhase('preshow');
+    if (e.key === '2') setPhase('interval');
+    if (e.key === '3') setPhase('postshow');
+  });
+
+  // ---- URL contract (production) -------------------------------------------
+  //   (default) / ?phase=preshow|interval|postshow
+  //              -> clean broadcast view, auto-rotating, NO dev chrome.
+  //   ?scene=<name|data-id>  (alias: ?slide=<...>)
+  //              -> hold on ONE slide, no rotation. Used by FoH-triggered OBS
+  //                 scenes, e.g. foyer.html?scene=coming-soon
+  //   ?preview=1 -> reveal the dev gallery (phase tabs, slide strip, legend).
+  //   ?obs=1     -> retained as a harmless alias (clean is now the default).
+  //
+  // Friendly scene names map to slide data-ids. A raw data-id (P01, I02, X05b)
+  // or a slide's data-kind also resolves, so most sensible names "just work".
+  const SCENE_ALIASES = {
+    'welcome': 'P01',
+    'tonight': 'P02', 'show-info': 'P02',
+    'cast': 'P03',
+    'warnings': 'P04', 'warning-tops': 'P04', 'warning-top3': 'P04',
+    'warning-full': 'P05', 'content-warnings': 'P05',
+    'safety': 'P06',
+    'about-ben': 'P07', 'about-play': 'P08',
+    'director': 'P09', 'director-quote': 'P09',
+    'did-you-know': 'P10', 'did-you-know-criterion': 'P10b',
+    'coming-soon': 'P11', 'next-production': 'P11', 'next-production-2': 'P11b',
+    'volunteer': 'P12',
+    'tickets': 'P13', 'walkins': 'P13', 'tickets-walkins': 'P13',
+    'interval-bar': 'I01', 'bar-spotlight': 'I01',
+    'countdown': 'I02', 'next-production-interval': 'I03',
+    'bar': 'X01', 'bar-stays-open': 'X01',
+    'thank-you': 'X02', 'thanks': 'X02'
+  };
+
+  function resolveSceneToId(name) {
+    if (!name) return null;
+    const raw = String(name).trim();
+    const key = raw.toLowerCase();
+    let el = document.querySelector(`.slide[data-id="${raw}"]`)
+          || document.querySelector(`.slide[data-id="${raw.toUpperCase()}"]`);
+    if (el) return el.dataset.id;
+    if (SCENE_ALIASES[key]) return SCENE_ALIASES[key];
+    el = document.querySelector(`.slide[data-kind="${key}"]`);
+    return el ? el.dataset.id : null;
+  }
+
+  function lockToScene(name) {
+    const id = resolveSceneToId(name);
+    if (!id) return false;
+    const slide = document.querySelector(`.slide[data-id="${id}"]`);
+    if (!slide) return false;
+    currentPhase = slide.dataset.phase;
+    document.body.dataset.phase = currentPhase;
+    playing = false;
+    if (dwellTimer)    { clearTimeout(dwellTimer); dwellTimer = null; }
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+    $dwellBar.style.transition = 'none';
+    $dwellBar.style.width = '0%';
+    buildStrip();
+    allSlides.forEach(s => s.classList.remove('active'));
+    slide.classList.add('active');
+    currentIdx = slidesForPhase(currentPhase).indexOf(slide);
+    markStripActive();
+    onSlideEnter(slide);
+    return true;
+  }
+
+  (function init() {
+    const p = new URLSearchParams(window.location.search);
+    // Broadcast-clean by default; opt into the dev gallery with ?preview=1.
+    if (p.get('preview') !== '1') {
+      document.body.classList.add('obs-chrome');
+    }
+    const PHASES = ['preshow', 'interval', 'postshow'];
+    const want = (p.get('scene') || p.get('slide') || '').trim().toLowerCase();
+    const phaseParam = (p.get('phase') || '').trim().toLowerCase();
+    // A phase name in ?scene= (or ?phase=) means "rotate that whole phase".
+    if (PHASES.includes(want)) { setPhase(want); return; }
+    // Any other ?scene=/?slide= value holds on that single slide (no rotation).
+    if (want && lockToScene(want)) { return; }
+    // Otherwise honour ?phase=, defaulting to the preshow loop.
+    setPhase(PHASES.includes(phaseParam) ? phaseParam : 'preshow');
+  })();
+})();
+</script>
+</body>
+</html>

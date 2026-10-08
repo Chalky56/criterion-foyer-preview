@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "show_id": "popcorn-2026",
+  "_source": "Scraped from https://criteriontheatre.co.uk/tickets on 2026-05-21. Door-to-door times are exactly as published on the public booking page.",
+  "_bar_close_note": "bar_close added 2026-06-26. Engine shows 'open until <bar_close>' only when it matches HH:MM; any non-time value (e.g. TBC) shows generic 'ask staff for last orders' copy and never a guessed time.",
+  "performances": [
+    {
+      "id": "popcorn-2026-night-1",
+      "date": "2026-06-27",
+      "weekday": "Saturday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "22:00",
+      "interval_at_estimated": "20:30",
+      "act_2_at_estimated": "20:50",
+      "bar_close": "23:00",
+      "press_night": false,
+      "matinee": false,
+      "notes": "First night."
+    },
+    {
+      "id": "popcorn-2026-night-2",
+      "date": "2026-06-28",
+      "weekday": "Sunday",
+      "curtain": "17:00",
+      "house_opens": "16:30",
+      "estimated_finish": "19:30",
+      "interval_at_estimated": "18:00",
+      "act_2_at_estimated": "18:20",
+      "bar_close": "TBC",
+      "_bar_close_TBC": "MATINEE — confirm real bar close with the bar team and replace 'TBC' before David leaves. Until then the foyer shows generic 'ask staff for last orders' copy.",
+      "press_night": false,
+      "matinee": true,
+      "notes": "Early-evening / matinee start. Only non-19:30 performance of the run."
+    },
+    {
+      "id": "popcorn-2026-night-3",
+      "date": "2026-06-30",
+      "weekday": "Tuesday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "22:00",
+      "interval_at_estimated": "20:30",
+      "act_2_at_estimated": "20:50",
+      "bar_close": "23:00",
+      "press_night": false,
+      "matinee": false,
+      "notes": "Monday is dark."
+    },
+    {
+      "id": "popcorn-2026-night-4",
+      "date": "2026-07-01",
+      "weekday": "Wednesday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "22:00",
+      "interval_at_estimated": "20:30",
+      "act_2_at_estimated": "20:50",
+      "bar_close": "23:00"
+    },
+    {
+      "id": "popcorn-2026-night-5",
+      "date": "2026-07-02",
+      "weekday": "Thursday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "22:00",
+      "interval_at_estimated": "20:30",
+      "act_2_at_estimated": "20:50",
+      "bar_close": "23:00"
+    },
+    {
+      "id": "popcorn-2026-night-6",
+      "date": "2026-07-03",
+      "weekday": "Friday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "22:00",
+      "interval_at_estimated": "20:30",
+      "act_2_at_estimated": "20:50",
+      "bar_close": "23:00"
+    },
+    {
+      "id": "popcorn-2026-night-7",
+      "date": "2026-07-04",
+      "weekday": "Saturday",
+      "curtain": "19:30",
+      "house_opens": "19:00",
+      "estimated_finish": "22:00",
+      "interval_at_estimated": "20:30",
+      "act_2_at_estimated": "20:50",
+      "bar_close": "23:00",
+      "notes": "Closing night."
+    }
+  ],
+  "_TBC_from_dean": "interval_at_estimated and act_2_at_estimated assume an interval starts at +60min and runs 20min. Adjust once Dean confirms actual interval cue."
+}

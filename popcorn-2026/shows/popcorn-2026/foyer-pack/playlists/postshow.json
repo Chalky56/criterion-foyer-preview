@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "_generated": "2026-05-22",
+  "phase": "postshow",
+  "show_id": "popcorn-2026",
+  "policy": {
+    "min_dwell_seconds": 10,
+    "max_dwell_seconds": 14,
+    "max_words_per_screen": 70,
+    "consecutive_repeat": false,
+    "loop_target_seconds": null,
+    "audio_allowed": false,
+    "video_requires_captions": true,
+    "video_captions_format": "burnt-in",
+    "group_rotation": [
+      "archive_memory",
+      "in_world",
+      "future_production"
+    ],
+    "_group_rotation_notes": "Added 2026-06-10 (David): wildcards cycle as editorial groups - archive (talking point), in-world posters (talking point), next productions (sale offer); unlisted tags (videos, gallery) join the end of the cycle. Requires FOY-07; ignored by older schedulers.",
+    "_captions_notes": "Per 08-accessibility-audit.md \u00a73 + show.json.accessibility_policy.video_captions. Any video item below MUST carry burnt-in captions if it contains speech. obs-helper should refuse to play a non-captioned video at runtime (Phase 2 enforcement).",
+    "_dwell_notes": "min_dwell raised 7->10 on 2026-06-24 (Chris: longer is better postshow). Preview refs retargeted from popcorn-foyer-preview.html to the canonical popcorn-foyer.html.",
+    "_notes": "Postshow is high-dwell. No fixed loop length; pool-driven with bag-refill. Items are weighted; Chris's videos protected at weight 2 so they don't get out-rotated by archive wildcards."
+  },
+  "items": [
+    {
+      "kind": "anchor",
+      "id": "bar-stays-open",
+      "template": "bar-stays-open",
+      "every_n": 6,
+      "source": "slides/postshow-bar-stays-open.png",
+      "dwell_seconds": 10,
+      "placeholder": true,
+      "placeholder_owner": "Bar team",
+      "_notes": "Bar close time per night - assumed 23:00 in slide copy; confirm. Now carries the real foyer-bar photo (assets/images/bar-foyer.jpg).",
+      "preview_ref": "popcorn-foyer.html#X01"
+    },
+    {
+      "kind": "anchor",
+      "id": "thank-you",
+      "template": "thank-you",
+      "every_n": 6,
+      "source": "slides/postshow-thank-you.png",
+      "dwell_seconds": 10,
+      "preview_ref": "popcorn-foyer.html#X02"
+    },
+    {
+      "kind": "anchor",
+      "id": "next-production-underdog-postshow",
+      "template": "next-production-postshow",
+      "every_n": 6,
+      "source": "slides/next-production-underdog-postshow.png",
+      "production_ref": "next_productions.json#underdog-2026",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X05"
+    },
+    {
+      "kind": "anchor",
+      "id": "next-production-easy3-postshow",
+      "template": "next-production-postshow",
+      "every_n": 6,
+      "production_ref": "next_productions.json#easy-3-2026",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X05",
+      "_notes": "Added 2026-06-26. Easy 3 jazz night (10 Jul) \u2014 soonest upcoming event. Live HTML card (no pre-rendered PNG); poster pending at assets/posters/easy-3-2026.jpg."
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-shakespeare-postshow",
+      "template": "next-production-christmas",
+      "tag": "future_production",
+      "weight": 1,
+      "source": "slides/next-production-shakespeare-postshow.png",
+      "production_ref": "next_productions.json#shakespeare-in-love-2026",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X05b",
+      "_notes": "Christmas slot - shown less than Underdog. Patrons leaving Popcorn are several months out from Shakespeare in Love so this is brand-presence, not a tight commercial ask."
+    },
+    {
+      "kind": "anchor",
+      "id": "volunteer-call-postshow",
+      "template": "volunteer",
+      "every_n": 6,
+      "source": "slides/volunteer-call-postshow.png",
+      "dwell_seconds": 10
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-crime-punishment-1971",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#crime-and-punishment-1971-nails",
+      "source": "slides/archive-crime-and-punishment-1971.png",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X03"
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-single-spies-2012",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#single-spies-2012-snowstorm",
+      "source": "slides/archive-single-spies-2012.png",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X06"
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-funny-peculiar-1981",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#funny-peculiar-1981-ice-water",
+      "source": "slides/archive-funny-peculiar-1981.png",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X07"
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-arsenic-1997",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#arsenic-and-old-lace-1997-countries",
+      "source": "slides/archive-arsenic-and-old-lace-1997.png",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X08"
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-babes-wood-1988",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#babes-in-the-wood-1988-ironing-fairy",
+      "source": "slides/archive-babes-in-the-wood-1988.png",
+      "dwell_seconds": 12,
+      "preview_ref": "popcorn-foyer.html#X09"
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-guys-dolls-1973",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#guys-and-dolls-1973-ring-box",
+      "source": "slides/archive-guys-and-dolls-1973.png",
+      "dwell_seconds": 13,
+      "preview_ref": "popcorn-foyer.html#X10"
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-inherit-wind-1962",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#inherit-the-wind-1962-first-visit",
+      "source": "slides/archive-inherit-the-wind-1962.png",
+      "dwell_seconds": 12,
+      "_notes": "Not yet rendered in preview but available in pool."
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-forbidden-planet-2005",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "memory_ref": "archive_memories.json#return-to-forbidden-planet-2005-wardrobe",
+      "source": "slides/archive-return-to-forbidden-planet-2005.png",
+      "dwell_seconds": 12,
+      "_notes": "Connects to current wardrobe I/C Anne-marie Greene - she's the memory's author. Nice continuity."
+    },
+    {
+      "kind": "wildcard",
+      "id": "ordinary-americans-feature",
+      "template": "popcorn-feature",
+      "tag": "in_world",
+      "weight": 1,
+      "source": "assets/posters/Ordinary_Americans_7_10.jpg",
+      "dwell_seconds": 11,
+      "preview_ref": "popcorn-foyer.html#XP1"
+    },
+    {
+      "kind": "wildcard",
+      "id": "the-unamerican-feature",
+      "template": "popcorn-feature",
+      "tag": "in_world",
+      "weight": 1,
+      "source": "assets/posters/The_Unamerican_7_10.jpg",
+      "dwell_seconds": 11,
+      "preview_ref": "popcorn-foyer.html#XP2"
+    },
+    {
+      "kind": "wildcard",
+      "id": "mall-murderers-feature",
+      "template": "popcorn-feature",
+      "tag": "in_world",
+      "weight": 1,
+      "source": "assets/posters/Mall_Murderers.jpg",
+      "dwell_seconds": 11,
+      "preview_ref": "popcorn-foyer.html#XP3",
+      "_notes": "Added 2026-06-10 (David). Image at assets/posters/Mall_Murderers.jpg; blurb in show.json foyer_content.features.mall-murderers."
+    },
+    {
+      "kind": "wildcard",
+      "id": "brooke-daniels-feature",
+      "template": "popcorn-feature",
+      "tag": "in_world",
+      "weight": 1,
+      "source": "assets/posters/Brooke_Daniels.jpg",
+      "dwell_seconds": 11,
+      "preview_ref": "popcorn-foyer.html#XP4",
+      "_notes": "Added 2026-06-10 (David). Image at assets/posters/Brooke_Daniels.jpg; blurb in show.json foyer_content.features.brooke-daniels."
+    },
+    {
+      "kind": "wildcard",
+      "id": "karl-brezner-feature",
+      "template": "popcorn-feature",
+      "tag": "in_world",
+      "weight": 1,
+      "source": "assets/posters/karl-brezner.jpg",
+      "dwell_seconds": 11,
+      "preview_ref": "popcorn-foyer.html#XP5",
+      "_notes": "Added 2026-06-24 (David). In-world TIME cover; blurb in show.json foyer_content.features.karl-brezner."
+    },
+    {
+      "kind": "wildcard",
+      "id": "farrah-delamitri-feature",
+      "template": "popcorn-feature",
+      "tag": "in_world",
+      "weight": 1,
+      "source": "assets/posters/farrah-delamitri-cover.jpg",
+      "dwell_seconds": 11,
+      "preview_ref": "popcorn-foyer.html#XP6",
+      "_notes": "Added 2026-06-24 (David). In-world Vanity Fair cover; blurb in show.json foyer_content.features.farrah-delamitri."
+    },
+    {
+      "kind": "wildcard",
+      "id": "chris-video-1",
+      "tag": "chris_video",
+      "weight": 2,
+      "source": "videos/chris/01.mp4",
+      "dwell_seconds": null,
+      "treatment": "no-overlay",
+      "captions": {
+        "required": true,
+        "format": "burnt-in",
+        "language": "en-GB",
+        "verified": false
+      },
+      "placeholder": true,
+      "placeholder_owner": "Chris",
+      "_notes": "Plays full-frame WITHOUT the Neon Noir overlay. Preserves authentic feel per 04-popcorn-content-plan \u00a77. Captions must be burnt into the picture before submission - see 08-accessibility-audit.md.",
+      "preview_ref": "popcorn-foyer.html#X04"
+    },
+    {
+      "kind": "wildcard",
+      "id": "director-bts-1",
+      "tag": "director_content",
+      "weight": 1,
+      "source": "videos/director/01.mp4",
+      "dwell_seconds": null,
+      "treatment": "no-overlay",
+      "captions": {
+        "required": true,
+        "format": "burnt-in",
+        "language": "en-GB",
+        "verified": false
+      },
+      "placeholder": true,
+      "placeholder_owner": "Dean Sheridan",
+      "_notes": "Optional director content. Pool may be empty - that's fine. Captions burnt-in if speech present (see show.json.accessibility_policy)."
+    },
+    {
+      "kind": "wildcard",
+      "id": "cast-gallery",
+      "template": "cast-gallery",
+      "tag": "gallery",
+      "weight": 1,
+      "dwell_seconds": 12,
+      "placeholder": true,
+      "placeholder_owner": "Chris",
+      "preview_ref": "popcorn-foyer.html#X11",
+      "_notes": "Added 2026-06-24. Cast-in-performance montage; auto-fills from assets/photos/performance-0N.jpg. Needs a new 'cast-gallery' template in js/slide-templates.js \u2014 see the Cascade prompt."
+    },
+    {
+      "kind": "wildcard",
+      "id": "faces-keith-railton",
+      "template": "archive-memory",
+      "tag": "archive_memory",
+      "weight": 1,
+      "source": "slides/faces-keith-railton.png",
+      "dwell_seconds": 10,
+      "placeholder": true,
+      "_notes": "Tribute slide for long-serving member. Sensitivity-check with David / archive team before include."
+    }
+  ]
+}

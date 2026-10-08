@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "_notes": "Scraped from criteriontheatre.co.uk on 2026-05-21. Both productions listed in archive/year/2026 alongside Popcorn. Cast for 550 was not yet listed at scrape time (open reading scheduled 31 May for casting).",
+  "_tickets_on_sale_note": "tickets_on_sale gates the booking QR + ticket URL on the Coming-Up slides. The theatre only puts tickets on sale near the date, so advertise everything but only show a booking link where you can actually buy. true = show QR + link; false/absent = advertise only (engine shows 'Tickets on sale nearer the date'). Flip to true when each goes on sale.",
+  "productions": [
+    {
+      "id": "underdog-2026",
+      "production_page": "https://criteriontheatre.co.uk/production/549",
+      "title": "Underdog",
+      "subtitle": "The Other Other Bronte",
+      "author": "Sarah Gordon",
+      "director": "Ruth Miller",
+      "director_role_note": "Listed as 'Assistant Director' on the production page — may be a placeholder; confirm with the programme team whether Ruth Miller is directing or assisting.",
+      "run_dates": { "first": "2026-09-26", "last": "2026-10-03" },
+      "synopsis_short": "Sarah Gordon's irreverent retelling of the life and legend of the Bronte sisters, and the sibling power dynamics that shaped their uneven rise to fame.",
+      "synopsis_full": "Charlotte Bronte has a confession about how one sister became an idol, and the other became known as the third sister. You know the one. No, not that one. The other, other one... Anne. This is not a story about well-behaved women. This is a story about the power of words. It's about sisters and sisterhood, love and jealousy, support and competition. Sarah Gordon's play is an irreverent retelling of the life and legend of the Bronte sisters, and the story of the sibling power dynamics that shaped their uneven rise to fame.",
+      "reviews": [
+        { "quote": "Impishly upended in Sarah Gordon's raucously funny new play... which mixes gothic tropes with family drama and astute literary criticism.", "source": "Marianka Swain, London Theatre Reviews" },
+        { "quote": "A portrait of the competition and mutual support that often co-exist among sisters, and of the challenges of being a female novelist in early Victorian times... jolly good fun.", "source": "Paul Lewis, Theatre Reviews" },
+        { "quote": "This is a wild romp that toes the line between the sober and the surreal... before pulling on our heartstrings in the closing throes.", "source": "The Arts Despatch" },
+        { "quote": "'Underdog' is a very funny play... It has nuanced points about authorship, legacy and family... you'll have fun, and you'll probably want to read 'The Tenant of Wildfell Hall' afterwards.", "source": "TimeOut" }
+      ],
+      "image_remote": "https://criteriontheatre.co.uk/poster/549/700",
+      "image_local":  "assets/posters/underdog-2026.jpg",
+      "icon_local":   "assets/posters/underdog-2026-icon.png",
+      "tickets_on_sale": false,
+      "tickets_url":  "https://criteriontheatre.co.uk/tickets"
+    },
+    {
+      "id": "shakespeare-in-love-2026",
+      "production_page": "https://criteriontheatre.co.uk/production/550",
+      "title": "Shakespeare in Love",
+      "author": "Marc Norman and Tom Stoppard",
+      "adapter": "Lee Hall",
+      "director": "Hugh Sorrill",
+      "run_dates": { "first": "2026-12-05", "last": "2026-12-12" },
+      "synopsis_short": "Based on the Academy Award-winning film. Romantic comedy reimagining William Shakespeare's creative process as he writes Romeo and Juliet.",
+      "synopsis_full": "Based on the Academy Award-winning movie, this enchanting, hilarious, romantic stage play reimagines William Shakespeare's creative process — and explores his inspiration — as he writes Romeo and Juliet. William Shakespeare hasn't written a hit in years, and theatre owner Henslowe is counting on Shakespeare's promised comedy, Romeo and Ethel, the Pirate's Daughter, to keep his wolfish creditors from the door. At the casting session, Will hears his lines spoken with great feeling by an unknown young actor and his curiosity is fired. Soon he discovers the secret of the talented young actor and rediscovers his muse.",
+      "reviews": [
+        { "quote": "A cracking love letter to theatre itself that strikes gold in its stage version.", "source": "WhatsOnStage" },
+        { "quote": "Lee Hall's adaptation preserves the wit of the original screenplay while adding some zest of its own... It has a fizzy, infectious exuberance.", "source": "Evening Standard" },
+        { "quote": "The writing is so witty and literate that it glitters. This is Tom Stoppard's original work at its sparkling best, ably translated to the stage.", "source": "The ReviewsHub" }
+      ],
+      "open_reading": {
+        "date": "2026-05-31",
+        "time": "19:30",
+        "location": "Criterion Theatre bar",
+        "purpose": "Open reading; auditions for ~25 roles; contact Hugh Sorrill (hugh@coventryvision.org.uk)."
+      },
+      "image_remote": "https://criteriontheatre.co.uk/poster/550/700",
+      "image_local":  "assets/posters/shakespeare-in-love-2026.jpg",
+      "icon_local":   "assets/posters/shakespeare-in-love-2026-icon.png",
+      "tickets_on_sale": false,
+      "tickets_url":  "https://criteriontheatre.co.uk/tickets"
+    },
+    {
+      "id": "easy-3-2026",
+      "_type": "bar-event",
+      "_scraped": "criteriontheatre.co.uk/event/10554 on 2026-06-26. Sooner than the two mainstage productions (10 Jul, during/just after the Popcorn run). Presented as a full Coming-Soon card per David. CONFIRM: source says 'jazz quintet' though the name implies a trio; listing time 19:30–22:30 vs body 'from 8pm'; tickets 'available shortly' so tickets_url points at the event page for now.",
+      "production_page": "https://criteriontheatre.co.uk/event/10554",
+      "title": "Easy 3",
+      "subtitle": "Live Jazz in the Bar",
+      "author": "Easy 3",
+      "run_dates": { "first": "2026-07-10", "last": "2026-07-10" },
+      "synopsis_short": "A summer's evening of cool jazz, Latin, hip-hop and soul from touring quintet Easy 3 — creative covers and original compositions in the Criterion's lounge bar. Tickets £7.",
+      "synopsis_full": "What better way to spend a summer's eve than with some cool beats and musical grooves? Jazz quintet Easy 3 have delighted audiences across the UK with their creative covers and original compositions, drawing influence from jazz, Latin, hip-hop and soul. The evening takes place in the theatre's lounge bar from 8pm. Tickets £7.",
+      "image_remote": "https://criteriontheatre.co.uk/image/0/800/events/10554/images/uploads/26-Jun-15-r9f.jpg",
+      "image_local":  "assets/posters/easy-3-2026.jpg",
+      "icon_local":   "assets/posters/easy-3-2026-icon.png",
+      "tickets_on_sale": true,
+      "tickets_url":  "https://criteriontheatre.co.uk/event/10554"
+    }
+  ]
+}

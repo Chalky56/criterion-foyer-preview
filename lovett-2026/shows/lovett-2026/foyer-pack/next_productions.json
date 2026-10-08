@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "_notes": "Carried forward from shows/popcorn-2026/foyer-pack/next_productions.json on 2026-08-02 per David - the two mainstage productions are unchanged and their posters were copied into this pack. Popcorn's third entry (Easy 3, a July bar event) is dropped: it is in the past. CONFIRM the two run-date ranges with Chris before the preview goes to Boondog.",
+  "_tickets_on_sale_note": "tickets_on_sale gates the booking QR and ticket URL on the Coming-Up slides. The theatre only puts tickets on sale near the date, so advertise everything but only show a booking link where you can actually buy. Both are false, so the engine shows 'Tickets on sale nearer the date'. Flip to true when each goes on sale.",
+
+  "productions": [
+    {
+      "id": "underdog-2026",
+      "production_page": "https://criteriontheatre.co.uk/production/549",
+      "title": "Underdog",
+      "subtitle": "The Other Other Bronte",
+      "author": "Sarah Gordon",
+      "director": "Ruth Miller",
+      "run_dates": { "first": "2026-09-26", "last": "2026-10-03" },
+      "synopsis_short": "Sarah Gordon's irreverent retelling of the life and legend of the Bronte sisters, and the sibling power dynamics that shaped their uneven rise to fame.",
+      "image_local": "assets/posters/underdog-2026.jpg",
+      "tickets_on_sale": false,
+      "tickets_url": "https://criteriontheatre.co.uk/tickets"
+    },
+    {
+      "id": "shakespeare-in-love-2026",
+      "production_page": "https://criteriontheatre.co.uk/production/550",
+      "title": "Shakespeare in Love",
+      "author": "Marc Norman and Tom Stoppard",
+      "adapter": "Lee Hall",
+      "director": "Hugh Sorrill",
+      "run_dates": { "first": "2026-12-05", "last": "2026-12-12" },
+      "synopsis_short": "Based on the Academy Award-winning film. Shakespeare hasn't written a hit in years and his creditors are at the door - until a casting session changes everything.",
+      "image_local": "assets/posters/shakespeare-in-love-2026.jpg",
+      "tickets_on_sale": false,
+      "tickets_url": "https://criteriontheatre.co.uk/tickets"
+    }
+  ]
+}

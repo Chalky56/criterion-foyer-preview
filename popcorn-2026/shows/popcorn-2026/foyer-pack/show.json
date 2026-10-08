@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "_generated": "2026-05-22",
+  "id": "popcorn-2026",
+  "title": "Popcorn",
+  "author": "Ben Elton",
+  "author_note": "Stage adaptation of his 1996 novel",
+  "director": "Dean Sheridan",
+  "venue": "Criterion Theatre, Earlsdon, Coventry",
+  "run_dates": {
+    "first": "2026-06-27",
+    "last":  "2026-07-04"
+  },
+  "running_time_minutes": 130,
+  "interval_minutes": 20,
+  "house_opens_minutes_before_curtain": 30,
+
+  "_TBC_from_dean": {
+    "running_time_minutes": "Estimated 130; confirm with Dean post-tech run.",
+    "interval_minutes": "Assumed 20; confirm with Dean and bar team."
+  },
+
+  "ticket_prices": {
+    "non_member": "£15.00",
+    "member":     "£12.50",
+    "under_25":   "£10.00"
+  },
+  "tickets_url": "https://criteriontheatre.co.uk/tickets",
+  "production_page_url": "https://criteriontheatre.co.uk/production/548",
+
+  "image_remote": "https://criteriontheatre.co.uk/icon/548/800/800",
+  "image_local":  "assets/posters/popcorn-2026.jpg",
+  "_image_notes": "image_local is the canonical reference for foyer-pack. If David's own Popcorn.jpg differs from the site image, drop it at assets/posters/popcorn-2026.jpg to override — download-assets.py will skip an existing file unless --force is passed.",
+
+  "synopsis": "A play adaptation of Ben Elton's 1996 novel. Hollywood film director Bruce Delamitri's Oscar-night celebrations are cut short when two violent fans, claiming his films inspired their crimes, invade his home. A sharp, darkly comic thriller about art, celebrity and responsibility in a culture addicted to spectacle and violence.",
+
+  "tagline": "Art, celebrity, responsibility.",
+  "_tagline_full": "Art, celebrity, responsibility — and what we'll forgive for a good story. (Shortened 2026-06-10: the about-play slide headlines the tagline in caps and the long form overflowed the slide.)",
+
+  "foyer_content": {
+    "_notes": "Engine slide content (FOY-01b templates read these). Text + image paths ported 2026-06-10 from the signed-off design source popcorn-foyer.html, which remains the design reference.",
+    "writer": {
+      "body": "Stand-up comedian, novelist, screenwriter. Co-creator of <em>The Young Ones</em> and <em>Blackadder</em>; writer of <em>Popcorn</em> as a novel in 1996 and as the stage play that has toured since 2000. The play won the <b>Olivier Award for Best New Comedy</b>.",
+      "footline": "Born 3 May 1959 <span class=\"sep\">&#8226;</span> Fitzrovia, London",
+      "image_local": "assets/people/ben-elton-topaz-upscale-4x-face.jpg"
+    },
+    "director": {
+      "quote": "We're quick to blame films, games and books when something terrible happens — anything but the person who chose to watch. Ben Elton wrote Popcorn in the nineties; it feels written for now. It holds a mirror up to all of us — and if you don't like the reflection, well… it's not my fault. <b>Everybody is responsible but me.</b>",
+      "_source": "Condensed 2026-06-24 by David/AI from Dean Sheridan's programme note. Confirm final wording with Dean.",
+      "image_local": "assets/people/dean-sheridan-square.jpg"
+    },
+    "trivia": {
+      "headline": "The Oscars",
+      "body": "The Academy Awards have been broadcast on television every year since 1953. The first ceremony, in 1929, lasted just <b>15 minutes</b>. The winners had been announced in the newspapers three months earlier — so it was less a competition than a victory dinner.",
+      "image_local": "assets/images/Oscar_square.png"
+    },
+    "venue": {
+      "body": "The Criterion has staged <b>over 450 productions</b> since 1955. Two of them were world premieres. Members have played <b>more than 6,000 parts</b> and crewed <b>8,000 backstage roles</b>. The building you're standing in is <b>over 140 years old</b> — an 1884 Methodist chapel that became a theatre in 1960.",
+      "footline": "200 Company members <span class=\"sep\">&#8226;</span> 400 supporting members <span class=\"sep\">&#8226;</span> 0 paid employees"
+    },
+    "features": {
+      "_notes": "In-world poster blurbs for the popcorn-feature template, keyed by titleFromAsset of the poster filename. Ordinary Americans + The Unamerican ported from the signed-off design source; Mall Murderers drafted 2026-06-10 (David to approve).",
+      "ordinary-americans": {
+        "eyebrow": "A Bruce Delamitri picture",
+        "body": "The Oscar-winning film at the heart of tonight's story. Bruce Delamitri's blood-soaked portrait of small-town America — and the movie two killers swear taught them everything.",
+        "footline": "\"Some people call it violence. He calls it truth.\""
+      },
+      "the-unamerican": {
+        "eyebrow": "Cover story",
+        "body": "Hollywood's most dangerous director, in his own words. The magazine profile behind Bruce Delamitri's most explosive masterpiece — too slick, too violent, too honest?",
+        "footline": "World-building from tonight's production"
+      },
+      "mall-murderers": {
+        "eyebrow": "Tonight's headlines",
+        "body": "The killing spree America couldn't stop watching. Wayne and Scout — celebrity outlaws in a culture addicted to the spectacle — claim Bruce Delamitri's films wrote their script.",
+        "footline": "World-building from tonight's production"
+      },
+      "brooke-daniels": {
+        "eyebrow": "Celebrity spotlight",
+        "body": "Model, actress, and the face on every newsstand. Brooke Daniels wants to be taken seriously in a town that only takes pictures — and tonight, on Oscar night, she's about to land the role of her life.",
+        "footline": "World-building from tonight's production"
+      },
+      "karl-brezner": {
+        "eyebrow": "On the cover",
+        "body": "The most powerful producer in Hollywood — the money and the muscle behind Bruce Delamitri's pictures. From blockbusters to cult classics, Brezner makes the movies we remember, and decides which ones we get to see.",
+        "footline": "\"Hollywood can't do without him. Neither can we.\"",
+        "_added": "2026-06-24 (David). In-world TIME cover prop. Poster assets/posters/karl-brezner.jpg."
+      },
+      "farrah-delamitri": {
+        "eyebrow": "Exclusive",
+        "body": "Inside the Delamitri fallout. Bruce's ex-wife — done playing nice, and set to take him for everything he's worth. The divorce that could be the most expensive in Hollywood history, told from the other side of the marriage.",
+        "footline": "World-building from tonight's production",
+        "_added": "2026-06-24 (David). In-world Vanity Fair cover prop. Poster assets/posters/farrah-delamitri-cover.jpg."
+      }
+    }
+  },
+
+  "cast": [
+    { "role": "Bruce Delamitri",  "actor": "Dave Crossfield" },
+    { "role": "Karl Brezner",     "actor": "Chris Revill" },
+    { "role": "Farrah Delamitri", "actor": "Donna Davenport" },
+    { "role": "Velvet Delamitri", "actor": "Millie Revill" },
+    { "role": "Wayne Hudson",     "actor": "Connor Bailey" },
+    { "role": "Scout",            "actor": "Kelly Davidson" },
+    { "role": "Brooke Daniels",   "actor": "Paige Phelps" },
+    { "role": "Kirsten",          "actor": "Morgan Blundell-Smith" },
+    { "role": "Bill",             "actor": "Rowan McDonnell" }
+  ],
+
+  "crew": [
+    { "role": "Director",         "name": "Dean Sheridan" },
+    { "role": "Stage Manager",    "name": "Mike Skinner" },
+    { "role": "Lighting Designer","name": "Olivia Simone" },
+    { "role": "Sound Designer",   "name": "Dave Cornish" },
+    { "role": "Set Designer",     "name": "Mark Ward" },
+    { "role": "AV",               "name": "David Chapman" },
+    { "role": "Wardrobe I/C",     "name": "Anne-marie Greene" },
+    { "role": "Wardrobe I/C",     "name": "Lilian McGrath" },
+    { "role": "Props I/C",        "name": "Erica Young" }
+  ],
+
+  "content_warnings": [
+    {
+      "id": "loud-gunshots",
+      "headline": "Loud gunshot effects",
+      "detail": "Sudden loud noises (gunshot effects).",
+      "tier": "top",
+      "confidence": "high"
+    },
+    {
+      "id": "strong-language",
+      "headline": "Strong language",
+      "detail": "Features frequent strong language, offensive slurs, and sexual terms.",
+      "tier": "top",
+      "confidence": "high"
+    },
+    {
+      "id": "age-guidance",
+      "headline": "Age guidance 15+",
+      "detail": "Recommended for ages 15 and above. The Criterion does not enforce age but advises caution.",
+      "tier": "top",
+      "confidence": "high"
+    },
+    {
+      "id": "simulated-violence",
+      "headline": "Simulated violence",
+      "detail": "Includes scenes of hostage-taking, physical threats, and guns used to intimidate people.",
+      "tier": "full",
+      "confidence": "high"
+    },
+    {
+      "id": "mature-themes",
+      "headline": "Mature themes",
+      "detail": "Adult themes around media violence, celebrity culture, and the sexualisation of crime.",
+      "tier": "full",
+      "confidence": "high"
+    },
+    {
+      "id": "references-self-harm",
+      "headline": "References to suicide and self-harm",
+      "detail": "Verbal references to suicide and self-harm. No on-stage depiction.",
+      "tier": "full",
+      "confidence": "medium",
+      "_TBC_from_dean": "Confirm whether Dean's cut retains these specific lines."
+    },
+    {
+      "id": "flashing-lights",
+      "headline": "Flashing lights",
+      "detail": "Camera flashes and rapid light changes during the Oscar-night and TV-studio sequences.",
+      "tier": "full",
+      "confidence": "medium",
+      "_TBC_from_olivia": "Confirm with Olivia whether her LX design uses strobing."
+    }
+  ],
+
+  "phase_policy": {
+    "foh_allowed_phase_nudges": ["house-open", "curtain-soon", "interval-ending"],
+    "audio_allowed": false,
+    "silent_first": true,
+    "audio_allowed_note": "Per 01-research-and-capabilities.md §B: silent-first for Popcorn. Burnt-in open captions required on any video that contains speech."
+  },
+
+  "accessibility_policy": {
+    "_source": "01-research-and-capabilities.md §A3 + 08-accessibility-audit.md",
+    "principle": "Design for everyone, don't make disabled patrons ask. Stagetext convention.",
+    "video_captions": {
+      "required": true,
+      "format": "burnt-in",
+      "language": "en-GB",
+      "_notes": "All spoken-word video shown on the foyer screen must carry burnt-in open captions. obs-helper should refuse to play a video flagged as containing speech but lacking captions.verified=true (enforcement to follow in Phase 2; convention recorded now)."
+    },
+    "contrast_minimum": "WCAG AAA for body text on dark backgrounds",
+    "flash_rate_maximum_hz": 3,
+    "flash_rate_note": "Foyer screen content itself never exceeds 3Hz flash. Strobing in the show is warned for separately under content_warnings.flashing-lights.",
+    "colour_information_redundancy": "Information must not be conveyed by colour alone. Content warnings carry text labels; CTAs carry words, not just neon hue."
+  },
+
+  "foyer_display":          "popcorn-foyer.html",
+  "branding_pack_ref":      "branding/theme.json",
+  "next_productions_ref":   "next_productions.json",
+  "archive_memories_ref":   "archive_memories.json",
+  "tickets_ref":            "tickets.json",
+  "performances_ref":       "performances.json",
+
+  "placeholders": [
+    { "id": "director-quote",       "owner": "Dean Sheridan",       "blocking": false, "notes": "RESOLVED 2026-06-24: condensed from Dean's programme note (P09 + foyer_content.director). Confirm final wording with Dean." },
+    { "id": "rehearsal-photos",     "owner": "Chris",               "blocking": false, "notes": "Cast/rehearsal photos for preshow gallery (P16) + postshow montage (X11). Drop to assets/photos/rehearsal-0N.jpg and performance-0N.jpg." },
+    { "id": "director-headshot",    "owner": "Dean Sheridan",       "blocking": false, "notes": "Headshot for the director slide. Drop to assets/people/dean-sheridan.jpg." },
+    { "id": "bar-featured-drink",   "owner": "Bar team",            "blocking": false, "notes": "Featured drink + price for the INTERVAL spotlight." },
+    { "id": "bar-stays-open-until", "owner": "Bar team",            "blocking": true,  "notes": "Confirm last orders / bar close time per night (assumed 23:00 in slides)." },
+    { "id": "chris-videos",         "owner": "Chris",               "blocking": false, "notes": "Video files + per-video phase eligibility. Burnt-in captions required if speech present." },
+    { "id": "cast-headshots",       "owner": "David / archive",     "blocking": false, "notes": "Optional but valuable on the cast slide. Otherwise text-only is fine." },
+    { "id": "warning-tbc-trio",     "owner": "Dean / Olivia",       "blocking": true,  "notes": "Confirm/deny: strobing. Three medium-confidence items in content_warnings above." },
+    { "id": "running-time-confirm", "owner": "Dean Sheridan",       "blocking": true,  "notes": "Confirm running time (estimated 130 min) and interval length (assumed 20 min)." },
+    { "id": "underdog-director",    "owner": "Criterion programme", "blocking": false, "notes": "Production 549 lists Ruth Miller as 'Assistant Director' only - confirm whether she's directing or there's an unnamed director." },
+    { "id": "shakespeare-cast",     "owner": "Criterion programme", "blocking": false, "notes": "Cast for Shakespeare in Love (550) not yet published - open reading 31 May." },
+    { "id": "qr-code-tickets",      "owner": "David",               "blocking": false, "notes": "QR image now shown on the tickets slide P13 (assets/images/tickets-qr.png). Destination URL NOT yet live — caption says so. Later: per-night QR to /seats/<event_id> from tickets.json on next-production slides." },
+    { "id": "ben-elton-photo",      "owner": "David",               "blocking": false, "notes": "Move C:\\Users\\chapm\\Downloads\\BenElton.jpg to assets/people/ben-elton.jpg." },
+    { "id": "accessibility-slide",  "owner": "David",               "blocking": false, "notes": "Add a slide pointing at criteriontheatre.co.uk/about/accessibility - see 08-accessibility-audit.md §5b." }
+  ],
+
+  "_auth_comment": "Dev passcode hashes preserved from pre-import stub show.json. The new David-authored show.json did not include these and login was failing 403. Rotate before any non-dev deployment using auth.pbkdf2_hash() in platform/obs-operator/auth.py. Current values map to: operator -> 'operator-passcode', cue-trigger -> 'cue-trigger-passcode', foh -> 'foh-passcode'.",
+
+  "phase_policy": {
+    "foh_allowed_phase_nudges": ["house-open", "curtain-soon", "interval-ending"],
+    "audio_allowed": false
+  },
+
+  "auth": {
+    "operator_passcode_hash": "pbkdf2_sha256$200000$b3BlcmF0b3Itc2FsdC0xMjM=$UyMNA0hpSUO+Sq8Io6bnYN1JMLlc0JHIYQdOSOhIPxg=",
+    "cue_trigger_passcode_hash": "pbkdf2_sha256$200000$Y3VlLXRyaWdnZXItc2FsdC0wMQ==$Cbi70TQ87+q8xNi/5zzPv8Rr3R33VyPiPk+aKdUboes=",
+    "foh_passcode_hash": "pbkdf2_sha256$200000$Zm9oLXNhbHQtMTIzNDU2Nw==$tBuXteWCpBn9KWxYchTQOI0wkBD0EYe/swjAE5zff5Q="
+  }
+}

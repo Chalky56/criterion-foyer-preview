@@ -11,7 +11,7 @@
   "_author_note": "The stage adaptation is Lee Hall's; the screenplay credit is in the subtitle. next_productions.json in the default pack carries author 'Marc Norman and Tom Stoppard' with adapter 'Lee Hall' - that is the coming-soon card's shape and stays as it is.",
   "director": "Hugh Sorrill",
   "venue": "the Criterion",
-  "_venue_note": "Short on purpose (requirements s7): the welcome eyebrow reads 'Tonight at the Criterion' on one line.",
+  "_venue_note": "Short on purpose (requirements s7): the welcome eyebrow reads 'Tonight at the Criterion' on one line. Depends on C20 Part B: until engine-supplied headlines obey headline_case, the volunteer card reads 'VOLUNTEER AT the Criterion' (seen on the live draft, 11 Oct) - do not republish before C20 merges.",
   "tagline": "Will has lost his words",
   "synopsis": "Will Shakespeare needs a hit and Henslowe needs a comedy. Then an unknown young actor speaks Will's lines, and he finds his muse.",
   "run_dates": {
@@ -63,13 +63,23 @@
     },
     "venue": {
       "body": "The Criterion has staged <b>over 450 productions</b> since 1955, in a building that is <b>over 140 years old</b> \u2014 an 1884 Methodist chapel that became a theatre in 1960. It is run entirely by its members: <b>no paid employees</b>, on stage or off.",
-      "footline": "Registered charity 1161430 <span class=\"sep\">&#8226;</span> A volunteer-run theatre in Earlsdon, Coventry"
+      "footline": "Registered charity 1161430 <span class=\"sep\">&#8226;</span> A volunteer-run theatre in Earlsdon, Coventry",
+      "headline": "The Criterion"
     },
     "volunteer": {
       "body": "Actors, makers, technicians, front-of-house, bar and box office \u2014 every part of the Criterion is volunteer-run, and new members are always welcome. No experience needed to get involved on stage, backstage, or around the building.",
       "footline": "Ask front-of-house, or visit criteriontheatre.co.uk/support"
     },
-    "_theatre_copy_note": "venue and volunteer copied verbatim from the default pack (public Criterion material, content-snapshot.md)."
+    "_theatre_copy_note": "venue and volunteer copied verbatim from the default pack (public Criterion material, content-snapshot.md).",
+    "bar": {
+      "body": "Stay for a drink and a conversation.",
+      "image_local": "assets/bar/bar-welcome.jpg"
+    },
+    "bar_spotlight": {
+      "eyebrow": "At the bar tonight",
+      "body": "Drinks, snacks and ice cream are being served now in the foyer bar.",
+      "image_local": "assets/bar/pint-marble.jpg"
+    }
   },
   "_content_warnings_status": "Owed by Hugh. The production page lists no content advice. The pack shows the content-advice-gap card, badged as a draft for Hugh, rather than guessed wording.",
   "content_warnings": [],
@@ -80,5 +90,13 @@
   },
   "branding_pack_ref": "../branding/theme.json",
   "next_productions_ref": "next_productions.json",
-  "performances_ref": "performances.json"
+  "performances_ref": "performances.json",
+  "archive_memories_ref": "archive_memories.json",
+  "_phase_plan": "Playlists follow docs/design/foyer-purpose-for-directors.md (11 Oct 2026 rework). PRESHOW: arrive and know what tonight is - tonight's cards as anchors; a tease of the making; a little Elizabethan context; the bar and interval pre-order; what's on next. INTERVAL: much less, much larger - what is served and when to be back. POSTSHOW: something to say - the making revealed, the history as conversation starters, the theatre's longer memory, the bar stays open, come back, take part.",
+  "render_check": {
+    "allow_show_names": [
+      "springboard"
+    ],
+    "_why": "The 2027 season list (R15) names Springboard Festival 2027, a future production, not the 2026 festival pack (C20, David 11 Oct 2026)."
+  }
 }

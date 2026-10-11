@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "_source": "Theatre-level archive-memory library. Seeded from public Criterion archive material at https://criteriontheatre.co.uk/archive/find/memory, already curated and provenance-checked in the Popcorn pack. All quotes are verbatim and attributed to their original authors. See content-snapshot.md for source URLs and approval dates.",
+  "_curation_principle": "Warm, theatrical, credited stories that honour the volunteer ethos and read well at 5-6 metres in 10-13 seconds. No invented nostalgia, no uncredited quotations, no personal/private material. Kept deliberately small; add only after a provenance, attribution and sensitivity check.",
+  "memories": [
+    {
+      "id": "crime-and-punishment-1971-nails",
+      "production": "Crime And Punishment (1971)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/112",
+      "author": "Karl Stafford",
+      "role": "Set construction",
+      "quote": "\u2026In those days, money was tight and materials short\u2026 All nails were recovered and straightened\u2026 and the wooden beer crates were repurposed for all manner of uses on stage.",
+      "image_local": "assets/archive/crime-and-punishment-1971.jpg",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "single-spies-2012-snowstorm",
+      "production": "Single Spies (2012)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/416",
+      "author": "Phil Reynolds",
+      "role": "Cast (Guy Burgess)",
+      "quote": "\u2026On the opening night there was a severe snowstorm; Elliot had been\u2026 wearing his heavy Russian overcoat and fur hat, and made his first entrance into my Moscow flat covered in real snow!",
+      "image_local": "assets/archive/single-spies-2012.jpg",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "funny-peculiar-1981-ice-water",
+      "production": "Funny Peculiar (1981)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/188",
+      "author": "Terry Nicholls",
+      "role": "Cast",
+      "quote": "Mr. Ruscoe decided to put ice water in the bottle he squirted down my trousers\u2026 I had my revenge for the final scene of the play. John had to play it completely immobilised in a hospital bed\u2026 I emptied a bottle of ice water onto the mattress.",
+      "image_local": "assets/archive/funny-peculiar-1981.jpg",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "arsenic-and-old-lace-1997-countries",
+      "production": "Arsenic And Old Lace (1997)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/311",
+      "author": "Nicole Firth",
+      "role": "Cast",
+      "quote": "The wonderful Doug Griffiths had to recite a list of countries every night\u2026 never quite got them in the same order or indeed the same list. Brings a smile to my face remembering this one.",
+      "image_local": "assets/archive/arsenic-and-old-lace-1997.jpg",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "babes-in-the-wood-1988-ironing-fairy",
+      "production": "The Babes In The Wood (1988)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/253",
+      "author": "Chris Firth",
+      "role": "Cast",
+      "quote": "\u2026I had bundled up my costume\u2026 Linda Holmes, doing wardrobe, was not very happy with this. 'Who do you think is going to be ironing this costume?' At the time I thought there was an ironing fairy. My mum, as it turned out.",
+      "image_local": "assets/archive/babes-in-the-wood-1988.jpg",
+      "dwell_seconds": 12
+    },
+    {
+      "id": "guys-and-dolls-1973-ring-box",
+      "production": "Guys And Dolls (1973)",
+      "production_page": "https://criteriontheatre.co.uk/archive/production/128",
+      "author": "Marcus Pugh",
+      "role": "Aged 11 at the time",
+      "quote": "My father played Sky Masterson\u2026 a ring box was needed for the proposal scene. 'I have a ring box,' I enthusiastically chirped\u2026 Ring boxes, I am sure, were not in short supply in Coventry.",
+      "image_local": "assets/archive/guys-and-dolls-1973.jpg",
+      "dwell_seconds": 13
+    }
+  ]
+}

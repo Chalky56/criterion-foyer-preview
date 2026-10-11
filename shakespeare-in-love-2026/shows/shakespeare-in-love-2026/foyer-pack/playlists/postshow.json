@@ -10,6 +10,7 @@
     "audio_allowed": false,
     "group_rotation": [
       "making",
+      "conversation",
       "theatre"
     ]
   },
@@ -86,18 +87,100 @@
     },
     {
       "kind": "wildcard",
-      "id": "greener-criterion",
-      "template": "did-you-know-criterion",
-      "tag": "theatre",
+      "id": "hist-no-women-postshow",
+      "template": "did-you-know",
+      "tag": "conversation",
       "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "No women on the stage",
+        "body": "In Shakespeare's lifetime every female role, Juliet included, was played by a boy. Women first acted on England's public stage in the 1660s.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-the-rose-postshow",
+      "template": "did-you-know",
+      "tag": "conversation",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "The Rose",
+        "body": "Henslowe's Rose, built in 1587, was Bankside's first playhouse. Its foundations were rediscovered in 1989.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-plague-postshow",
+      "template": "did-you-know",
+      "tag": "conversation",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "Closed by plague",
+        "body": "In 1592 and 1593 plague kept London's playhouses shut for months on end.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-penny-postshow",
+      "template": "did-you-know",
+      "tag": "conversation",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "A penny to stand",
+        "body": "A penny bought standing room in the open yard, among the groundlings.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-old-story-postshow",
+      "template": "did-you-know",
+      "tag": "conversation",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "An old story",
+        "body": "Romeo and Juliet was already an old tale. Shakespeare took it from Arthur Brooke's poem of 1562.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-revels-postshow",
+      "template": "did-you-know",
+      "tag": "conversation",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "The Master of the Revels",
+        "body": "Every play needed his licence, and he could cut it or ban it.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "bar-stays-open",
+      "template": "bar-stays-open",
+      "sales_intent": true,
+      "tag": "theatre",
+      "weight": 2,
       "dwell_seconds": 12,
       "content": {
-        "eyebrow": "A greener Criterion",
-        "headline": "Turning the Criterion green",
-        "body": "Grants from the Veolia Environmental Trust, the Theatres Trust and the Wolfson Foundation are helping us towards becoming carbon neutral.",
-        "footline": "Improvements due in 2027"
+        "image_local": "assets/bar/bar-welcome.jpg"
       },
-      "_note": "R16, verbatim from the default pack."
+      "_source": "Reused verbatim from Underdog (Dave C's wording; Lilian McGrath's image included, no on-screen credit) - David, 11 Oct 2026."
     },
     {
       "kind": "wildcard",
@@ -121,6 +204,10 @@
             "title": "The Road to Huntsville"
           },
           {
+            "when": "May",
+            "title": "Springboard Festival 2027"
+          },
+          {
             "when": "Jun - Jul",
             "title": "Things I Know to Be True"
           },
@@ -134,8 +221,7 @@
           }
         ]
       },
-      "_source": "R15. criteriontheatre.co.uk/news/202 (5 October 2026), checked 11 October 2026. Road to Huntsville is a Studio production. 'Things I Know to Be True' is six words, one over the date-list row budget - it is a title and cannot be shortened.",
-      "_springboard_note": "Springboard Festival 2027 (May) left out for now: the render check's past-show guard flags any 'Springboard' as a leak from the 2026 pack. Restore the row once the check can tell a future production from a past one (tool fix, to be queued)."
+      "_source": "R15. criteriontheatre.co.uk/news/202 (5 October 2026), checked 11 October 2026. Road to Huntsville is a Studio production. 'Things I Know to Be True' is six words, one over the date-list row budget - it is a title and cannot be shortened."
     },
     {
       "kind": "wildcard",
@@ -144,6 +230,21 @@
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "greener-criterion",
+      "template": "did-you-know-criterion",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 12,
+      "content": {
+        "eyebrow": "A greener Criterion",
+        "headline": "Turning the Criterion green",
+        "body": "Grants from the Veolia Environmental Trust, the Theatres Trust and the Wolfson Foundation are helping us towards becoming carbon neutral.",
+        "footline": "Improvements due in 2027"
+      },
+      "_note": "R16, verbatim from the default pack."
     },
     {
       "kind": "wildcard",
@@ -160,6 +261,67 @@
       "tag": "theatre",
       "weight": 1,
       "dwell_seconds": 11
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-crime-punishment-1971",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "source": "assets/archive/crime-and-punishment-1971.jpg",
+      "dwell_seconds": 12,
+      "_source": "Copied from the default pack (archive_memories.json) - the theatre's longer memory."
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-single-spies-2012",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "source": "assets/archive/single-spies-2012.jpg",
+      "dwell_seconds": 12,
+      "_source": "Copied from the default pack (archive_memories.json) - the theatre's longer memory."
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-funny-peculiar-1981",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "source": "assets/archive/funny-peculiar-1981.jpg",
+      "dwell_seconds": 12,
+      "_source": "Copied from the default pack (archive_memories.json) - the theatre's longer memory."
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-arsenic-1997",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "source": "assets/archive/arsenic-and-old-lace-1997.jpg",
+      "dwell_seconds": 12,
+      "_source": "Copied from the default pack (archive_memories.json) - the theatre's longer memory."
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-babes-wood-1988",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "source": "assets/archive/babes-in-the-wood-1988.jpg",
+      "dwell_seconds": 12,
+      "_source": "Copied from the default pack (archive_memories.json) - the theatre's longer memory."
+    },
+    {
+      "kind": "wildcard",
+      "id": "archive-guys-dolls-1973",
+      "template": "archive-memory",
+      "tag": "theatre",
+      "weight": 1,
+      "source": "assets/archive/guys-and-dolls-1973.jpg",
+      "dwell_seconds": 13,
+      "_source": "Copied from the default pack (archive_memories.json) - the theatre's longer memory."
     }
-  ]
+  ],
+  "_phase_purpose": "Something to say about what they have just watched: the making revealed, the history as talking points, the archive; stay at the bar; come back (Appropriate, 2027); take part (volunteer)."
 }

@@ -89,8 +89,21 @@ function headlineAsWritten() {
     && document.documentElement?.dataset?.headlineCase === "as_written";
 }
 
+/* HTML entities must survive the capitals pass: "&mdash;".toUpperCase() is
+   "&MDASH;", which is not an entity and would render as literal text. The
+   capitals run segment-wise between entities so "Phones off &mdash;" becomes
+   "PHONES OFF &mdash;" - byte-identical to writing the caps by hand (C20). */
+const HTML_ENTITY = /&(?:#[0-9]+|#[xX][0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);/g;
+
 function caps(value) {
-  return emphasise(String(value || "").toUpperCase());
+  const text = String(value || "");
+  let out = "";
+  let last = 0;
+  for (const match of text.matchAll(HTML_ENTITY)) {
+    out += text.slice(last, match.index).toUpperCase() + match[0];
+    last = match.index + match[0].length;
+  }
+  return emphasise(out + text.slice(last).toUpperCase());
 }
 
 function upper(value) {
@@ -506,7 +519,7 @@ function aboutWriterTemplate(item, ctx) {
   return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow">About the writer</p>
-          <h2 class="headline small">${upper(show.author) || "THE WRITER"}</h2>
+          <h2 class="headline small">${upper(show.author || "The writer")}</h2>
           <p class="body" style="max-width:none;">
             ${body}
           </p>
@@ -568,7 +581,7 @@ function castGallery(item, ctx) {
     return "";
   }
   const eyebrow = content.eyebrow || packCopy.eyebrow || "Tonight's company";
-  const headline = content.headline || packCopy.headline || (show.title ? `The cast of ${show.title}` : "TONIGHT'S COMPANY");
+  const headline = content.headline || packCopy.headline || (show.title ? `The cast of ${show.title}` : "Tonight's company");
   const footline = content.footline || packCopy.footline || "";
   const cellNote = content.note || packCopy.note || "cast in performance";
   const gridClass = `photo-grid${item.portrait ? " portrait-safe" : ""}`;
@@ -595,7 +608,7 @@ function productionGallery(item, ctx) {
     return "";
   }
   const eyebrow = content.eyebrow || packCopy.eyebrow || "In rehearsal";
-  const headline = content.headline || packCopy.headline || (show.title || "PRODUCTION GALLERY");
+  const headline = content.headline || packCopy.headline || (show.title || "Production gallery");
   const footline = content.footline || packCopy.footline || "";
   const cellNote = content.note || packCopy.note || "rehearsal shot";
   const gridClass = `photo-grid${item.portrait ? " portrait-safe" : ""}`;
@@ -1359,7 +1372,7 @@ export const slideTemplates = {
     const cast = (ctx.show && ctx.show.cast) || [];
     const rows = cast.map(member => `<div class="cast-row"><span class="cast-role">${member.role}</span><span class="cast-actor">${member.actor}</span></div>`).join("\n          ");
     return `<p class="eyebrow">Tonight's cast</p>
-      <h2 class="headline small">THE COMPANY</h2>
+      <h2 class="headline small">${upper("The company")}</h2>
       <div class="two-col">
           ${rows}
       </div>`;
@@ -1371,7 +1384,7 @@ export const slideTemplates = {
     const rows = tops.map(warning => `<div class="warning-tag">${warning.headline}</div>
           <div class="warning-detail">${warning.detail}</div>`).join("\n          ");
     return `<p class="eyebrow warn">Content Notice</p>
-      <h2 class="headline small">BEFORE YOU TAKE YOUR SEAT</h2>
+      <h2 class="headline small">${upper("Before you take your seat")}</h2>
       <div class="warning-list" style="margin-top:18px;">
           ${rows}
       </div>`;
@@ -1389,10 +1402,10 @@ export const slideTemplates = {
     const col1 = selected.slice(0, half).map(warningLine).join("\n            ");
     const col2 = selected.slice(half).map(warningLine).join("\n            ");
     const eyebrow = content.eyebrow || "Full Content Advisory";
-    const headline = content.headline || "CONTENT &amp; ACCESSIBILITY";
+    const headline = content.headline || "Content &amp; accessibility";
     return `${warningIcon()}
       <p class="eyebrow warn">${eyebrow}</p>
-      <h2 class="headline small">${headline}</h2>
+      <h2 class="headline small">${upper(headline)}</h2>
       <p class="body${content.body ? '' : ' small'}">${content.body || "This production contains the following. Please speak to a member of front-of-house if you have any concerns."}</p>
       <div class="two-col" style="margin-top:14px;">
           <div>
@@ -1412,7 +1425,7 @@ export const slideTemplates = {
       ? `<p class="review-badge">Draft &mdash; ${item.draft_label || (item.draft_owner ? `for ${item.draft_owner}'s approval` : "for approval")}</p>`
       : "";
     return `<p class="eyebrow warn">Content notice</p>
-      <h2 class="headline small">CONTENT ADVICE TO BE CONFIRMED</h2>
+      <h2 class="headline small">${upper("Content advice to be confirmed")}</h2>
       <p class="body" style="max-width:none;">${content.body || "Age guidance, themes and other content information for this production have not been confirmed. Please speak to front-of-house if you have any concerns."}</p>
       ${draftBadge}`;
   },
@@ -1420,7 +1433,7 @@ export const slideTemplates = {
   // P06 — safety: phones, photography, fire exits
   "safety": () => `${phonesOffIcon()}
       <p class="eyebrow">Before curtain</p>
-      <h2 class="headline small">PHONES OFF &mdash; NO PHOTOGRAPHY</h2>
+      <h2 class="headline small">${upper("Phones off &mdash; no photography")}</h2>
       <p class="body">
         Please silence your phones completely &mdash; vibrate is loud on stage.
         Photography and recording are not permitted during the performance.
@@ -1471,7 +1484,7 @@ export const slideTemplates = {
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow calm">From the director</p>
-          <h2 class="headline small outline">DIRECTOR'S NOTE</h2>
+          <h2 class="headline small outline">${upper("Director's note")}</h2>
           ${bodyCopy}
           <p class="footline">${show.director || "Director"} <span class="sep">&#8226;</span> Director</p>
           ${isDraft ? `<p class="review-badge">Draft — ${draftLabel}</p>` : ""}
@@ -1497,7 +1510,7 @@ export const slideTemplates = {
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow">${phase} film</p>
-          <h2 class="headline small">PUBLICITY FILM</h2>
+          <h2 class="headline small">${upper("Publicity film")}</h2>
           <p class="body" style="max-width:none;">${content.body || "A short publicity film for Underdog will appear here once Chris Firth supplies the approved footage. No old-show footage or invented running time is used."}</p>
           ${draftBadge}
         </div>
@@ -1539,7 +1552,7 @@ export const slideTemplates = {
   "did-you-know-criterion": (item, ctx) => {
     const content = item.content || {};
     const venue = ctx.show?.foyer_content?.venue || {};
-    const headline = content.headline || venue.headline || ctx.show?.venue || "OUR THEATRE";
+    const headline = content.headline || venue.headline || ctx.show?.venue || "Our theatre";
     const body = content.body || venue.body || "This production is made possible by the people who support and volunteer at our theatre.";
     const footline = content.footline || venue.footline;
     const image_local = content.image_local || venue.image_local;
@@ -1574,7 +1587,7 @@ export const slideTemplates = {
         ${particleOverlay(item, ctx, { seed: item.id || "next-production", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Coming up next at ${ctx.show?.venue || "our theatre"}</p>
-          <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
+          <h2 class="headline small cyan">${upper(prod.title || "Coming soon")}</h2>
           <p class="subhead cyan" style="font-size:2.2vw; letter-spacing:3px;">${prod.subtitle || ""}</p>
           <p class="body" style="max-width:none;">
             ${prod.synopsis_short || prod.synopsis_full || ""}
@@ -1602,7 +1615,7 @@ export const slideTemplates = {
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow calm">And coming later</p>
-          <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
+          <h2 class="headline small cyan">${upper(prod.title || "Coming soon")}</h2>
           <p class="body" style="max-width:none; margin-top:18px;">
             ${prod.synopsis_short || prod.synopsis_full || ""}
           </p>
@@ -1621,7 +1634,7 @@ export const slideTemplates = {
 
   // P12 — volunteer call
   "volunteer": (item, ctx) => `<p class="eyebrow">Join us</p>
-      <h2 class="headline small">VOLUNTEER AT ${upper(ctx.show?.venue) || "OUR THEATRE"}</h2>
+      <h2 class="headline small">${upper(`Volunteer at ${ctx.show?.venue || "our theatre"}`)}</h2>
       <p class="body">
         ${item.content?.body || ctx.show?.foyer_content?.volunteer?.body || "Speak to the front-of-house team to find out how to take part on stage, backstage, or around the building."}
       </p>
@@ -1634,7 +1647,7 @@ export const slideTemplates = {
     return `<div class="sales-card">
         ${particleOverlay(item, ctx, { seed: item.id || "tickets-walkins", count: 15 })}
         <p class="eyebrow">Tickets &amp; walk-ins</p>
-        <h2 class="headline small">TICKETS FROM ${prices.under_25 || "&pound;10"}</h2>
+        <h2 class="headline small">${upper(`Tickets from ${prices.under_25 || "&pound;10"}`)}</h2>
         <div class="walkins-grid">
           <div class="walkins-tiers">
             <div class="price-tier secondary">
@@ -1691,7 +1704,7 @@ export const slideTemplates = {
         ${particleOverlay(item, ctx, { seed: item.id || "bar-spotlight", count: 15 })}
         <div class="split-text">
           <p class="eyebrow">${eyebrow}</p>
-          <h2 class="headline medium cyan">THE BAR IS OPEN</h2>
+          <h2 class="headline medium cyan">${upper("The bar is open")}</h2>
           <p class="body" style="max-width:none;">
             ${body}
           </p>
@@ -1734,7 +1747,7 @@ export const slideTemplates = {
         : "Please enjoy the interval.");
     const labelClass = countdown.state === "clear" ? " is-label" : "";
     return `<p class="eyebrow">Interval</p>
-      <h2 class="headline small cyan">ACT II BEGINS IN</h2>
+      <h2 class="headline small cyan">${upper("Act II begins in")}</h2>
       <div class="countdown-display${labelClass}" id="countdown-display">${value}</div>
       <p class="body countdown-caption" id="countdown-caption">${caption}</p>`;
   },
@@ -1747,7 +1760,7 @@ export const slideTemplates = {
         ${particleOverlay(item, ctx, { seed: item.id || "next-production-interval", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Coming next</p>
-          <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
+          <h2 class="headline small cyan">${upper(prod.title || "Coming soon")}</h2>
           <p class="subhead cyan" style="font-size:var(--foyer-small-size); letter-spacing:3px;">${prod.subtitle || ""}</p>
           <p class="body" style="max-width:none;">
             ${prod.synopsis_short || prod.synopsis_full || ""}
@@ -1770,7 +1783,7 @@ export const slideTemplates = {
     const body = content.body || packCopy.body
       || "Every production is made by volunteers, and every ticket helps keep live theatre thriving in Earlsdon.";
     return `<p class="eyebrow">Did you know</p>
-      <h2 class="headline small cyan">THE CRITERION IS A CHARITY</h2>
+      <h2 class="headline small cyan">${upper("The Criterion is a charity")}</h2>
       <p class="body">
         ${body}
       </p>
@@ -1798,7 +1811,7 @@ export const slideTemplates = {
         ${particleOverlay(item, ctx, { seed: item.id || "bar-stays-open", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Thank you for being with us</p>
-          <h2 class="headline small">THE BAR STAYS OPEN</h2>
+          <h2 class="headline small">${upper("The bar stays open")}</h2>
           <p class="body" style="max-width:none;">
             ${bodyCopy}
           </p>
@@ -1821,7 +1834,7 @@ export const slideTemplates = {
     const content = item.content || {};
     const packCopy = ctx.show?.foyer_content?.thank_you || {};
     const eyebrow = content.eyebrow || packCopy.eyebrow || `From everyone at ${ctx.show?.venue || "the theatre"}`;
-    const headline = content.headline || packCopy.headline || "THANK YOU";
+    const headline = content.headline || packCopy.headline || "Thank you";
     const body = content.body || packCopy.body
       || "For making the journey to Earlsdon, and for giving us your evening.";
     const footline = content.footline || packCopy.footline || "";
@@ -1831,7 +1844,7 @@ export const slideTemplates = {
   },
 
   "archive-intro": () => `<p class="eyebrow calm">From the theatre archive</p>
-      <h2 class="headline medium outline">FROM THE ARCHIVES</h2>
+      <h2 class="headline medium outline">${upper("From the archives")}</h2>
       <p class="body">Seven decades of first nights, near-disasters and standing ovations &mdash; a few
         favourites from the Criterion's history.</p>`,
 
@@ -1851,7 +1864,7 @@ export const slideTemplates = {
     }
     if (!memory) {
       return `<p class="eyebrow calm">From the theatre archive</p>
-        <h2 class="headline small outline">A LIFE IN THE THEATRE</h2>
+        <h2 class="headline small outline">${upper("A life in the theatre")}</h2>
         <p class="body">Stories from the actors, makers and volunteers who built this theatre's history.</p>`;
     }
     const year = productionYear(memory.production);
@@ -1909,7 +1922,7 @@ export const slideTemplates = {
         ${particleOverlay(item, ctx, { seed: item.id || "next-production-postshow", count: 15 })}
         <div class="split-text">
           <p class="eyebrow calm">Book your next visit</p>
-          <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
+          <h2 class="headline small cyan">${upper(prod.title || "Coming soon")}</h2>
           <p class="subhead" style="color:var(--lavender); font-size:1.9vw;">${prod.subtitle || ""}${prod.author ? ` &mdash; by ${prod.author}` : ""}</p>
           <p class="review-quote">${prod.synopsis_short || ""}</p>
           ${runDates ? `<p class="footline">${runDates}</p>` : ""}
@@ -1936,7 +1949,7 @@ export const slideTemplates = {
     return `<div class="split-layout">
         <div class="split-text">
           <p class="eyebrow calm">Coming later at ${ctx.show?.venue || "our theatre"}</p>
-          <h2 class="headline small cyan">${upper(prod.title) || "COMING SOON"}</h2>
+          <h2 class="headline small cyan">${upper(prod.title || "Coming soon")}</h2>
           <p class="subhead" style="color:var(--lavender); font-size:var(--foyer-small-size);">${prod.author || ""}${prod.adapter ? ` &mdash; adapted by ${prod.adapter}` : ""}</p>
           <p class="review-quote">&ldquo;${review.quote || prod.synopsis_short || ""}&rdquo;<span class="source">${review.source || ""}</span></p>
           ${footline ? `<p class="footline">${footline}</p>` : ""}
@@ -1955,7 +1968,7 @@ export const slideTemplates = {
   "company-profile": (item, ctx) => {
     const show = ctx.show || {};
     const vc = ctx.visitingCompany || {};
-    const name = upper(vc.name) || upper(show.author) || "OUR GUEST COMPANY";
+    const name = upper(vc.name || show.author || "Our guest company");
     const nameCaps = caps(vc.name) || caps(show.author) || "OUR GUEST COMPANY";
     const body = vc.body || (show.author && show.venue
       ? `A visiting production by ${show.author} at ${show.venue}.`
@@ -1981,7 +1994,7 @@ export const slideTemplates = {
   "company-productions": (item, ctx) => {
     const show = ctx.show || {};
     const vc = ctx.visitingCompany || {};
-    const name = upper(vc.name) || upper(show.author) || "VISITING COMPANY";
+    const name = upper(vc.name || show.author || "Visiting company");
     const allProductions = vc.productions || [];
     const offset = Math.max(0, Number(item.offset) || 0);
     const limit = item.limit != null ? Number(item.limit) : 6;
@@ -2027,7 +2040,7 @@ export const slideTemplates = {
       return `<li${cls}><span class="tour-when">${d.when || ""}</span><span class="tour-venue">${d.venue || ""}</span></li>`;
     }).join("\n        ");
     return `<p class="eyebrow">${caps(tour.intro) || "ON TOUR"}</p>
-      <h2 class="headline small">${upper(vc.name) || "VISITING COMPANY"}</h2>
+      <h2 class="headline small">${upper(vc.name || "Visiting company")}</h2>
       <ul class="tour-list">
         ${listItems}
       </ul>
@@ -2060,7 +2073,7 @@ export const slideTemplates = {
       return `<li${cls}><span class="date-list-when">${(row && row.when) || ""}</span><span class="date-list-title">${(row && row.title) || ""}</span></li>`;
     }).join("\n        ");
     const eyebrow = content.eyebrow || "Coming up";
-    const headline = content.headline || ctx.show?.venue || "AT OUR THEATRE";
+    const headline = content.headline || ctx.show?.venue || "At our theatre";
     const footline = content.footline || "";
     return `<p class="eyebrow">${eyebrow}</p>
       <h2 class="headline small">${upper(headline)}</h2>

@@ -2,6 +2,86 @@
   "schema_version": 1,
   "generated": "2026-10-11",
   "sizes": {
+    "assets/archive/arsenic-and-old-lace-1997.jpg": [
+      269,
+      400
+    ],
+    "assets/archive/babes-in-the-wood-1988.jpg": [
+      283,
+      400
+    ],
+    "assets/archive/crime-and-punishment-1971.jpg": [
+      270,
+      400
+    ],
+    "assets/archive/funny-peculiar-1981.jpg": [
+      273,
+      400
+    ],
+    "assets/archive/guys-and-dolls-1973.jpg": [
+      247,
+      400
+    ],
+    "assets/archive/single-spies-2012.jpg": [
+      800,
+      321
+    ],
+    "assets/bar/bar-welcome.jpg": [
+      1400,
+      933
+    ],
+    "assets/bar/bottle-pour.jpg": [
+      1400,
+      933
+    ],
+    "assets/bar/cask-pull.jpg": [
+      1400,
+      933
+    ],
+    "assets/bar/dave-close.jpg": [
+      1400,
+      903
+    ],
+    "assets/bar/dave-pull.jpg": [
+      1399,
+      903
+    ],
+    "assets/bar/dave-wine.jpg": [
+      1399,
+      903
+    ],
+    "assets/bar/ice-cream-chocolate.jpg": [
+      712,
+      489
+    ],
+    "assets/bar/ice-cream-vanilla.jpg": [
+      602,
+      415
+    ],
+    "assets/bar/optics-wall.jpg": [
+      1400,
+      933
+    ],
+    "assets/bar/pint-marble.jpg": [
+      1400,
+      932
+    ],
+    "assets/bar/snacks-product.jpg": [
+      1376,
+      768
+    ],
+    "assets/bar/wine-open.jpg": [
+      1400,
+      933
+    ],
+    "assets/bar/wine-red.jpg": [
+      1400,
+      933
+    ],
+    "assets/bar/wine-white.jpg": [
+      1400,
+      933
+    ],
     "assets/posters/appropriate-2027.jpg": [
       600,
       600

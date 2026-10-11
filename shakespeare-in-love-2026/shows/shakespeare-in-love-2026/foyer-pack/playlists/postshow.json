@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "phase": "postshow",
+  "policy": {
+    "min_dwell_seconds": 9,
+    "max_dwell_seconds": 24,
+    "max_words_per_screen": 60,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 300,
+    "audio_allowed": false,
+    "group_rotation": [
+      "making",
+      "theatre"
+    ]
+  },
+  "items": [
+    {
+      "kind": "one-shot",
+      "id": "thank-you",
+      "template": "thank-you",
+      "trigger": "start",
+      "dwell_seconds": 15
+    },
+    {
+      "kind": "anchor",
+      "id": "next-production-appropriate",
+      "template": "next-production-postshow",
+      "every_n": 5,
+      "production_ref": "next_productions.json#appropriate-2027",
+      "dwell_seconds": 13,
+      "_note": "R14 postshow anchor."
+    },
+    {
+      "kind": "wildcard",
+      "id": "set-build",
+      "template": "story-montage",
+      "tag": "making",
+      "weight": 2,
+      "dwell_seconds": 21,
+      "review_status": "draft",
+      "draft_owner": "the set-build team",
+      "draft_label": "photographs to come from the set-build team",
+      "content": {
+        "eyebrow": "Behind the scenes",
+        "headline": "Building the set",
+        "body": "Photographs from the set-building team to come.",
+        "frames": [
+          {
+            "source": "assets/placeholders/set-build-1.svg",
+            "caption": "To come",
+            "alt": "Placeholder for a set-building photograph"
+          },
+          {
+            "source": "assets/placeholders/set-build-2.svg",
+            "caption": "To come",
+            "alt": "Placeholder for a set-building photograph"
+          },
+          {
+            "source": "assets/placeholders/set-build-3.svg",
+            "caption": "Finished",
+            "alt": "Placeholder for a photograph of the finished set"
+          }
+        ],
+        "footline": "Set built by the Criterion set-building team"
+      },
+      "_note": "R7 slot, one card for now; grows to a 4-6 card sequence when the team's photographs arrive (count, credits owed)."
+    },
+    {
+      "kind": "wildcard",
+      "id": "prop-clip-1-postshow",
+      "template": "feature",
+      "tag": "making",
+      "weight": 1,
+      "dwell_seconds": 14,
+      "source": "assets/placeholders/prop-clip.svg",
+      "content": {
+        "eyebrow": "Made on stage",
+        "headline": "Props made in front of you",
+        "body": "The cast make some of tonight's props on stage.",
+        "footline": "Clip to come from the company"
+      },
+      "review_status": "draft",
+      "draft_owner": "the company",
+      "draft_label": "clip to come from the company",
+      "_note": "R9 placeholder. When clips arrive: item.video (videos/*.webm, landscape, 4-5 s, under 3 MB) + item.poster; one card per clip."
+    },
+    {
+      "kind": "wildcard",
+      "id": "greener-criterion",
+      "template": "did-you-know-criterion",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 12,
+      "content": {
+        "eyebrow": "A greener Criterion",
+        "headline": "Turning the Criterion green",
+        "body": "Grants from the Veolia Environmental Trust, the Theatres Trust and the Wolfson Foundation are helping us towards becoming carbon neutral.",
+        "footline": "Improvements due in 2027"
+      },
+      "_note": "R16, verbatim from the default pack."
+    },
+    {
+      "kind": "wildcard",
+      "id": "season-2027-postshow",
+      "template": "date-list",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 16,
+      "content": {
+        "eyebrow": "Next year",
+        "headline": "2027 at the Criterion",
+        "footline": "More autumn productions to be announced",
+        "rows": [
+          {
+            "when": "Jan - Feb",
+            "title": "Appropriate",
+            "highlight": true
+          },
+          {
+            "when": "March",
+            "title": "The Road to Huntsville"
+          },
+          {
+            "when": "Jun - Jul",
+            "title": "Things I Know to Be True"
+          },
+          {
+            "when": "September",
+            "title": "Stones in His Pockets"
+          },
+          {
+            "when": "December",
+            "title": "The Full Monty"
+          }
+        ]
+      },
+      "_source": "R15. criteriontheatre.co.uk/news/202 (5 October 2026), checked 11 October 2026. Road to Huntsville is a Studio production. 'Things I Know to Be True' is six words, one over the date-list row budget - it is a title and cannot be shortened.",
+      "_springboard_note": "Springboard Festival 2027 (May) left out for now: the render check's past-show guard flags any 'Springboard' as a leak from the 2026 pack. Restore the row once the check can tell a future production from a past one (tool fix, to be queued)."
+    },
+    {
+      "kind": "wildcard",
+      "id": "volunteer-postshow",
+      "template": "volunteer",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-charity",
+      "template": "criterion-charity",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 12
+    },
+    {
+      "kind": "wildcard",
+      "id": "criterion-story-postshow",
+      "template": "did-you-know-criterion",
+      "tag": "theatre",
+      "weight": 1,
+      "dwell_seconds": 11
+    }
+  ]
+}

@@ -1,0 +1,2589 @@
+/*
+  Springboard Festival 2026 — shared scene stylesheet.
+  Brand: dark teal/navy underwater photo background (#F3EFD2 cream
+  for all type), Oswald display headlines, Inter for any small body text.
+  Welcome scene uses SpringboardWelcome.jpg as a full-bleed image.
+  Other scenes lay content on top of background-springboard-water.jpg.
+*/
+
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/anton-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/bebas-neue-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('assets/fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('assets/fonts/oswald-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Rye';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/rye-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/im-fell-english-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/im-fell-english-italic-latin.woff2') format('woff2');
+}
+
+:root {
+  --colour-primary: #1D4D4F;
+  --colour-primary-text: #F3EFD2;
+  --colour-accent: #6BA5C4;
+  --colour-background: #02101e;
+  --colour-background-text: #F3EFD2;
+  --font-headline: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --watermark-image: none;
+  --watermark-opacity: 0.12;
+  --cream: #F3EFD2;            /* primary text colour, matches lockup */
+  --cream-dim: rgba(243,239,210,0.78);
+  --cream-faint: rgba(243,239,210,0.55);
+  --peacock: #6BA5C4;          /* eyebrow/subline blue from welcome image */
+  --peacock-soft: rgba(107,165,196,0.65);
+  --peacock-line: rgba(107,165,196,0.75);  /* thin vertical divider */
+  --water-overlay: rgba(4, 14, 32, 0.55);  /* darken backdrop where text sits */
+  --water-overlay-strong: rgba(4, 14, 32, 0.78);
+  --stage-main:  #c0392b;
+  --stage-ros:   #2980b9;
+  --stage-floor: #27ae60;
+  --stage-other: #7f8c8d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  background: #02101e;  /* deepest teal — visible behind images while loading */
+  font-family: 'Inter', sans-serif;
+  color: var(--cream);
+  overflow: hidden;
+}
+
+/* ---------- BACKDROP ---------- */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: url('assets/background-springboard-water.jpg') center/cover no-repeat #02101e;
+}
+
+/* Vignette to make text more legible on busy water areas. Sits on top of
+   the water image but underneath any hero overlay. */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--water-overlay-strong) 0%,
+    var(--water-overlay) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Welcome hero overlay. Sits on top of the water backdrop and fades in/out
+   on .active, giving us a smooth crossfade between hero and water rather
+   than the previous instant snap. When the hero is fully opaque it covers
+   the water and its vignette completely. */
+.backdrop-hero {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: url('assets/SpringboardLogo.jpg') center/cover no-repeat;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+  pointer-events: none;
+}
+.backdrop-hero.active { opacity: 1; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  padding: 60px 80px;
+}
+
+/* Vertical peacock divider removed at David's request (25 Apr).
+   Reinstate via the rule below if it's wanted again later.
+   .scene:not(.scene-welcome)::before { ... } */
+
+/* ---------- TYPOGRAPHY ---------- */
+
+.eyebrow {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 38px;
+  color: var(--peacock);
+}
+
+.headline {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 200px;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+}
+.headline.tight  { font-size: 150px; }
+.headline.medium { font-size: 110px; }
+.headline.small  { font-size:  78px; }
+
+.subline {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 38px;
+  color: var(--peacock);
+  margin-top: 30px;
+}
+
+/* ---------- LAYOUT ZONES ---------- */
+
+.left-zone {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 60px;
+}
+
+/* Bottom-right Criterion lockup. Uses David's CriLogo_Clean.png as a CSS
+   mask, with cream background-color showing through — that recolours the
+   pure-white PNG to brand cream without needing to re-export the image. */
+.lockup {
+  position: absolute;
+  right: 80px;
+  bottom: 50px;
+  width: 180px;
+  height: 180px;
+  z-index: 2;
+  background-color: var(--cream);
+  -webkit-mask: url('assets/criterion-logo.png') no-repeat center / contain;
+          mask: url('assets/criterion-logo.png') no-repeat center / contain;
+}
+/* The <img> inside is hidden — kept in markup for accessibility/alt-text. */
+.lockup img { display: none; }
+
+/* ---------- SCENE: WELCOME (full-bleed hero) ---------- */
+/* The JPG provides all the design.  The lockup overlay is shown on the
+   welcome scene too (when David supplies a logo-free hero image), so the
+   lockup position stays consistent across every scene in the rotation. */
+
+/* ---------- SCENE: TONIGHT ---------- */
+
+.scene-tonight {
+  flex-direction: column;
+  padding: 70px 100px 240px 100px;  /* extra bottom padding clears the 180px lockup */
+}
+.scene-tonight .top-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+.scene-tonight .top-bar .date-tag {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+.scene-tonight .running-order {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 80px;
+  align-content: start;
+}
+.scene-tonight .running-order .col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.scene-tonight .row {
+  display: grid;
+  grid-template-columns: 130px 100px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(243,239,210,0.15);
+  color: var(--cream);
+}
+.scene-tonight .row .time {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+}
+.scene-tonight .row .act {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.scene-tonight .row.is-interval { opacity: 0.55; font-style: italic; }
+.scene-tonight .row.is-closing  { opacity: 0.55; }
+
+/* Stage badge */
+.stage-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 5px 11px;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  background: var(--stage-other);
+  display: inline-block;
+  width: fit-content;
+}
+.stage-badge.stage-Main  { background: var(--stage-main); }
+.stage-badge.stage-Ros   { background: var(--stage-ros); }
+.stage-badge.stage-Side  { background: var(--stage-ros); }
+.stage-badge.stage-Floor { background: var(--stage-floor); }
+
+/* ---------- SCENE: NEXT UP ---------- */
+
+.scene-next .left-zone {
+  gap: 24px;
+  width: 55%;       /* leaves 45% for the image area on the right */
+  padding-right: 60px;
+}
+.scene-next .next-act-name {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 140px;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-top: 4px;
+}
+.scene-next .next-meta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 4px;
+}
+.scene-next .next-time {
+  font-family: 'Oswald', sans-serif;
+  font-size: 80px;             /* up from 60 — gives time a bit more weight */
+  font-weight: 600;
+  line-height: 1;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+}
+.scene-next .stage-badge {
+  font-size: 30px;
+  padding: 10px 22px;
+}
+.scene-next .blurb {
+  margin-top: 22px;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--cream);
+  max-width: 900px;
+}
+/* Byline (writer/director on plays) — kept deliberately quiet so it
+   doesn't visually compete with the act name above. */
+.scene-next .byline {
+  margin-top: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--peacock-soft);
+  opacity: 0.85;
+}
+
+/* Image area on the right of the Next-up scene.
+   object-fit: contain so portrait headshots and landscape film-stills both
+   show in full, without weird cropping. The dark navy fill shows through
+   as letterboxing — looks intentional against the water backdrop. */
+.scene-next .next-image-wrap {
+  position: absolute;
+  top: 90px;
+  right: 80px;
+  width: 700px;
+  height: 560px;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1;
+  background: rgba(2,14,32,0.65);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.scene-next .next-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Duo composite — for collaborations like Andrea/Lewis or Sharan + Juggy.
+   Two images side-by-side, each filling half the panel.  Uses cover so
+   each portrait fills its half cleanly; the seam in the middle reads
+   as a visual cue for "collaboration". */
+.scene-next .next-image-wrap.duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  background: rgba(2,14,32,0.85);  /* shows as a thin divider line */
+}
+.scene-next .next-image-wrap.duo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* ---------- SCENE: INTERVAL ---------- */
+
+.scene-interval .left-zone { gap: 24px; }
+.scene-interval .headline { font-size: 300px; letter-spacing: 0.01em; }
+.scene-interval .resume-time {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 50px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--peacock);
+  margin-top: 30px;
+}
+
+/* ---------- SCENE: COMING SOON ---------- */
+
+.scene-coming-soon {
+  flex-direction: column;
+  padding: 70px 100px 240px 100px;  /* extra bottom padding clears the 180px lockup */
+}
+.scene-coming-soon .top-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+.scene-coming-soon .top-bar .date-tag {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+.scene-coming-soon .cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  align-content: start;   /* cards size to content, sit at top of grid */
+}
+.scene-coming-soon .card {
+  background: rgba(4,14,32,0.55);
+  border: 1px solid rgba(243,239,210,0.18);
+  border-radius: 12px;
+  padding: 0;            /* image goes to the edge; body has its own padding */
+  display: flex;
+  flex-direction: column;
+  color: var(--cream);
+  overflow: hidden;
+}
+.scene-coming-soon .card .card-image {
+  width: 100%;
+  height: 240px;
+  background: rgba(4,14,32,0.7);
+}
+.scene-coming-soon .card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Night card panels (.scene-night-cards): use contain so portrait headshots
+   and logos show in full with dark letterboxing rather than being cropped.
+   Scoped to avoid changing the Coming Soon cards which use cover intentionally. */
+.scene-night-cards .card .card-image img {
+  object-fit: contain;
+}
+/* Duo card — two collaborators sharing one image slot (e.g. Andrea/Lewis).
+   Each half fills its column with cover so faces aren't pillarboxed. */
+.scene-night-cards .card .card-image.duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 2px;
+  background: rgba(4,14,32,0.85);
+  overflow: hidden;
+}
+.scene-night-cards .card .card-image.duo img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.scene-coming-soon .card .card-body {
+  padding: 24px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.card .card-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 52px;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+.card .card-subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  margin-top: -8px;
+  opacity: 0.85;
+}
+.card .card-meta {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+.card .card-writer {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  font-size: 22px;
+  color: var(--cream-dim);
+}
+.card .card-blurb {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+/* Old name kept for backward compatibility — same styling as card-meta. */
+.card .card-dates {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--peacock);
+}
+
+/* ---------- ROTATION CONTAINER ----------
+   Crossfade timing: scene fades 1.6s, matching the backdrop-hero crossfade
+   so hero ↔ water and Welcome-lockup ↔ Tonight-content move together.
+   Both sides of the fade are visible simultaneously, so the eye never sees
+   an empty water frame between scenes. */
+.rotation > .scene { opacity: 0; transition: opacity 1.6s ease; }
+.rotation > .scene.active { opacity: 1; }
+
+body.nextgen-foyer,
+body.announcement-overlay-page {
+  width: 1920px;
+  height: 1080px;
+  /* Transparent: this page exists ONLY as an OBS Browser Source stacked over the
+     foyer scenes (see README). It was opaque ink+gradients until 2026-06-11, which
+     blacked out the underlying scene the first time the source was wired correctly. */
+  background: transparent;
+  color: var(--colour-background-text);
+  overflow: hidden;
+  --ink: #0A0612;
+  --ink-2: #1A0E2A;
+  --neon-magenta: #FF1A75;
+  --neon-cyan: #00E5FF;
+  --poster-yellow: #FFD434;
+  --cream: #F4E5C2;
+}
+
+.ng-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    linear-gradient(160deg, rgba(0,0,0,0.08), rgba(0,0,0,0.45)),
+    var(--colour-background);
+}
+
+.ng-watermark {
+  position: absolute;
+  inset: 0;
+  background-image: var(--watermark-image);
+  background-repeat: no-repeat;
+  /* Mirrors .criterion-mark (163px wide, bottom 18px, inset 28px) so the two
+     corner marks share a baseline and a footprint. At 440px it read as a smear
+     rather than a counterweight. Overridable per show via --watermark-size. */
+  background-position: bottom 18px left 28px;
+  background-size: var(--watermark-size, 163px) auto;
+  opacity: var(--watermark-opacity);
+  pointer-events: none;
+}
+
+html[data-watermark-position="bottom-left"] .ng-watermark { background-position: bottom 18px left 28px; }
+html[data-watermark-position="bottom-right"] .ng-watermark { background-position: bottom 18px right 28px; }
+html[data-watermark-position="top-right"] .ng-watermark { background-position: top 18px right 28px; }
+html[data-watermark-position="top-left"] .ng-watermark { background-position: top 18px left 28px; }
+
+.ng-topline {
+  position: absolute;
+  top: 48px;
+  left: 64px;
+  right: 64px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.ng-phase,
+.ng-show,
+.ng-caption,
+.announcement-overlay {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ng-phase {
+  font-family: var(--font-headline);
+  font-size: 34px;
+  color: var(--colour-accent);
+}
+/* PRESHOW and POSTSHOW are our vocabulary, not the audience's - a patron in the
+   foyer already knows whether the show has started. INTERVAL is the exception:
+   it tells someone walking in that a break is running, so that one stays. The
+   unavailable state stays too, because that is a fault worth seeing.
+   Hidden with visibility rather than display, so .ng-topline keeps both flex
+   children and justify-content: space-between still pins the show name hard
+   right. Deliberately applies to the review build as well, so reviewers see
+   exactly what the audience will. David's call, 2026-09-10. */
+.nextgen-foyer .ng-phase { visibility: hidden; }
+.nextgen-foyer[data-phase="interval"] .ng-phase,
+.nextgen-foyer[data-phase="unavailable"] .ng-phase { visibility: visible; }
+
+.ng-show {
+  font-family: var(--font-headline);
+  font-size: 34px;
+  color: var(--colour-primary-text);
+}
+
+.ng-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.ng-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.ng-caption {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  bottom: 48px;
+  z-index: 2;
+  font-family: var(--font-headline);
+  font-size: 28px;
+  color: var(--colour-accent);
+}
+
+.announcement-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 0 64px 40px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+.announcement-overlay-page[data-pos="top"] .announcement-overlay {
+  top: 0;
+  bottom: auto;
+  padding: 40px 64px 0;
+  transform: translateY(-28px);
+}
+
+.announcement-overlay.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.announcement-band {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1500px;
+  min-height: 96px;
+  /* 156 -> 170px: two clamped lines at the 56px type floor need ~121px of
+     content plus 44px padding and 4px border (2026-09-14 band de-Popcorn). */
+  max-height: 170px;
+  padding: 22px 34px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  overflow: hidden;
+  background: rgba(10, 6, 18, 0.92);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ink, #0A0612) 92%, transparent),
+    color-mix(in srgb, var(--ink-2, #1A0E2A) 92%, transparent)
+  );
+  border: 2px solid var(--neon-magenta, #FF1A75);
+  border-left: 8px solid var(--neon-cyan, #00E5FF);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.announcement-overlay-page[data-kind="nudge"] .announcement-band {
+  border-color: var(--poster-yellow, #FFD434);
+  border-left-color: var(--poster-yellow, #FFD434);
+}
+
+.announcement-kicker {
+  flex: 0 0 auto;
+  padding-right: 26px;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: var(--font-headline);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+  /* --colour-accent, not --neon-cyan: cyan maps to the show's secondary, a
+     rule-only colour that must never carry text (Underdog #B5432E = 3.37:1). */
+  color: var(--colour-accent, #D9A94E);
+}
+
+.announcement-overlay-page[data-kind="nudge"] .announcement-kicker {
+  color: var(--poster-yellow, #FFD434);
+}
+
+.announcement-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--cream-2, var(--colour-primary-text, #F4E5C2));
+  font-family: var(--font-headline);
+  font-size: clamp(26px, 3.1vw, 56px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.announcement-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--neon-cyan, #00E5FF);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.announcement-overlay-page[data-kind="nudge"] .announcement-progress {
+  background: var(--poster-yellow, #FFD434);
+}
+
+.announcement-overlay-page[data-pos="top"] .announcement-progress {
+  top: 0;
+  bottom: auto;
+}
+
+/* Criterion house foyer engine. Show packs supply tokens, never layout. */
+
+body.nextgen-foyer {
+  /* Inherit the resolved show aliases from :root; local literals mask them. */
+  /* Running-copy tier for foyer rule 2: nothing the audience reads goes below
+     56px (both terms are 56.00px at 1920x1080). Closes exception E1; see
+     docs/design/2026-09-24-foyer-type-scale-full-repair-design.md. */
+  --foyer-copy-size: min(2.9167vw, 5.1852vh);
+  /* Small-print tier for foyer rule 2: footlines and captions may sit at the
+     34px minimum the rules allow (both terms are 34.00px at 1920x1080). */
+  --foyer-small-size: min(1.7708vw, 3.1481vh);
+  --ink: inherit;
+  --ink-2: inherit;
+  --ink-3: inherit;
+  --neon-magenta: inherit;
+  --neon-cyan: inherit;
+  --neon-violet: inherit;
+  --poster-yellow: inherit;
+  --poster-red: inherit;
+  --cream: inherit;
+  --cream-2: inherit;
+  --lavender: inherit;
+  --white: var(--colour-primary-text);
+  --dim: inherit;
+  --glow-magenta:  0 2px 10px rgba(199, 164, 90, 0.18);
+  --glow-cyan:     0 2px 10px rgba(107, 165, 196, 0.16);
+  --glow-yellow:   0 2px 8px rgba(199, 164, 90, 0.14);
+
+  background:
+    radial-gradient(ellipse 85% 68% at 18% 12%, rgba(107, 165, 196, 0.16), transparent 72%),
+    radial-gradient(ellipse 75% 75% at 85% 100%, rgba(199, 164, 90, 0.08), transparent 75%),
+    linear-gradient(145deg, var(--ink) 0%, var(--ink-2) 58%, var(--ink-3) 100%);
+  color: var(--cream);
+}
+
+/* Same masking fix as body.nextgen-foyer above, but ONLY the six literals the
+   shared body rule at ~line 546 sets on body.announcement-overlay-page - the
+   overlay must keep background: transparent (it sits over live scenes in OBS),
+   so it cannot share the block above. */
+body.announcement-overlay-page {
+  --ink: inherit;
+  --ink-2: inherit;
+  --neon-magenta: inherit;
+  --neon-cyan: inherit;
+  --poster-yellow: inherit;
+  --cream: inherit;
+}
+
+/* ---- ambient layers ---- */
+.nextgen-foyer .ng-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--phase-intensity-preshow, 1);
+}
+/* A phase with no rule in this group inherits PRESHOW's brightness through the
+   base rule's --phase-intensity-preshow fallback - not the nearest phase's.
+   That is what left holding, the quietest phase, rendering at full brightness.
+   Every new phase needs its own line here. */
+body.nextgen-foyer[data-phase="interval"] .ng-ambient { opacity: var(--phase-intensity-interval, 0.9); }
+body.nextgen-foyer[data-phase="postshow"] .ng-ambient { opacity: var(--phase-intensity-postshow, 0.65); }
+body.nextgen-foyer[data-phase="holding"] .ng-ambient { opacity: var(--phase-intensity-holding, 0.4); }
+.nextgen-foyer .ng-ambient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.38) 100%);
+}
+.nextgen-foyer .ng-texture {
+  position: absolute;
+  inset: 0;
+  opacity: var(--texture-opacity, 0);
+  background-image: var(--texture-image, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* ON-AIR indicator (preshow/interval) */
+.nextgen-foyer .on-air {
+  position: absolute;
+  top: 48px;
+  right: 64px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace clock-style readout, not themed */
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: var(--cream-2);
+  z-index: 5;
+  opacity: 0.55;
+}
+.nextgen-foyer .on-air-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--neon-magenta);
+  box-shadow: var(--glow-magenta);
+  animation: ng-pulse 2.2s ease-in-out infinite;
+}
+@keyframes ng-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1.0; }
+}
+body.nextgen-foyer[data-phase="postshow"] .on-air { display: none; }
+
+/* Engine-owned corner mark. The verified roofline master is a CSS mask so
+   its colour follows the active theme rather than a raster's baked palette. */
+.nextgen-foyer .criterion-mark {
+  position: absolute;
+  bottom: 18px;
+  right: 28px;
+  width: 163px;
+  aspect-ratio: 434 / 262;
+  opacity: 0.8;
+  z-index: 4;
+  pointer-events: none;
+  color: var(--colour-primary-text);
+  background-color: currentColor;
+  -webkit-mask: url('assets/criterion-logo-lockup-outlined.svg') no-repeat center / contain;
+          mask: url('assets/criterion-logo-lockup-outlined.svg') no-repeat center / contain;
+}
+body.nextgen-foyer[data-phase="postshow"] .criterion-mark { opacity: 0.4; }
+
+/* The slide stage sits above ambient layers. */
+.nextgen-foyer .ng-stage { z-index: 3; }
+
+/* ---- slide base ---- */
+.nextgen-foyer .slide {
+  position: absolute;
+  inset: 0;
+  padding: 9% 8% 10% 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  animation: ng-fade-in 700ms ease forwards;
+}
+.nextgen-foyer .slide.active { opacity: 1; }
+@keyframes ng-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.nextgen-foyer .eyebrow {
+  font-family: 'JetBrains Mono', monospace; /* fixed: house monospace kicker treatment, not themed */
+  font-weight: 400;
+  font-size: 34px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  /* muted_text, not --neon-cyan: secondary is a rule-only colour and must
+     never carry text (foyer-surfaces.md colour roles). C17, 10 Oct 2026. */
+  color: var(--cream-2);
+  margin: 0 0 22px 0;
+  text-shadow: none;
+}
+.nextgen-foyer .eyebrow.warn  { color: var(--poster-yellow); text-shadow: var(--glow-yellow); }
+.nextgen-foyer .eyebrow.alert { color: var(--poster-red); text-shadow: 0 0 6px rgba(177, 29, 46, 0.8), 0 0 16px rgba(177, 29, 46, 0.5); }
+.nextgen-foyer .eyebrow.calm  { color: var(--lavender); text-shadow: none; }
+
+.nextgen-foyer .headline {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-weight: 400;
+  font-size: 9vw;
+  line-height: 0.92;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin: 0 0 24px 0;
+  text-shadow: var(--glow-magenta);
+  text-transform: uppercase;
+}
+.nextgen-foyer .headline.small  { font-size: 6vw; }
+.nextgen-foyer .headline.medium { font-size: 7.5vw; }
+.nextgen-foyer .headline.outline {
+  color: rgba(244, 229, 194, 0.10);
+  -webkit-text-stroke: 1.6px var(--neon-magenta);
+  text-shadow: none;
+}
+.nextgen-foyer .headline.cyan { text-shadow: var(--glow-cyan); }
+/* {braced} emphasis inside a headline. Falls back through the theme's own
+   tokens, so a show that sets neither still gets something deliberate.
+   Underdog sets poster_red to a lightened struck-red: the theme's secondary
+   #B5432E is 3.37:1 on the ground, which clears WCAG large-text but sits well
+   under this pack's own 7:1 muted floor and recedes at 3-8 metres. */
+.nextgen-foyer .hl-em {
+  /* Last resort is accent, never --colour-primary/secondary: the braced word
+     is text, and secondary is a rule-only colour (foyer-surfaces.md). */
+  color: var(--colour-emphasis, var(--poster-red, var(--colour-accent)));
+}
+
+/* The welcome title's tracking was tuned for capitals. It lives here rather
+   than inline on the element so the headline_case reset below can reach it. */
+.nextgen-foyer .slide[data-kind="welcome"] .headline { letter-spacing: 6px; }
+
+/* Theme token headline_case: "as_written" (theme-loader.js sets
+   html[data-headline-case]) renders headline-tier copy exactly as written in
+   the pack, and drops the tracking tuned for capitals - wide tracking on
+   mixed-case type reads as a fault. Eyebrows, footlines, credits, badges and
+   fallback placeholder labels are small-caps design elements, not headlines,
+   and do not follow the token. */
+html[data-headline-case="as_written"] .nextgen-foyer .slide .headline {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.nextgen-foyer .subhead {
+  font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+  font-size: 3vw;
+  letter-spacing: 4px;
+  color: var(--cream);
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+}
+.nextgen-foyer .subhead.cyan { color: var(--cream-2); text-shadow: none; }
+
+.nextgen-foyer .body {
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: var(--foyer-copy-size);
+  line-height: 1.5;
+  color: var(--cream);
+  max-width: 76%;
+  margin: 0 0 18px 0;
+}
+.nextgen-foyer .body.small { font-size: var(--foyer-copy-size); max-width: 72%; }
+
+.nextgen-foyer .footline {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace metadata line (times, sources), not themed */
+  font-size: min(2.27vw, 3.15vh);
+  color: var(--cream-2);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 32px;
+}
+.nextgen-foyer .footline .sep,
+.nextgen-foyer .sep { color: var(--neon-magenta); margin: 0 12px; }
+
+.nextgen-foyer .author {
+  font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+  font-size: 3vw;
+  color: var(--colour-primary-text);
+  letter-spacing: 8px;
+  margin-top: -6px;
+  /* Secondary is rule-only. The author line is information-bearing text, so it
+     uses the high-contrast text token rather than the decorative red. */
+  text-shadow: none;
+}
+.nextgen-foyer .subtitle {
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(3.46vw, 5.19vh);
+  line-height: 1.1;
+  color: var(--cream);
+  margin-top: -8px;
+  margin-bottom: 16px;
+  max-width: 80%;
+}
+.nextgen-foyer .review-badge {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 18px;
+  background: rgba(217, 169, 78, 0.15);
+  border: 2px solid var(--colour-accent);
+  border-radius: 4px;
+  color: var(--colour-accent);
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(2.15vw, 3.15vh);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* two-column lists (cast / warnings full) */
+.nextgen-foyer .two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6%;
+  row-gap: 12px;
+  margin-top: 12px;
+}
+.nextgen-foyer .cast-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(200, 185, 216, 0.15);
+  font-size: var(--foyer-small-size);
+}
+.nextgen-foyer .cast-role {
+  color: var(--lavender);
+  font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
+  letter-spacing: 2px;
+}
+.nextgen-foyer .cast-actor {
+  color: var(--white);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* warning chips (top-3) */
+.nextgen-foyer .warning-list {
+  display: grid;
+  grid-template-columns: minmax(300px, 21vw) 1fr;
+  column-gap: 3%;
+  row-gap: 16px;
+  align-items: center;
+  max-width: 94%;
+  margin-top: 18px;
+}
+.nextgen-foyer .warning-tag {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 1.6vw;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--poster-yellow);
+  border: 1.5px solid var(--poster-yellow);
+  padding: 6px 14px;
+  border-radius: 3px;
+  box-shadow: var(--glow-yellow);
+  text-align: center;
+}
+.nextgen-foyer .warning-detail {
+  font-size: min(1.46vw, 2.05vh);
+  color: var(--cream);
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* pill (tbc markers) */
+.nextgen-foyer .pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 212, 52, 0.12);
+  color: var(--poster-yellow);
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace tbc marker, not themed */
+  font-size: 0.8vw;
+  letter-spacing: 1px;
+  margin-right: 6px;
+}
+
+/* posters */
+.nextgen-foyer .poster-frame {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 26, 117, 0.15), rgba(0, 229, 255, 0.10));
+  border: 1.5px solid var(--neon-magenta);
+  box-shadow:
+    0 0 0 1px rgba(255, 26, 117, 0.4),
+    0 0 24px rgba(255, 26, 117, 0.35),
+    0 14px 40px rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+}
+.nextgen-foyer .poster-frame.cyan {
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.4),
+    0 0 24px rgba(0, 229, 255, 0.35),
+    0 14px 40px rgba(0, 0, 0, 0.7);
+}
+.nextgen-foyer .poster-frame.muted {
+  border-color: rgba(200, 185, 216, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(200, 185, 216, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.nextgen-foyer .poster-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.nextgen-foyer .poster-frame.contain img {
+  object-fit: contain;
+  background: linear-gradient(135deg, #100822 0%, #1A0E2A 100%);
+}
+.nextgen-foyer .poster-frame .fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 18px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace placeholder caption, not themed */
+  font-size: 1.77vw;
+  color: var(--cream-2);
+  letter-spacing: 2px;
+}
+.nextgen-foyer .poster-frame .fallback strong {
+  display: block;
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 1.8vw;
+  letter-spacing: 3px;
+  color: var(--neon-magenta);
+  margin-bottom: 8px;
+}
+.nextgen-foyer .poster-frame.missing img { display: none; }
+.nextgen-foyer .poster-frame.missing .fallback { display: flex; }
+
+/* Reusable photo presentation: clean, sharp image on the theme ground.
+   Contain preserves the whole object; cover fills the box and may be used
+   where crop margin permits a restrained Ken Burns pan/zoom.
+   No duplicated blurred photograph. */
+.nextgen-foyer .photo-presentation {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: var(--colour-background, #0d0806);
+  border: 1.5px solid rgba(217, 169, 78, 0.35);
+  border-radius: 2px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7);
+}
+.nextgen-foyer .photo-window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.nextgen-foyer .contain .photo-window {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+.nextgen-foyer .photo-presentation .photo-fg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.nextgen-foyer .photo-presentation.contain .photo-fg {
+  object-fit: contain;
+}
+.nextgen-foyer .photo-presentation.cover .photo-fg {
+  object-fit: cover;
+}
+.nextgen-foyer .photo-presentation .photo-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.77vw;
+  color: var(--cream-2);
+  letter-spacing: 2px;
+  background: var(--colour-background, #0d0806);
+}
+.nextgen-foyer .photo-presentation.missing .photo-fg { display: none; }
+.nextgen-foyer .photo-presentation.missing .photo-fallback { display: flex; }
+
+/* In-card clip (Shakespeare in Love prop-making shorts, C15 Oct 2026): a
+   muted looping <video> layered over its poster still inside the same
+   .photo-presentation frame a photo gets. The poster underneath paints while
+   the clip loads and becomes the photo if the clip cannot play; if both are
+   gone the shared .photo-fallback shows - never a black box or broken-media
+   icon. The video itself never drifts: it IS the motion, so it carries
+   .video-fg, not .photo-fg, and the Ken Burns rules never reach it. */
+.nextgen-foyer .video-presentation .video-fg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.nextgen-foyer .video-presentation.contain .video-fg {
+  object-fit: contain;
+}
+.nextgen-foyer .video-presentation.cover .video-fg {
+  object-fit: cover;
+}
+.nextgen-foyer .video-presentation .video-fg.failed,
+.nextgen-foyer .video-presentation .photo-fg.poster-gone,
+.nextgen-foyer .video-presentation.missing .video-fg {
+  display: none;
+}
+
+/* Reduced motion turns an in-card clip back into its poster still: the
+   <video> is hidden so the .photo-fg poster underneath is what shows -
+   the designed still, never a black frame - and the engine pauses and
+   rewinds the element so going back to full motion restarts from the top.
+   Same !important/@media pattern as the story-frame and gold-dust rules
+   below: an explicit ?motion=full still wins over the OS preference. */
+.nextgen-foyer.motion-reduced .video-presentation .video-fg {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nextgen-foyer:not(.motion-full) .video-presentation .video-fg {
+    display: none;
+  }
+}
+
+/* Restrained Ken Burns on cover photos (~1.00 -> 1.06).
+   Contained photographs zoom inside a fixed window fitted to their natural ratio.
+   Posters, QR codes and text are never animated. */
+.nextgen-foyer .photo-presentation.cover[data-motion="true"] .photo-fg {
+  animation: photo-drift 14s linear infinite alternate;
+}
+.nextgen-foyer .photo-presentation.contain[data-motion="true"] .photo-fg {
+  animation: photo-contained-drift 14s linear infinite alternate;
+}
+@keyframes photo-contained-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+@keyframes photo-drift {
+  from { transform: scale(1.0) translate(0, 0); }
+  to   { transform: scale(1.06) translate(-1.5%, -1%); }
+}
+
+/* ---------- photo-set (C18, October 2026) ----------
+   1-4 photos at their own recorded aspect ratios - the frame IS the photo's
+   shape, so nothing is cropped at rest and no space needs blur fill or
+   pillarboxing (design note docs/design/2026-10-10-foyer-photo-set-design.md).
+   Each frame's --ps-aspect comes from photo-sizes.json (written by
+   tools/foyer-photo-sizes.py); the shared height is min(--ps-h width-fit
+   term, 100% of the real remaining height), so the DOM - not a hard-coded
+   number - decides the rowMax half of the justified-row formula.
+   Padding is the tighter photo-card padding David picked (decision 1): 5%
+   top/bottom instead of the house 9%/10%; CSS vertical padding resolves
+   against the canvas width. Remaining space is plain theme ground. */
+.nextgen-foyer .slide[data-kind="photo-set"] {
+  padding: 5% 8%;
+}
+.nextgen-foyer .photo-set {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+.nextgen-foyer .photo-set .photo-presentation {
+  /* One definite axis only - height - then aspect-ratio gives the width the
+     recorded shape needs. Overrides the base 100%x100% sizing. */
+  flex: 0 0 auto;
+  width: auto;
+  height: min(var(--ps-h, 100%), 100%);
+  aspect-ratio: var(--ps-aspect);
+}
+
+/* Side layouts: one or two full-height portraits on the right, text on the
+   left (one portrait may also carry the 24-word body). */
+.nextgen-foyer .photo-set-side {
+  flex-direction: row;
+  align-items: stretch;
+  column-gap: 72px;
+}
+.nextgen-foyer .photo-set-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  align-self: center;
+}
+.nextgen-foyer .photo-set-side-photos {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 40px;
+  /* No height: the stretch + the margins below give ~864px - still
+     full-height to the eye, but the rightmost frame's bottom-right corner
+     stays clear of the engine-owned roof-mark (.criterion-mark, bottom
+     18px / right 28px / 163px wide, z-index 4 above the stage). */
+  margin-right: 44px;
+  margin-bottom: 24px;
+}
+
+/* Row layout: a justified row under the headline - one common height,
+   widths proportional to each photo's aspect, left-aligned when the row
+   does not fill the card (decision 2). */
+.nextgen-foyer .photo-set-rows {
+  flex-direction: column;
+}
+.nextgen-foyer .photo-set-head {
+  flex: 0 0 auto;
+}
+.nextgen-foyer .photo-set-row {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  gap: 40px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.nextgen-foyer .photo-set-rows > .footline {
+  flex: 0 0 auto;
+}
+
+/* Motion: frames arrive one after another in a short fade, then each photo
+   zooms from 100% to 104% around its focus point, cropped only by the
+   frame's own overflow - never a pan. The base rule keeps frames opaque;
+   the fade-in only exists when motion is enabled, and the generic
+   motion-reduced / prefers-reduced-motion rules below pin the still. */
+.nextgen-foyer .slide[data-kind="photo-set"] .photo-presentation[data-motion="true"] {
+  opacity: 0;
+  animation: photo-set-arrive 550ms ease-out forwards;
+  animation-delay: calc(var(--ps-i, 0) * 250ms);
+}
+@keyframes photo-set-arrive {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* Overrides the generic contain drift (scale 1.06): photo-set's zoom is a
+   quieter 4% over the card's own dwell, delayed until the frame has arrived. */
+.nextgen-foyer .slide[data-kind="photo-set"] .photo-presentation[data-motion="true"] .photo-fg {
+  transform-origin: var(--ps-focus, 50% 50%);
+  animation: photo-set-zoom var(--ps-dwell, 20s) ease-in-out forwards;
+  animation-delay: calc(var(--ps-i, 0) * 250ms + 600ms);
+}
+@keyframes photo-set-zoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.04); }
+}
+/* Reduced motion / preview pause: the whole photo, still - no fade, no
+   zoom. The .photo-fg zoom is already killed by the generic
+   .motion-reduced .photo-presentation[data-motion="true"] .photo-fg rule;
+   these rules additionally pin the frame at opacity 1 so a frame whose
+   arrive animation never ran is still visible. */
+.nextgen-foyer.motion-reduced .slide[data-kind="photo-set"] .photo-presentation[data-motion="true"] {
+  animation: none !important;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nextgen-foyer:not(.motion-full) .slide[data-kind="photo-set"] .photo-presentation[data-motion="true"] {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+/* Preview pause (#stage.motion-paused) needs nothing extra: the blanket
+   animation-play-state rule freezes the fade and zoom wherever they are,
+   and resume lets them finish - the same path C17 gave story frames. */
+
+/* split layout: type left, poster right */
+.nextgen-foyer .split-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.85fr;
+  gap: 6%;
+  align-items: center;
+  height: 100%;
+}
+/* min-width:0 lets the grid columns shrink below their content size so a long
+   headline or poster can't force horizontal overflow that clips the corner
+   wordmark (.ng-topline). */
+.nextgen-foyer .split-text { min-width: 0; }
+.nextgen-foyer .split-layout .poster-frame,
+.nextgen-foyer .split-layout .photo-presentation {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  justify-self: end;
+  max-width: 460px;
+}
+.nextgen-foyer .split-text > * { margin-left: 0; }
+
+/* Lower-third (TV-news band) — ported from popcorn-foyer.html for parity.
+   Not yet wired to a template, kept here so the type tier matches the source. */
+.nextgen-foyer .lower-third {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12%;
+  padding: 0 8%;
+}
+.nextgen-foyer .lower-third-bar {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid var(--poster-yellow);
+  background: rgba(10, 6, 18, 0.85);
+  box-shadow: var(--glow-yellow);
+}
+.nextgen-foyer .lower-third-tag {
+  background: var(--poster-yellow);
+  color: var(--ink);
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 1.7vw;
+  letter-spacing: 3px;
+  padding: 16px 24px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+.nextgen-foyer .lower-third-body {
+  flex: 1;
+  padding: 16px 24px;
+  color: var(--cream);
+  font-size: min(1.38vw, 2vh);
+  align-self: center;
+}
+
+/* Photo-gallery grid — rehearsal (preshow) + cast montage (postshow).
+   Copied from popcorn-foyer.html .photo-grid. Each cell shows the neon
+   "photo pending" fallback until Chris's photos land in assets/photos/. */
+.nextgen-foyer .photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5%;
+  margin-top: 22px;
+  height: 54%;
+}
+.nextgen-foyer .photo-grid .photo-presentation {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+/* Portrait-safe variant: a bounded cell height (like the base .photo-grid
+   above) taller than the landscape 54% to give 2:3 posters more headroom.
+   The generated composites already contain the full image, so cells can fill. */
+.nextgen-foyer .photo-grid.portrait-safe {
+  height: 62%;
+}
+.nextgen-foyer .photo-grid.portrait-safe .photo-presentation {
+  width: 100%;
+  height: 100%;
+}
+
+/* Interval countdown */
+.nextgen-foyer .countdown-display {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 13vw;
+  line-height: 0.9;
+  letter-spacing: 5px;
+  color: var(--white);
+  text-shadow: var(--glow-cyan);
+}
+.nextgen-foyer .countdown-display.is-label {
+  font-size: 6vw;
+}
+.nextgen-foyer .countdown-caption {
+  margin-top: 34px;
+  color: var(--cream-2);
+}
+
+/* Coming-up "scan to book" QR + ticket CTA */
+.nextgen-foyer .book-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 22px;
+}
+.nextgen-foyer .book-qr {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.nextgen-foyer .book-qr-frame {
+  width: 8vw;
+  max-width: 120px;
+  aspect-ratio: 1 / 1;
+  background: #FFFFFF;
+  border: 2px solid var(--neon-cyan);
+  border-radius: 6px;
+  box-shadow: var(--glow-cyan);
+  padding: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nextgen-foyer .book-qr-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.nextgen-foyer .book-qr-fallback {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  color: #111;
+  letter-spacing: 2px;
+}
+.nextgen-foyer .book-qr-caption {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace QR caption, not themed */
+  font-size: min(3.63vw, 5.19vh);
+  color: var(--cream-2);
+  letter-spacing: 2px;
+  margin-top: 9px;
+  text-transform: uppercase;
+}
+.nextgen-foyer .ticket-cta {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace URL/CTA run, not themed */
+  font-size: var(--foyer-copy-size);
+  color: var(--cream-2);
+  letter-spacing: 1.5px;
+  text-transform: none;
+}
+.nextgen-foyer .tickets-pending {
+  margin-top: 22px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace status line, not themed */
+  font-size: min(2.27vw, 3.15vh);
+  color: var(--cream-2);
+  letter-spacing: 1px;
+  text-transform: none;
+  opacity: 0.85;
+}
+
+/* Tickets & walk-ins — three price tiers + QR. All colours come from the
+   active theme's accent/secondary/muted scale, not Popcorn's neon literals. */
+.nextgen-foyer .walkins-grid {
+  display: flex;
+  gap: 4%;
+  align-items: center;
+  max-width: 94%;
+  margin-top: 18px;
+}
+.nextgen-foyer .walkins-tiers {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3%;
+}
+.nextgen-foyer .walkins-qr {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.nextgen-foyer .price-tier {
+  border: 1.5px solid var(--tier-color);
+  padding: 18px 14px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--tier-color) 6%, transparent);
+}
+.nextgen-foyer .price-tier.accent   { --tier-color: var(--colour-accent); }
+.nextgen-foyer .price-tier.secondary { --tier-color: var(--colour-primary); }
+.nextgen-foyer .price-tier.muted    { --tier-color: var(--cream-2); }
+.nextgen-foyer .price-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: min(3.73vw, 5.19vh);
+  color: var(--tier-color);
+  /* 3px -> 1px tracking: at the 56px floor "Under 25" needed ~293px against a
+     288px tier box and wrapped to two lines (2026-09-14 type-floor repair). */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+/* The tier colour is also the label colour, but the secondary tier's
+   --tier-color is --colour-primary - a rule-only colour. Keep it on the
+   border and background tint; the label itself falls back to muted_text. */
+.nextgen-foyer .price-tier.secondary .price-label { color: var(--cream-2); }
+.nextgen-foyer .price-amount {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  font-size: 4.2vw;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+.nextgen-foyer .qr-card {
+  width: 11vw;
+  max-width: 170px;
+  aspect-ratio: 1 / 1;
+  background: #FFFFFF;
+  border: 2px solid var(--colour-accent);
+  border-radius: 6px;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--colour-accent) 25%, transparent);
+  padding: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nextgen-foyer .qr-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.nextgen-foyer .qr-fallback {
+  font-family: var(--font-headline, 'Anton'), sans-serif;
+  color: #111;
+  letter-spacing: 2px;
+}
+.nextgen-foyer .qr-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: min(3.63vw, 5.19vh);
+  color: var(--colour-accent);
+  letter-spacing: 2px;
+  margin-top: 9px;
+  text-transform: uppercase;
+}
+
+/* Postshow archive and coming-soon treatments. */
+.nextgen-foyer .poster-frame.muted {
+  border-color: rgba(200, 185, 216, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(200, 185, 216, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.nextgen-foyer .poster-frame.feature {
+  border-color: var(--poster-yellow);
+  box-shadow:
+    0 0 0 1px rgba(255, 212, 52, 0.5),
+    0 0 26px rgba(177, 29, 46, 0.45),
+    0 14px 40px rgba(0, 0, 0, 0.7);
+}
+.nextgen-foyer .archive-thumb-wrap {
+  display: grid;
+  /* Archive photographs are landscape (about 16:9). The 1.5fr/0.9fr split with a
+     3/4 portrait frame letterboxed them into roughly 260x150 - unreadable at
+     3-8 metres. Wider column, landscape frame. Measured 2026-09-10. */
+  grid-template-columns: 1.05fr 1fr;
+  gap: 5%;
+  align-items: center;
+  margin-top: 10px;
+}
+.nextgen-foyer .archive-thumb-wrap .poster-frame {
+  width: 100%;
+  max-width: 660px;
+  max-height: 440px;
+  aspect-ratio: 3 / 2;
+  justify-self: end;
+}
+.nextgen-foyer .archive-text .body { max-width: none; font-size: var(--foyer-copy-size); }
+.nextgen-foyer .archive-attribution {
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace attribution/date run, not themed */
+  font-size: min(2.19vw, 3.15vh);
+  color: var(--cream-2);
+  letter-spacing: 2px;
+  margin-top: 10px;
+}
+.nextgen-foyer .archive-attribution .attr-name { color: var(--cream-2); }
+/* Inline SVG marks on the advisory cards. Colour comes from the theme accent
+   token, so a new show retunes them for free. Sized in vw/vh for 3-8m reading. */
+.nextgen-foyer .slide-icon {
+  display: block;
+  height: min(6.5vw, 9.5vh);
+  width: auto;
+  margin-bottom: 1.4vh;
+  color: var(--colour-accent);
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+.nextgen-foyer .review-quote {
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-style: italic;
+  font-size: var(--foyer-copy-size);
+  line-height: 1.5;
+  color: var(--cream);
+  border-left: 2px solid var(--neon-cyan);
+  padding-left: 18px;
+  margin: 10px 0;
+  max-width: 90%;
+}
+.nextgen-foyer .review-quote .source {
+  display: block;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace source/URL, not themed */
+  font-size: min(2.19vw, 3.15vh);
+  color: var(--cream-2);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+/* Visiting-company templates. */
+.nextgen-foyer .tour-list {
+  list-style: none;
+  margin-top: 30px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 80%;
+}
+.nextgen-foyer .tour-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  font-family: var(--font-body);
+  font-size: min(1.4vw, 2vh);
+  color: var(--cream);
+}
+.nextgen-foyer .tour-list li.highlight {
+  font-family: var(--font-headline);
+  font-size: min(2.2vw, 3.2vh);
+  color: var(--colour-accent);
+}
+.nextgen-foyer .tour-list .tour-when {
+  flex: 0 0 auto;
+  min-width: 200px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace date/time run, not themed */
+  font-size: 0.85em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+}
+.nextgen-foyer .tour-list li.highlight .tour-when {
+  color: var(--colour-accent);
+}
+.nextgen-foyer .tour-list .tour-venue {
+  flex: 1 1 auto;
+}
+
+/* date-list (C17, for R15 "2027 at the Criterion"): the in-house season
+   list. Deliberately NOT .tour-list - the visiting-tour rows sit at ~22px,
+   under the 56px running-copy floor, because a tour card is a dense
+   schedule. Here each row is something the audience is meant to read at
+   3-8 metres, so the title is at --foyer-copy-size and the date run keeps
+   the house monospace treatment at the 34px small-print tier. At most six
+   rows (the template drops the rest), which keeps the card inside the
+   1080p frame with eyebrow, headline and footline. */
+.nextgen-foyer .date-list {
+  list-style: none;
+  margin: 30px 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 90%;
+}
+.nextgen-foyer .date-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 36px;
+  border-bottom: 1px solid var(--colour-primary);
+  padding-bottom: 12px;
+}
+.nextgen-foyer .date-list li:last-child {
+  border-bottom: none;
+}
+.nextgen-foyer .date-list .date-list-when {
+  flex: 0 0 230px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: monospace date run, not themed */
+  font-size: var(--foyer-small-size);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+}
+.nextgen-foyer .date-list .date-list-title {
+  flex: 1 1 auto;
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: var(--foyer-copy-size);
+  line-height: 1.25;
+  color: var(--cream);
+}
+.nextgen-foyer .date-list li.highlight .date-list-title {
+  color: var(--colour-accent);
+}
+
+/* ---- Overnight holding: a dark screen, not a display ----
+   The foyer screen faces the street and the building is not highly secure, so
+   between performances the panel goes black and advertises nothing: no ambient
+   wash, no poster colours, no show wordmark, no Criterion mark. What is left is
+   one small white status line in the top-left corner, for whoever is locking up.
+   This is the one place in the pack where the design contract's 56px floor and
+   10:1 body contrast are deliberately set aside, because nobody is reading this
+   from six metres - and a screen bright enough to read from the pavement is the
+   thing being avoided. Every element hidden here is hidden by name: a new shell
+   element will show through until it is added to this list, the same trap the
+   phase-intensity rules above carry. Rebuilt 18 September 2026 to David's brief;
+   the old centred wordmark-and-message card is in git history if it is wanted
+   back.
+
+   Since October 2026 the holding phase carries three clock-driven states
+   (holdingState() in slide-templates.js): wind-down at bar close, wake-up
+   ahead of house open, and overnight everywhere else. The blackout applies
+   to the overnight state ONLY - [data-holding-state="overnight"] - because
+   the other two are audience-facing and carry the show's theme like every
+   other card (design: docs/design/2026-09-25-foyer-holding-three-states-design.md). */
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"],
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-shell,
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-stage {
+  background: #000;
+}
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-ambient,
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-watermark,
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-topline,
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-caption,
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .criterion-mark {
+  display: none;
+}
+body.nextgen-foyer[data-phase="holding"][data-holding-state="overnight"] .ng-stage {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  display: block;
+}
+
+/* The two audience-facing holding states keep the normal shell chrome -
+   topline, watermark, Criterion mark - and borrow established phase
+   intensities rather than inventing new tokens: wind-down sits at the
+   postshow dim (the audience is leaving), wake-up at preshow brightness
+   (it is, in effect, early preshow). */
+body.nextgen-foyer[data-phase="holding"][data-holding-state="wind-down"] .ng-ambient {
+  opacity: var(--phase-intensity-postshow, 0.65);
+}
+body.nextgen-foyer[data-phase="holding"][data-holding-state="wake-up"] .ng-ambient {
+  opacity: var(--phase-intensity-preshow, 1);
+}
+body.nextgen-foyer[data-phase="holding"][data-holding-state="wind-down"] .ng-shell {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 60%, color-mix(in srgb, var(--colour-accent) calc(var(--phase-intensity-postshow, 0.65) * 8%), transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+body.nextgen-foyer[data-phase="holding"][data-holding-state="wind-down"] .criterion-mark {
+  opacity: 0.4;
+}
+.nextgen-foyer .holding-slide {
+  position: absolute;
+  top: 20px;
+  left: 26px;
+  margin: 0;
+  text-align: left;
+}
+.nextgen-foyer .holding-status {
+  margin: 0;
+  /* Deliberately NOT the show's body face: the overnight line carries no
+     branding at all, and the serif renders old-style figures, so "18m" came out
+     with a lowercase-looking 1. Tabular lining digits also stop the line
+     twitching as the countdown ticks down each minute. */
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: clamp(13px, 0.95vw, 18px);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-shadow: none;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ---- holding three states: wind-down + wake-up (C9, October 2026) ----
+   Both are audience-facing cards at the design contract's sizes, themed by
+   the same tokens as every other card. Layouts mirror the approved mock-ups
+   (docs/design/holding-three-states-mockups/): wind-down reuses the standard
+   eyebrow/headline/body/footline block centred vertically; the image variant
+   is the standard split layout with the same poster frame the
+   next-production cards use. */
+.nextgen-foyer .holding-wind-down {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.nextgen-foyer .holding-wind-down.split-layout {
+  display: grid;
+}
+/* A next-production image that 404s (pack lists it but the file is absent)
+   collapses to the text card - no broken frame, no placeholder (D8). */
+.nextgen-foyer .holding-wind-down.no-image {
+  display: flex;
+  flex-direction: column;
+}
+.nextgen-foyer .holding-wind-down.no-image .poster-frame {
+  display: none;
+}
+.nextgen-foyer .holding-rule {
+  width: 220px;
+  height: 4px;
+  background: var(--colour-primary);
+  margin: 10px 0 0;
+}
+.nextgen-foyer .holding-wind-down .body {
+  margin-top: 28px;
+}
+/* The engine-filled {show} / {next_production} names take the theme accent
+   (design section 3, mock-ups 01/04/05) - not .hl-em's emphasis colour,
+   which a pack may map below the 7:1 accent-as-text floor. */
+.nextgen-foyer .holding-wind-down .hold-name {
+  color: var(--colour-accent);
+}
+
+/* The wake-up card: context line and countdown on the left, the "Tonight"
+   timeline on the right. Sizes follow the mock-ups (JetBrains Mono small
+   print, Anton-scale title and figure, accent for the countdown and the
+   next-up row). */
+.nextgen-foyer .holding-wake-up {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 700px;
+  column-gap: 80px;
+  align-items: center;
+}
+.nextgen-foyer .holding-wake-up .wu-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.nextgen-foyer .holding-wake-up .wu-context {
+  font-family: "JetBrains Mono", monospace;
+  font-size: var(--foyer-small-size, 34px);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+  margin: 0;
+}
+.nextgen-foyer .holding-wake-up .wu-context b {
+  color: var(--colour-accent);
+  font-weight: 400;
+}
+.nextgen-foyer .holding-wake-up .wu-show {
+  font-family: var(--font-headline);
+  font-size: 6vw;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 14px 0 50px;
+}
+.nextgen-foyer .holding-wake-up .wu-lead {
+  font-family: var(--font-body);
+  font-size: var(--foyer-copy-size, 56px);
+  color: var(--cream);
+  margin: 0 0 6px;
+}
+.nextgen-foyer .holding-wake-up .wu-count {
+  font-family: var(--font-headline);
+  font-size: 300px;
+  line-height: 0.95;
+  letter-spacing: 4px;
+  font-variant-numeric: tabular-nums;
+  color: var(--colour-accent);
+  margin: 0;
+}
+.nextgen-foyer .holding-wake-up .wu-count small {
+  font-size: 0.4em;
+  letter-spacing: 2px;
+  margin-left: 18px;
+}
+.nextgen-foyer .holding-wake-up .wu-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 4px solid var(--colour-primary);
+  padding-left: 56px;
+}
+.nextgen-foyer .holding-wake-up .wu-heading {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  font-size: var(--foyer-small-size, 34px);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+  margin: 0 0 26px;
+}
+.nextgen-foyer .holding-wake-up .wu-row {
+  display: flex;
+  align-items: baseline;
+  gap: 36px;
+  padding: 14px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--cream) 14%, transparent);
+}
+.nextgen-foyer .holding-wake-up .wu-row .wu-t {
+  font-family: var(--font-headline);
+  font-size: 64px;
+  letter-spacing: 1px;
+  width: 230px;
+  flex: 0 0 auto;
+  color: var(--cream);
+}
+.nextgen-foyer .holding-wake-up .wu-row .wu-t.est {
+  color: var(--cream-2);
+}
+.nextgen-foyer .holding-wake-up .wu-row .wu-w {
+  font-family: var(--font-body);
+  font-size: var(--foyer-copy-size, 56px);
+  color: var(--cream);
+}
+.nextgen-foyer .holding-wake-up .wu-row.next .wu-t,
+.nextgen-foyer .holding-wake-up .wu-row.next .wu-w {
+  color: var(--colour-accent);
+}
+
+/* Phase tonal overrides, expressed entirely in theme tokens: ground comes from
+   --ink (== --colour-background), tints from --colour-primary/--colour-accent.
+   Tint strength is driven by the show's phase_intensity (theme-loader.js sets
+   --phase-intensity-interval/-postshow on :root) so a show can dim its late
+   phases, per Lovett's postshow: 0.6. Shape only (a soft radial lift over a
+   vertical ground gradient) is carried over from the original signed-off
+   design — the colour source and strength are now per-show, not Popcorn's. */
+body.nextgen-foyer[data-phase="interval"] .ng-shell {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 30%, color-mix(in srgb, var(--colour-primary) calc(var(--phase-intensity-interval, 0.9) * 18%), transparent), transparent 70%),
+    radial-gradient(ellipse 70% 70% at 25% 75%, color-mix(in srgb, var(--colour-accent) calc(var(--phase-intensity-interval, 0.9) * 10%), transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+body.nextgen-foyer[data-phase="interval"] .slide .headline { text-shadow: var(--glow-cyan); }
+body.nextgen-foyer[data-phase="interval"] .slide .eyebrow:not(.warn):not(.alert):not(.calm) {
+  color: var(--poster-yellow);
+  text-shadow: var(--glow-yellow);
+}
+body.nextgen-foyer[data-phase="interval"] .on-air-dot {
+  background: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+body.nextgen-foyer[data-phase="postshow"] .ng-shell {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 60%, color-mix(in srgb, var(--colour-accent) calc(var(--phase-intensity-postshow, 0.65) * 8%), transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+body.nextgen-foyer[data-phase="postshow"] .slide .headline {
+  text-shadow:
+    0 0 4px color-mix(in srgb, var(--white) 40%, transparent),
+    0 0 18px color-mix(in srgb, var(--lavender) 20%, transparent);
+}
+
+/* Authentic full-frame video: no ambient, labels, captions, or brand overlay. */
+body.nextgen-foyer.media-active .ng-ambient,
+body.nextgen-foyer.media-active .on-air,
+body.nextgen-foyer.media-active .ng-topline,
+body.nextgen-foyer.media-active .ng-caption,
+body.nextgen-foyer.media-active .criterion-mark {
+  display: none;
+}
+body.nextgen-foyer.media-active .ng-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+}
+body.nextgen-foyer.media-active .ng-media {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+/* unknown-template fallback card uses the alert eyebrow + standard body. */
+
+/* =====================================================================
+   ENGINE REVIEW BAR (?preview=1 only)
+   Calm/dark reviewer chrome, clearly "not part of the foyer". Built by
+   nextgen-foyer.html only when ?preview=1, so broadcast capture never
+   sees it. Mirrors the retired mockup's .preview-header look.
+   ===================================================================== */
+body.nextgen-foyer.ng-preview {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #050309;
+  --preview-scale: 1;
+  --preview-left: 0px;
+  --preview-top: 0px;
+}
+
+body.nextgen-foyer.ng-preview .ng-shell {
+  position: fixed;
+  top: var(--preview-top);
+  left: var(--preview-left);
+  width: 1920px;
+  height: 1080px;
+  transform: scale(var(--preview-scale));
+  transform-origin: top left;
+}
+
+.ng-preview-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 8px 16px;
+  background: var(--ink);
+  border-bottom: 1px solid var(--colour-primary);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+  font-family: 'JetBrains Mono', monospace; /* fixed: reviewer-only chrome, never broadcast, not themed */
+}
+.ng-preview-bar .ngp-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.ng-preview-bar .ngp-title {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--cream);
+  white-space: nowrap;
+}
+.ng-preview-bar .ngp-stamp {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--cream-2);
+}
+.ng-preview-bar .ngp-group {
+  display: flex;
+  background: var(--ink);
+  border: 1px solid var(--colour-primary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.ng-preview-bar .ngp-btn {
+  background: transparent;
+  color: var(--cream-2);
+  border: none;
+  padding: 7px 12px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: reviewer-only chrome, never broadcast, not themed */
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+}
+.ng-preview-bar .ngp-btn:hover {
+  background: var(--ink-2);
+  color: var(--cream);
+}
+.ng-preview-bar .ngp-btn.active {
+  background: var(--colour-accent);
+  color: var(--ink);
+  font-weight: 700;
+}
+.ng-preview-bar .ngp-btn[data-phase="interval"].active,
+.ng-preview-bar .ngp-btn[data-phase="postshow"].active { background: var(--colour-primary); }
+.ng-preview-bar .ngp-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+}
+/* The bar must not reflow between slides. Its width varies three ways: the
+   FRAME group appears only on montages, 'NOW SHOWING <id> - <template>'
+   changes per slide, and the JUMP select is as wide as its longest option.
+   The 2026-09-10 fix made the now-showing field the only flexible item; that
+   held until a fourth phase button (HOLDING) and the 'built <timestamp>'
+   suffix were added, which together pushed the fixed items past the line and
+   wrapped MOTION again on montage cards below about 1920px.
+
+   So the rule is now structural rather than a one-off: the three items that
+   carry variable-width TEXT - the build stamp, the jump select and the
+   now-showing label - shrink and ellipsise; every CONTROL keeps its natural
+   width so nothing a reviewer clicks ever moves. Anything added to the bar
+   later inherits flex: 0 0 auto and simply reduces the room those three
+   share, rather than starting a second row. The bases must be explicit and
+   small: flex wraps on each item's HYPOTHETICAL size, so 'flex: 0 1 auto'
+   would start a new row before any shrinking happened at all. The bases are
+   weighted 150 / 40 / 40 so the build stamp - which reviewers quote back when
+   reporting what they saw - keeps its full two lines down to 1366px, while the
+   jump and now-showing labels, which only repeat what is already on screen,
+   give up their width first. Below about 1300px the controls alone exceed the
+   line and two rows is the honest outcome.
+   Reviewer chrome only - this bar
+   is never broadcast. Fixed 2026-09-10, made structural 2026-09-17. */
+.ng-preview-bar > * { flex: 0 0 auto; }
+.ng-preview-bar .ngp-brand {
+  flex: 1 1 150px;
+  min-width: 0;
+}
+.ng-preview-bar .ngp-brand #ngp-stamp,
+.ng-preview-bar .ngp-brand .ngp-built {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The build time sits on its own line rather than being truncated off the end
+   of the version: reviewers quote it when reporting what they saw. The version
+   already carries the build date, so this line only adds day, month and time,
+   and both lines carry the full locale string as a tooltip. */
+.ng-preview-bar .ngp-built {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+  color: var(--cream-2);
+  opacity: 0.75;
+}
+.ng-preview-bar .ngp-jump-field {
+  flex: 1 1 100px;
+  min-width: 0;
+}
+/* Floors, so shrinking never leaves a control unusable: the jump select keeps
+   enough width to read the start of a card id rather than collapsing to a bare
+   chevron, and the now-showing value keeps enough to be worth reading. */
+.ng-preview-bar .ngp-jump-field .ngp-select {
+  min-width: 12ch;
+}
+.ng-preview-bar .ngp-now-field {
+  flex: 1 1 110px;
+  min-width: 0;
+  overflow: hidden;
+}
+.ng-preview-bar .ngp-now-field #ngp-now {
+  min-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Narrow reviewer windows cannot hold the build time as well as every control
+   at a usable size. Below 1560px it is dropped from the bar and the text items
+   dropped from the bar and the text items give up their weighting; the full
+   string is still on the tooltip of the version line. */
+@media (max-width: 1559px) {
+  .ng-preview-bar .ngp-brand .ngp-built { display: none; }
+  /* Below this width the controls alone nearly fill the line. Squeezing the
+     text items further makes their own labels collide, so the bar is allowed
+     a second row instead - which is legible, where an overlap is not. */
+  .ng-preview-bar .ngp-brand { flex: 0 0 auto; }
+  .ng-preview-bar .ngp-jump-field { flex: 0 0 auto; }
+  .ng-preview-bar .ngp-now-field { flex: 1 1 110px; }
+}
+
+.ng-preview-bar .ngp-select,
+.ng-preview-bar .ngp-input {
+  background: var(--ink);
+  color: var(--cream);
+  border: 1px solid var(--colour-primary);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-family: 'JetBrains Mono', monospace; /* fixed: reviewer-only chrome, never broadcast, not themed */
+  font-size: 11px;
+}
+.ng-preview-bar .ngp-input { width: 58px; }
+.ng-preview-bar .ngp-select { max-width: 260px; }
+
+/* Feature slide — large image with caption, no portrait letterboxing. */
+.nextgen-foyer .feature-layout {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 28px;
+  height: 100%;
+  width: 100%;
+  align-items: end;
+}
+.nextgen-foyer .feature-hero {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nextgen-foyer .feature-hero .photo-presentation {
+  width: 100%;
+  height: 100%;
+}
+.nextgen-foyer .feature-caption { min-width: 0; }
+/* Caption type matches story-montage, the proven-legible sibling in this family
+   (.story-heading .story-body). The previous min(3.0vw, 4.5vh) on eyebrow, body and
+   footline made the auto-sized caption row ~407px of a ~687px card, starving the 1fr
+   hero to ~212px. Body is 38.40px at 1920x1080 (body tier unified 2026-09-14),
+   so foyer legibility is unchanged.
+   Measured 2026-09-10: hero 212px -> 407px. */
+.nextgen-foyer .feature-caption .body {
+  font-size: var(--foyer-copy-size);
+  max-width: 86%;
+}
+.nextgen-foyer .feature-caption .footline {
+  font-size: min(2.27vw, 3.15vh);
+  letter-spacing: 2px;
+}
+.nextgen-foyer .feature-caption .eyebrow {
+  font-size: 34px;
+}
+/* Scoped to the feature caption only: .headline.small is 6vw (115px at 1920), a sixth
+   of the card on its own. Matches .headline.tiny, the size story-montage uses for the
+   same job. Other templates using .headline.small are untouched. */
+.nextgen-foyer .feature-caption .headline {
+  font-size: min(4.2vw, 6vh);
+}
+
+/* Story montage: equal medium picture boxes in a row, heading above,
+   captions below each picture, and credit/draft strip separate at the bottom.
+   Supports 1, 2 or 3 usable frames. */
+.nextgen-foyer .headline.tiny {
+  font-size: min(4.2vw, 6vh);
+}
+.nextgen-foyer .story-montage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 2vh 0;
+  gap: 2vh;
+}
+.nextgen-foyer .story-heading {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.nextgen-foyer .story-heading .eyebrow {
+  margin-bottom: 0.5vh;
+}
+.nextgen-foyer .story-heading .headline.tiny {
+  margin-bottom: 0.8vh;
+}
+.nextgen-foyer .story-heading .story-body {
+  margin: 0 auto;
+  max-width: 80%;
+  font-size: var(--foyer-copy-size);
+}
+.nextgen-foyer .story-stage {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2.2vw;
+  /* min-height:auto keeps the 240px photo floor honest: min-height:0 let the
+     stage shrink below its content so photos and captions overdrew the credit. */
+  min-height: auto;
+}
+.nextgen-foyer .story-frame {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 560px;
+  opacity: 0;
+}
+.nextgen-foyer .story-frames-1 .story-frame {
+  flex: 0 0 auto;
+  max-width: 560px;
+}
+.nextgen-foyer .story-frame-photo {
+  flex: 1 1 auto;
+  min-height: 240px;
+  overflow: hidden;
+}
+.nextgen-foyer .story-frame-photo .photo-presentation {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+.nextgen-foyer .story-frame .frame-caption {
+  flex: 0 0 auto;
+  color: var(--cream);
+  font-family: var(--font-body, 'Inter'), sans-serif;
+  font-size: min(2.18vw, 3.15vh);
+  padding: 1.2vh 0;
+  margin: 0;
+  text-align: center;
+}
+.nextgen-foyer .story-credit {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 0 4vw;
+}
+.nextgen-foyer .story-credit .footline {
+  margin: 0.4vh 0;
+}
+.nextgen-foyer .story-credit .review-badge {
+  display: inline-block;
+  margin-top: 0.8vh;
+  font-size: min(2.15vw, 3.15vh);
+}
+
+/* Automatic story reveal keyframes.
+   3 frames / 21 s: frame 0 visible immediately; frame 1 fades in ~5 s;
+   frame 2 fades in ~10 s; all remain visible to the end.
+   Transitions last ~0.8 s (3.8% of 21 s). */
+.nextgen-foyer .story-frames-3 .story-frame[data-frame="0"] {
+  animation: story-reveal-3-0 var(--story-dwell, 21s) linear forwards;
+}
+.nextgen-foyer .story-frames-3 .story-frame[data-frame="1"] {
+  animation: story-reveal-3-1 var(--story-dwell, 21s) linear forwards;
+}
+.nextgen-foyer .story-frames-3 .story-frame[data-frame="2"] {
+  animation: story-reveal-3-2 var(--story-dwell, 21s) linear forwards;
+}
+@keyframes story-reveal-3-0 {
+    0.0% { opacity: 1; }
+  100.0% { opacity: 1; }
+}
+@keyframes story-reveal-3-1 {
+    0.0%, 23.8% { opacity: 0; }
+   27.8%, 100.0% { opacity: 1; }
+}
+@keyframes story-reveal-3-2 {
+    0.0%, 47.6% { opacity: 0; }
+   51.4%, 100.0% { opacity: 1; }
+}
+
+/* 2 frames / 21 s: frame 0 visible immediately; frame 1 fades in ~10.5 s. */
+.nextgen-foyer .story-frames-2 .story-frame[data-frame="0"] {
+  animation: story-reveal-2-0 var(--story-dwell, 21s) linear forwards;
+}
+.nextgen-foyer .story-frames-2 .story-frame[data-frame="1"] {
+  animation: story-reveal-2-1 var(--story-dwell, 21s) linear forwards;
+}
+@keyframes story-reveal-2-0 {
+    0.0% { opacity: 1; }
+  100.0% { opacity: 1; }
+}
+@keyframes story-reveal-2-1 {
+    0.0%, 48.0% { opacity: 0; }
+   52.0%, 100.0% { opacity: 1; }
+}
+
+/* 1 frame: static, fully visible. */
+.nextgen-foyer .story-frames-1 .story-frame[data-frame="0"] {
+  opacity: 1;
+  animation: none;
+}
+
+.nextgen-foyer .story-montage.paused .story-frame,
+.nextgen-foyer .story-montage.paused .photo-presentation[data-motion="true"] .photo-fg {
+  animation-play-state: paused;
+}
+/* Reduced motion: all frames visible immediately. No frame is hidden.
+   Contain-only photographs stay still by design. */
+.nextgen-foyer.motion-reduced .story-frame,
+.nextgen-foyer.motion-reduced .photo-presentation[data-motion="true"] .photo-fg {
+  animation: none !important;
+}
+.nextgen-foyer.motion-reduced .story-frame {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nextgen-foyer:not(.motion-full) .story-frame {
+    animation: none !important;
+    opacity: 1;
+  }
+  .nextgen-foyer:not(.motion-full) .photo-presentation[data-motion="true"] .photo-fg {
+    animation: none;
+  }
+}
+
+/* Restrained opt-in gold dust for ticket / bar / refreshment / next-show cards.
+   12-18 seeded pseudo-random motes, 4-12px, slow varied travel, kept to spare
+   margins so they never sit over prices, QR codes or running copy.
+   Disabled by reduced motion or theme token. */
+.nextgen-foyer .sales-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.nextgen-foyer .sales-card > .split-text,
+.nextgen-foyer .sales-card > .walkins-grid,
+.nextgen-foyer .sales-card > .walkins-qr,
+.nextgen-foyer .sales-card > .poster-frame,
+.nextgen-foyer .sales-card > h2,
+.nextgen-foyer .sales-card > p,
+.nextgen-foyer .sales-card > .qr-card {
+  position: relative;
+  z-index: 1;
+}
+/* story-montage and feature carry their own children, so lift them above the
+   motes the same way the older sales cards do. Added 2026-09-10. */
+.nextgen-foyer .sales-card > .story-heading,
+.nextgen-foyer .sales-card > .story-stage,
+.nextgen-foyer .sales-card > .story-credit,
+.nextgen-foyer .sales-card > .feature-hero,
+.nextgen-foyer .sales-card > .feature-caption {
+  position: relative;
+  z-index: 1;
+}
+.nextgen-foyer .gold-dust {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nextgen-foyer .gold-dust span {
+  position: absolute;
+  left: var(--gd-left, 5%);
+  top: var(--gd-top, 5%);
+  width: var(--gd-size, 6px);
+  height: var(--gd-size, 6px);
+  border-radius: 50%;
+  background: var(--colour-accent);
+  opacity: 0;
+  box-shadow: 0 0 4px color-mix(in srgb, var(--colour-accent) 30%, transparent);
+  animation: gold-drift var(--gd-duration, 20s) ease-in-out infinite;
+  animation-delay: var(--gd-delay, 0s);
+}
+@keyframes gold-drift {
+  0%, 100% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  25%      { opacity: var(--gd-opacity, 0.3); }
+  50%      { opacity: calc(var(--gd-opacity, 0.3) * 0.65); transform: translate(var(--gd-drift-x, 0), var(--gd-drift-y, 20px)) scale(1); }
+  75%      { opacity: var(--gd-opacity, 0.3); }
+}
+.nextgen-foyer.motion-reduced .gold-dust {
+  display: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nextgen-foyer:not(.motion-full) .gold-dust { display: none !important; }
+}
+.nextgen-foyer.motion-full .gold-dust {
+  display: block !important;
+}
+
+/* Pause decoration, but reveal a newly selected slide immediately. */
+.nextgen-foyer #stage.motion-paused > .slide {
+  animation: none !important;
+  opacity: 1;
+}
+.nextgen-foyer #stage.motion-paused * {
+  animation-play-state: paused !important;
+}
+#ngp-motion-notice:not([hidden]) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-basis: 100%;
+  padding: 8px 12px;
+  color: #fff2d3;
+  background: #382a13;
+  font: 15px/1.3 system-ui, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+}
+#ngp-motion-preview { border: 1px solid #d9a94e; }
+
+/* ---------- NO HOUSE-COLOUR FLASH ON RELOAD (2026-09-24) ----------
+   OBS reloads a foyer browser source each time its scene becomes active.
+   Until now the first frames painted the Criterion house navy (#02101e) -
+   first from this sheet, then from HOUSE_THEME in theme-loader.js - before the
+   show's theme.json arrived, which read as a ~0.5 s blue flash on the ME55C.
+   Now nextgen-foyer.html paints plain black with the shell hidden until the
+   show palette is applied (html[data-theme-ready], set in boot()). The CSS-only
+   failsafe reveals the shell after 3 s whatever happens, so a failed theme
+   load can never leave the foyer blank. */
+html.ng-page:not([data-theme-ready]),
+html.ng-page:not([data-theme-ready]) body.nextgen-foyer {
+  background: #000;
+}
+html.ng-page:not([data-theme-ready]) body.nextgen-foyer .ng-shell {
+  visibility: hidden;
+  animation: ng-theme-failsafe 0s linear 3s forwards;
+}
+@keyframes ng-theme-failsafe {
+  to { visibility: visible; }
+}

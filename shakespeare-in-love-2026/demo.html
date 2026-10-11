@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criterion foyer live demo</title>
+  <style>
+    :root { color-scheme: dark; --ink:#17131d; --panel:#221c2a; --cream:#f3efd2; --muted:#bdb3c8; --accent:#ff1a75; --line:#4b4056; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--ink); color: var(--cream); font: 16px/1.45 system-ui, sans-serif; }
+    main { width: min(1500px, 100%); margin: 0 auto; padding: 24px; }
+    h1 { margin: 0 0 6px; font-size: clamp(1.6rem, 3vw, 2.5rem); }
+    .intro { margin: 0 0 22px; color: var(--muted); }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; margin-bottom: 18px; }
+    button { border: 1px solid var(--line); border-radius: 4px; padding: 10px 14px; background: var(--panel); color: var(--cream); cursor: pointer; text-align: left; }
+    button:hover, button.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    button strong, button span { display: block; }
+    button span { margin-top: 2px; color: var(--muted); font: .75rem/1.2 ui-monospace, monospace; }
+    .dwell { display: flex; gap: 8px; align-items: center; margin-left: auto; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; }
+    .dwell input { width: 5rem; padding: 7px; border: 1px solid var(--line); border-radius: 3px; background: #0e0b12; color: var(--cream); }
+    .dwell button { padding: 7px 10px; }
+    .frame-wrap { position: relative; overflow: hidden; width: min(100%, calc((100dvh - 230px) * 16 / 9)); margin-inline: auto; aspect-ratio: 16 / 9; border: 1px solid var(--line); border-radius: 5px; background: #000; }
+    /* The engine renders at a fixed 1920x1080 (the Samsung/OBS viewport); scale it to fit. */
+    iframe { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; border: 0; transform-origin: top left; }
+    .file-guard { display: none; padding: 24px; border: 1px solid var(--line); background: var(--panel); }
+    .file-guard a { color: var(--cream); }
+    @media (max-width: 800px) { .dwell { width: 100%; margin-left: 0; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Foyer live-engine demo</h1>
+  <p class="intro">This is the live engine used by the theatre Samsung screen.</p>
+  <section class="hosted-demo">
+    <div class="controls">
+      <button class="active" data-route="phase=preshow"><strong>Preshow</strong><span>F_PRESHOW</span></button>
+      <button data-route="phase=interval"><strong>Interval</strong><span>F_INTERVAL</span></button>
+      <button data-route="phase=postshow"><strong>Postshow</strong><span>F_POSTSHOW</span></button>
+      <button data-route="scene=welcome"><strong>Welcome</strong><span>F_WELCOME</span></button>
+      <button data-route="scene=tonight"><strong>Tonight</strong><span>F_TONIGHT</span></button>
+      <button data-route="scene=coming-soon"><strong>Coming soon</strong><span>F_COMING_SOON</span></button>
+      <div class="dwell">
+        <label for="dwell-seconds">Dwell seconds</label>
+        <input id="dwell-seconds" type="number" min="2" max="120" step="1" value="5">
+        <button id="apply-dwell" type="button">Apply</button>
+      </div>
+    </div>
+    <div class="frame-wrap">
+      <iframe id="foyer-frame" title="Live foyer engine preview"></iframe>
+    </div>
+  </section>
+  <p class="file-guard" id="file-guard">
+    The live demo needs a hosted link or <code>python -m http.server</code>.
+    From disk, use the <a href="review.html">step-through review page</a> instead.
+  </p>
+</main>
+<script>
+  (() => {
+    const hostedDemo = document.querySelector(".hosted-demo");
+    const guard = document.getElementById("file-guard");
+    if (location.protocol === "file:") {
+      hostedDemo.hidden = true;
+      guard.style.display = "block";
+      return;
+    }
+
+    const frame = document.getElementById("foyer-frame");
+    const dwellInput = document.getElementById("dwell-seconds");
+    const buttons = [...document.querySelectorAll("[data-route]")];
+    let activeRoute = buttons[0].dataset.route;
+
+    function loadScene() {
+      const dwell = Number(dwellInput.value);
+      const validDwell = Number.isFinite(dwell) && dwell >= 2 && dwell <= 120;
+      frame.src = `index.html?${activeRoute}${validDwell ? `&dwell=${dwell}` : ""}`;
+    }
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        activeRoute = button.dataset.route;
+        for (const candidate of buttons) candidate.classList.toggle("active", candidate === button);
+        loadScene();
+      });
+    }
+    document.getElementById("apply-dwell").addEventListener("click", loadScene);
+    dwellInput.addEventListener("change", loadScene);
+
+    const wrap = document.querySelector(".frame-wrap");
+    function fitFrame() {
+      frame.style.transform = `scale(${wrap.clientWidth / 1920})`;
+    }
+    window.addEventListener("resize", fitFrame);
+    fitFrame();
+    loadScene();
+  })();
+</script>
+</body>
+</html>

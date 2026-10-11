@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "_generated": "2026-10-11",
+  "_purpose": "Shakespeare in Love, 5 - 12 December 2026. A Criterion-produced mainstage production directed by Hugh Sorrill. DRAFT pack in look A, built 11 October 2026 (Cowork) to publish to the preview site for Hugh (decisions L1-L6). Known content filled; unknowns are visible placeholders, kept to things genuinely owed.",
+  "_copy_status": "DRAFT. Production facts from criteriontheatre.co.uk/production/550, checked 11 October 2026 (credits, director, run dates, synopsis); the page lists no times, running time, cast or content advice. New wording (subtitle, about-the-play, Elizabethan history, director's note draft, thank-you) approved by David 11 October 2026; the director's note is Cowork's draft for Hugh's approval (L3). Requirements: docs/plans/2026-10-08-sil-foyer-requirements.md.",
+  "id": "shakespeare-in-love-2026",
+  "title": "Shakespeare in Love",
+  "subtitle": "From the screenplay by Marc Norman and Tom Stoppard",
+  "_subtitle_note": "Requirements s7: the welcome card prints 'BY <author>' under the subtitle, so the subtitle must not repeat 'by Lee Hall'.",
+  "author": "Lee Hall",
+  "_author_note": "The stage adaptation is Lee Hall's; the screenplay credit is in the subtitle. next_productions.json in the default pack carries author 'Marc Norman and Tom Stoppard' with adapter 'Lee Hall' - that is the coming-soon card's shape and stays as it is.",
+  "director": "Hugh Sorrill",
+  "venue": "the Criterion",
+  "_venue_note": "Short on purpose (requirements s7): the welcome eyebrow reads 'Tonight at the Criterion' on one line.",
+  "tagline": "Will has lost his words",
+  "synopsis": "Will Shakespeare needs a hit and Henslowe needs a comedy. Then an unknown young actor speaks Will's lines, and he finds his muse.",
+  "run_dates": {
+    "first": "2026-12-05",
+    "last": "2026-12-12"
+  },
+  "running_time_minutes": null,
+  "interval_minutes": null,
+  "_running_time_status": "Not known on 11 October 2026 (owed: S4). With no running time the show-info card says it is not yet confirmed, which is true. Fill both when Hugh or the theatre confirms them.",
+  "house_opens_minutes_before_curtain": null,
+  "image_local": "assets/posters/shakespeare-in-love-2026.jpg",
+  "_image_note": "The public production poster (criteriontheatre.co.uk/poster/550/700, fetched 21 May 2026 for the default pack; content-snapshot.md). It shows on welcome, show-info and about-the-play: David, 11 October 2026, chose the poster on all three cards over R2's 'once'.",
+  "production_page_url": "https://criteriontheatre.co.uk/production/550",
+  "tickets_url": "https://criteriontheatre.co.uk/tickets",
+  "tickets_on_sale": false,
+  "_tickets_note": "Not confirmed on sale on 11 October 2026; ticket prices not published. Leave false until a current tickets page shows them.",
+  "cast": [
+    {
+      "role": "Cast list",
+      "actor": "to come from Hugh"
+    }
+  ],
+  "_cast_source": "PLACEHOLDER, owed by Hugh. The production page publishes no cast. Replace this single row with the cast in programme order.",
+  "credits": {
+    "lines": [
+      "Adapted for the stage by Lee Hall",
+      "From the screenplay by Marc Norman and Tom Stoppard",
+      "Directed by Hugh Sorrill"
+    ],
+    "_note": "Production team owed by Hugh; extend before the run."
+  },
+  "foyer_content": {
+    "director": {
+      "quote": "Shakespeare in Love is a love letter to theatre: the chaos, the rivalries and the magic of putting on a play. Tonight you get all three.",
+      "attribution": "Hugh Sorrill, director",
+      "draft_owner": "Hugh",
+      "draft_label": "for Hugh's approval",
+      "_status": "Cowork's draft, approved by David 11 October 2026 to show Hugh (L3). Not Hugh's words until he says so; the draft badge stays until then."
+    },
+    "show_info": {
+      "descriptor": "Directed by <b>Hugh Sorrill</b>",
+      "_note": "Short on purpose: with no running time yet, the longer 'Adapted by Lee Hall - directed by Hugh Sorrill' spilled the card by 190 px (layout test, 11 Oct). Lee Hall is on the welcome card."
+    },
+    "thank_you": {
+      "eyebrow": "From everyone at the Criterion",
+      "headline": "Thank you for coming",
+      "body": "For making the journey to Earlsdon, and for giving your evening to Shakespeare in Love. We hope you'll come back.",
+      "footline": "Shakespeare in Love <span class=\"sep\">&#8226;</span> 5 - 12 December 2026"
+    },
+    "venue": {
+      "body": "The Criterion has staged <b>over 450 productions</b> since 1955, in a building that is <b>over 140 years old</b> \u2014 an 1884 Methodist chapel that became a theatre in 1960. It is run entirely by its members: <b>no paid employees</b>, on stage or off.",
+      "footline": "Registered charity 1161430 <span class=\"sep\">&#8226;</span> A volunteer-run theatre in Earlsdon, Coventry"
+    },
+    "volunteer": {
+      "body": "Actors, makers, technicians, front-of-house, bar and box office \u2014 every part of the Criterion is volunteer-run, and new members are always welcome. No experience needed to get involved on stage, backstage, or around the building.",
+      "footline": "Ask front-of-house, or visit criteriontheatre.co.uk/support"
+    },
+    "_theatre_copy_note": "venue and volunteer copied verbatim from the default pack (public Criterion material, content-snapshot.md)."
+  },
+  "_content_warnings_status": "Owed by Hugh. The production page lists no content advice. The pack shows the content-advice-gap card, badged as a draft for Hugh, rather than guessed wording.",
+  "content_warnings": [],
+  "phase_policy": {
+    "audio_allowed": false,
+    "silent_first": true,
+    "audio_allowed_note": "Silent by default, per house convention. In-card prop clips are muted by the engine."
+  },
+  "branding_pack_ref": "../branding/theme.json",
+  "next_productions_ref": "next_productions.json",
+  "performances_ref": "performances.json"
+}

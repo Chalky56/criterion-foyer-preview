@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "_notes": "R14: Appropriate copied verbatim from the default pack's next_productions.json on 11 October 2026 (public site copy and the NYT line, production/552). Serious play after a romantic comedy: site copy and the review only. tickets_on_sale stays false until booking opens.",
+  "productions": [
+    {
+      "id": "appropriate-2027",
+      "production_page": "https://criteriontheatre.co.uk/production/552",
+      "title": "Appropriate",
+      "author": "Branden Jacobs-Jenkins",
+      "director": "Dean Sheridan",
+      "run_dates": {
+        "first": "2027-01-30",
+        "last": "2027-02-06"
+      },
+      "synopsis_short": "When the Lafayette siblings return to their late father’s crumbling Arkansas estate to settle his debts, they uncover a hidden photo album containing horrific historical artifacts.",
+      "synopsis_full": "When the Lafayette siblings return to their late father’s crumbling Arkansas estate to settle his debts, they uncover a hidden photo album containing horrific historical artifacts. As long-buried rivalries ignite and secrets leak out, the family is forced to confront their shared history and implicit complicity in a dark past.",
+      "reviews": [
+        {
+          "quote": "A razor-sharp, fiercely funny, and devastating interrogation of American history.",
+          "source": "The New York Times"
+        }
+      ],
+      "image_local": "assets/posters/appropriate-2027.jpg",
+      "tickets_on_sale": false,
+      "tickets_url": "https://criteriontheatre.co.uk/tickets"
+    }
+  ]
+}

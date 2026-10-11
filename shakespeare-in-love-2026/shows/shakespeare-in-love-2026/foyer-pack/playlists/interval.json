@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "phase": "interval",
+  "policy": {
+    "min_dwell_seconds": 9,
+    "max_dwell_seconds": 16,
+    "max_words_per_screen": 40,
+    "consecutive_repeat": false,
+    "loop_target_seconds": 60,
+    "audio_allowed": false
+  },
+  "items": [
+    {
+      "kind": "wildcard",
+      "id": "return-soon",
+      "template": "did-you-know-criterion",
+      "tag": "service",
+      "weight": 2,
+      "dwell_seconds": 12,
+      "content": {
+        "eyebrow": "The interval",
+        "headline": "Act II will resume shortly",
+        "body": "Please enjoy the break. Make your way back to your seats when you hear the bell or the announcement to return."
+      },
+      "_note": "Underdog's approved wording (no house-lights cue: the Criterion uses a bell and announcements)."
+    },
+    {
+      "kind": "wildcard",
+      "id": "next-production-interval-appropriate",
+      "template": "next-production-interval",
+      "tag": "service",
+      "weight": 2,
+      "production_ref": "next_productions.json#appropriate-2027",
+      "dwell_seconds": 12,
+      "_note": "R14 interval anchor-weight."
+    },
+    {
+      "kind": "wildcard",
+      "id": "season-2027-interval",
+      "template": "date-list",
+      "tag": "service",
+      "weight": 1,
+      "dwell_seconds": 16,
+      "content": {
+        "eyebrow": "Next year",
+        "headline": "2027 at the Criterion",
+        "footline": "More autumn productions to be announced",
+        "rows": [
+          {
+            "when": "Jan - Feb",
+            "title": "Appropriate",
+            "highlight": true
+          },
+          {
+            "when": "March",
+            "title": "The Road to Huntsville"
+          },
+          {
+            "when": "Jun - Jul",
+            "title": "Things I Know to Be True"
+          },
+          {
+            "when": "September",
+            "title": "Stones in His Pockets"
+          },
+          {
+            "when": "December",
+            "title": "The Full Monty"
+          }
+        ]
+      },
+      "_source": "R15. criteriontheatre.co.uk/news/202 (5 October 2026), checked 11 October 2026. Road to Huntsville is a Studio production. 'Things I Know to Be True' is six words, one over the date-list row budget - it is a title and cannot be shortened.",
+      "_springboard_note": "Springboard Festival 2027 (May) left out for now: the render check's past-show guard flags any 'Springboard' as a leak from the 2026 pack. Restore the row once the check can tell a future production from a past one (tool fix, to be queued)."
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-no-women-interval",
+      "template": "did-you-know",
+      "tag": "service",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "No women on the stage",
+        "body": "In Shakespeare's lifetime every female role, Juliet included, was played by a boy. Women first acted on England's public stage in the 1660s.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    },
+    {
+      "kind": "wildcard",
+      "id": "hist-penny-interval",
+      "template": "did-you-know",
+      "tag": "service",
+      "weight": 1,
+      "dwell_seconds": 15,
+      "content": {
+        "eyebrow": "Did you know",
+        "headline": "A penny to stand",
+        "body": "A penny bought standing room in the open yard, among the groundlings.",
+        "image_local": "assets/posters/shakespeare-in-love-2026.jpg"
+      }
+    }
+  ]
+}

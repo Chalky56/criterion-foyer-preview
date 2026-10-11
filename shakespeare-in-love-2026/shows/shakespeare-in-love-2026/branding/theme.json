@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "name": "shakespeare-in-love-2026",
+  "label": "Shakespeare in Love - look A, Ink & Quill",
+  "description": "Look A (Ink & Quill) for Shakespeare in Love, 5 - 12 December 2026, as drawn on the look sheet (tools/foyer-look-sheet/sil-2026/build_sil_sheet.py, LOOKS[A]). The ink as the ground: blue-black, paper-white words, a pale teal accent and one red heart, all set in IM Fell English, a 17th-century printer's face. The publicity's ink blot sits bottom-left as a texture. Complements the licensed publicity (R2) without reproducing it. DRAFT: Hugh has not yet chosen a look; this is the recommended one, published so he can see it live.",
+  "colours": {
+    "ground": "#071A1F",
+    "accent": "#8FCFC8",
+    "secondary": "#DC0431",
+    "text": "#F4F1EA",
+    "muted_text": "#A9C4C1"
+  },
+  "_colour_notes": {
+    "method": "WCAG 2 relative-luminance ratios, measured 11 October 2026 (Cowork) with the look sheet's own contrast() function. 'On blot' is against the texture's darkest fill #000A0D, where text can also sit.",
+    "ground": "Blue-black ink. Text on it 15.82:1.",
+    "text": "Paper white. 15.82:1 on ground, 17.74:1 on the blot; body floor is 10:1.",
+    "accent": "Pale teal for headlines' emphasis, CTAs and the {braced} emphasis word (emphasis falls back to accent because poster_red is deliberately unset). 10.14:1 on ground, 11.37:1 on the blot; well above the 7:1 emphasis floor (Underdog's poster_red was 5.76:1).",
+    "secondary": "The publicity's red heart. 3.49:1 on ground - RULE AND MOTIF COLOUR ONLY, never text (C17 colour rule; foyer-surfaces.md).",
+    "muted_text": "Ink-wash grey-teal for eyebrows, footlines and small print. 9.65:1 on ground, 10.82:1 on the blot; above the 7:1 muted floor.",
+    "poster_red": "Not set, on purpose. A red light enough to reach 7:1 on this ground (#EE849A, 7.14:1) reads pink, not heart-red. With it unset, {braced} emphasis uses the accent (10.14:1) and the alert eyebrow uses the text colour."
+  },
+  "fonts": {
+    "headline": "IM Fell English",
+    "body": "IM Fell English"
+  },
+  "_font_notes": "IM Fell English is in APPROVED_FONTS and its .woff2 is in platform/obs-helper/assets/fonts/ - no new font for look A (R3). Looks B and C would need Kaushan Script or Caveat Brush installed first.",
+  "headline_case": "as_written",
+  "_headline_case_notes": "Period serif headlines read as written, as on the look sheet (C14). Eyebrows, footlines and badges stay in capitals.",
+  "watermark": {
+    "image": null,
+    "opacity": 0.12,
+    "position": "bottom-right"
+  },
+  "_watermark_notes": "The house Criterion roofline mark, bottom-right, opposite the ink blot.",
+  "texture": {
+    "image": "sil-inkblot-texture.svg",
+    "opacity": 0.9
+  },
+  "_texture_notes": "R4. The ink blot, bottom-left, as on every look-A card of the sheet. Text over it keeps its ratio (see colour notes).",
+  "poster_frame": "mat",
+  "phase_intensity": {
+    "preshow": 1.0,
+    "interval": 0.9,
+    "postshow": 0.65,
+    "holding": 0.4
+  },
+  "motion": {
+    "photos": true,
+    "particles": false
+  },
+  "_motion_notes": "Photos move gently, as the house does. No particles: the motes are a Popcorn/Underdog flourish that would fight a calm period look."
+}

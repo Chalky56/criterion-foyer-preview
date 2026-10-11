@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "phase": "holding",
+  "policy": {
+    "min_dwell_seconds": 20,
+    "max_dwell_seconds": 60,
+    "wind_down_minutes": 15,
+    "wake_up_minutes": 60,
+    "max_words_per_screen": 12,
+    "audio_allowed": false
+  },
+  "items": [
+    {
+      "kind": "anchor",
+      "id": "wd-thanks",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "normal",
+      "dwell_seconds": 20,
+      "eyebrow": "Thank you",
+      "headline": "Thank you for coming to {show}",
+      "footline": "From everyone at the Criterion"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-next",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "normal",
+      "dwell_seconds": 20,
+      "eyebrow": "{show} continues",
+      "headline": "{next_when}",
+      "body": "Tell a friend - it runs until {run_end}.",
+      "footline": "criteriontheatre.co.uk"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-goodnight",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "normal",
+      "dwell_seconds": 20,
+      "eyebrow": "Goodnight",
+      "headline": "Safe journey home",
+      "footline": "See you again soon"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-final-thanks",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "final",
+      "dwell_seconds": 20,
+      "eyebrow": "The final performance",
+      "headline": "Thank you for coming to {show}",
+      "body": "That was the last night. Thank you for being part of it.",
+      "footline": "From everyone at the Criterion"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-final-next",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "final",
+      "dwell_seconds": 20,
+      "eyebrow": "Next at the Criterion",
+      "headline": "{next_production}",
+      "body": "{next_production_dates}",
+      "footline": "criteriontheatre.co.uk",
+      "image": "next_production"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-final-goodnight",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "final",
+      "dwell_seconds": 20,
+      "eyebrow": "Goodnight",
+      "headline": "Safe journey home",
+      "footline": "See you again soon"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-rehearsal-thanks",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "dress",
+      "dwell_seconds": 20,
+      "eyebrow": "Rehearsal - thank you",
+      "headline": "Thank you for coming to {show}",
+      "footline": "From everyone at the Criterion"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-rehearsal-opening",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "dress",
+      "dwell_seconds": 20,
+      "eyebrow": "Rehearsal - thank you",
+      "headline": "Opening night: {opening_when}",
+      "footline": "criteriontheatre.co.uk"
+    },
+    {
+      "kind": "anchor",
+      "id": "wd-rehearsal-goodnight",
+      "template": "holding-card",
+      "holding_state": "wind-down",
+      "variant": "dress",
+      "dwell_seconds": 20,
+      "eyebrow": "Goodnight",
+      "headline": "Safe journey home",
+      "footline": "See you again soon"
+    },
+    {
+      "kind": "anchor",
+      "id": "wake-up",
+      "template": "holding-wake-up",
+      "holding_state": "wake-up",
+      "dwell_seconds": 60
+    },
+    {
+      "kind": "anchor",
+      "id": "holding",
+      "template": "holding",
+      "holding_state": "overnight",
+      "show_when": "countdown",
+      "dwell_seconds": 60,
+      "message": "Shakespeare in Love",
+      "sub_countdown": "{show} - display resumes in {countdown}"
+    },
+    {
+      "kind": "anchor",
+      "id": "final-holding",
+      "template": "holding",
+      "holding_state": "overnight",
+      "show_when": "final",
+      "dwell_seconds": 60,
+      "message": "Shakespeare in Love",
+      "sub_final": "{show} - run ended"
+    }
+  ],
+  "_source": "Copied 11 October 2026 from the C9 copy-ready example in platform/obs-helper/FOYER-PACK-CONTRACT.md (Underdog's reviewed wording)."
+}

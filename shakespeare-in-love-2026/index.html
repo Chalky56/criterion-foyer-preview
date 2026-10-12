@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Criterion Foyer Display</title>
-<link rel="stylesheet" href="style.css?v=20261011holding3c1">
+<link rel="stylesheet" href="style.css?v=20261012perf1">
 </head>
 <body class="nextgen-foyer" data-phase="preshow">
 <div class="ng-shell">
@@ -30,7 +30,7 @@
   import { getActiveShow, getVisitingCompany, startShowPolling } from "./js/show-resolver.js?v=20260909motion3";
   import { loadTheme } from "./js/theme-loader.js?v=20260909motion3";
   import { Scheduler } from "./js/scheduler.js?v=20260909motion3";
-  import { renderSlideHTML, canRenderSlide, holdingState, holdingWindows } from "./js/slide-templates.js?v=20261011holding3c1";
+  import { renderSlideHTML, canRenderSlide, holdingState, holdingWindows, performanceState, performanceDefaultPlaylist } from "./js/slide-templates.js?v=20261012perf1";
 
   const params = new URLSearchParams(window.location.search);
   const dwellSeconds = params.get("dwell");
@@ -38,7 +38,7 @@
     const raw = (searchParams.get("phase") || searchParams.get("scene") || "preshow")
       .trim()
       .toLowerCase();
-    const phases = new Set(["preshow", "interval", "postshow", "holding"]);
+    const phases = new Set(["preshow", "interval", "postshow", "holding", "performance"]);
     const singleRoutes = {
       welcome: "welcome",
       tonight: "show-info",
@@ -52,7 +52,16 @@
       };
     }
     if (phases.has(raw)) {
-      return { name: raw, phase: raw, template: null };
+      // C21: &pip=1 is the card-plus-small-picture layout (design section
+      // 5). It means something only on the performance phase, and the key
+      // stays absent otherwise so the route shape is unchanged elsewhere.
+      const pip = raw === "performance" && searchParams.get("pip") === "1";
+      return {
+        name: raw,
+        phase: raw,
+        template: null,
+        ...(pip ? { pip: true } : {}),
+      };
     }
     if (singleRoutes[raw]) {
       return { name: raw, phase: "preshow", template: singleRoutes[raw] };
@@ -104,6 +113,8 @@
   // The holding state last seen by advance() - a change mid-dwell rebuilds
   // the scheduler so the new state's items enter the rotation.
   let holdingStateSeen = null;
+  // Same again for the performance phase's act-one / act-two / running (C21).
+  let performanceStateSeen = null;
   let timer = null;
   let countdownTimer = null;
   let wakeupTimer = null;
@@ -345,6 +356,15 @@
     } else {
       delete document.body.dataset.holdingState;
     }
+    // The performance state (C21): the card's own performance_state when it
+    // carries one (preview steps the three cards under one clock state),
+    // else the computed state.
+    if (ctx && route?.phase === "performance") {
+      document.body.dataset.performanceState =
+        entry.performance_state || performanceState(ctx).state;
+    } else {
+      delete document.body.dataset.performanceState;
+    }
     fitPhotoWindows();
     remainingMs = ((preview && previewDwellOverride) || entry.dwell_seconds || 5) * 1000;
     setStoryPaused(preview && previewPaused);
@@ -558,6 +578,17 @@
         await scheduler.init();
       }
     }
+    // The performance states move the same way (C21). In preview the clock
+    // is deliberately ignored for this phase - every state card is in the
+    // rotation at once - so there is nothing to rebuild.
+    if (ctx && route?.phase === "performance" && ctx.performancePreview !== true) {
+      const state = performanceState(ctx).state;
+      if (state !== performanceStateSeen) {
+        performanceStateSeen = state;
+        scheduler = new Scheduler(schedulerPlaylist, schedulerOptions);
+        await scheduler.init();
+      }
+    }
     const current = scheduler.next();
     const next = scheduler.previewNext();
     if (!current) {
@@ -595,22 +626,37 @@
   // `holding` is an optional fourth playlist: when a pack has none, the phase
   // runs its postshow playlist rather than rendering SLIDE UNAVAILABLE or going
   // black. data-phase stays "holding" so the theme's phase intensity applies.
+  // `holding` is an optional playlist: when a pack has none, the phase runs
+  // its postshow playlist rather than rendering SLIDE UNAVAILABLE or going
+  // black. `performance` (C21) is the same shape but falls back to the
+  // engine's built-in state cards - the engine cannot fall back to the
+  // camera; only OBS can show one (design, D1).
   async function loadPhasePlaylist(foyerPackBase, phase) {
     try {
       const playlist = await fetchJson(`${foyerPackBase}/playlists/${phase}.json`);
-      if (phase === "holding") {
-        // Holding anchors are the whole rotation, not interjections, so an
-        // anchor with no every_n means "every position" - without this the
-        // scheduler's every_n slot test never fires it.
+      if (phase === "holding" || phase === "performance") {
+        // State-card anchors are the whole rotation, not interjections, so
+        // an anchor with no every_n means "every position" - without this
+        // the scheduler's every_n slot test never fires it.
         for (const item of playlist.items || []) {
           if (item.kind === "anchor" && !item.every_n) {
             item.every_n = 1;
           }
         }
-        console.info("holding phase: loaded playlists/holding.json");
+        console.info(`${phase} phase: loaded playlists/${phase}.json`);
       }
       return playlist;
     } catch (error) {
+      if (phase === "performance") {
+        console.warn("performance phase: playlists/performance.json unavailable; using the built-in cards", error);
+        const playlist = performanceDefaultPlaylist();
+        for (const item of playlist.items || []) {
+          if (item.kind === "anchor" && !item.every_n) {
+            item.every_n = 1;
+          }
+        }
+        return playlist;
+      }
       if (phase !== "holding") {
         throw error;
       }
@@ -717,6 +763,11 @@
       countdownWindowMinutes,
       countdown: { minutes: null, state: "clear" },
       foyerPackBase,
+      // C21: pip paints the card + small-picture layout; performancePreview
+      // lets preview mode show every state card (and the pending chips /
+      // stand-in) regardless of the clock - ruling 4.
+      pip: route?.pip === true,
+      performancePreview: preview && route?.phase === "performance",
     };
     showLabel.textContent = showMeta.title || showInfo.id;
     phaseLabel.textContent = route.name;
@@ -730,6 +781,7 @@
       scheduler = new Scheduler(schedulerPlaylist, schedulerOptions);
       await scheduler.init();
       holdingStateSeen = route?.phase === "holding" ? holdingState(ctx).state : null;
+      performanceStateSeen = route?.phase === "performance" ? performanceState(ctx).state : null;
     }
     currentPlaylistItems = playlist.items || [];
   }
@@ -887,9 +939,12 @@
     updatePreviewPlayButton();
   }
 
-  async function previewSetPhase(name) {
+  async function previewSetPhase(name, pip) {
     const phaseParams = new URLSearchParams();
     phaseParams.set("phase", name);
+    if (pip) {
+      phaseParams.set("pip", "1");
+    }
     const nextRoute = resolveRoute(phaseParams);
     if (!nextRoute) {
       return;
@@ -902,6 +957,7 @@
     clearTimer();
     scheduler = null;
     holdingStateSeen = null;
+    performanceStateSeen = null;
     previewHistory.length = 0;
     previewIndex = -1;
     await buildScheduler();
@@ -923,11 +979,16 @@
     const activeShow = await getActiveShow();
     const foyerPackBase = activeShow?.paths?.foyerPack;
     if (!foyerPackBase) return null;
-    const phases = ["preshow", "interval", "postshow", "holding"];
-    const playlists = await Promise.all(phases.map(async name => ({
-      phase: name,
-      playlist: await fetchJson(`${foyerPackBase}/playlists/${name}.json`).catch(() => null),
-    })));
+    const phases = ["preshow", "interval", "postshow", "holding", "performance"];
+    const playlists = await Promise.all(phases.map(async name => {
+      // A pack without performance.json still serves the built-in cards, so
+      // their ids must deep-link the same way (e.g. card=perf-act-two).
+      const playlist = await fetchJson(`${foyerPackBase}/playlists/${name}.json`).catch(() => null);
+      return {
+        phase: name,
+        playlist: playlist ?? (name === "performance" ? performanceDefaultPlaylist() : null),
+      };
+    }));
     const matches = playlists.flatMap(({ phase: matchPhase, playlist }) =>
       (playlist?.items || [])
         .filter(item => item.id === cardId)
@@ -946,6 +1007,9 @@
     if (target) {
       const phaseParams = new URLSearchParams();
       phaseParams.set("phase", target.phase);
+      if (params.get("pip") === "1") {
+        phaseParams.set("pip", "1");
+      }
       route = resolveRoute(phaseParams);
       phase = route.name;
       document.body.dataset.phase = route.phase;
@@ -961,7 +1025,11 @@
       return;
     }
     document.querySelectorAll("#ngp-phases .ngp-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.phase === route?.phase);
+      // The two performance tabs share data-phase - the pip flag tells them
+      // apart so only the one actually on screen lights up.
+      btn.classList.toggle("active",
+        btn.dataset.phase === route?.phase
+        && (btn.dataset.pip === "1") === Boolean(route?.pip));
     });
     const select = document.getElementById("ngp-jump");
     if (select) {
@@ -1091,6 +1159,8 @@
         <button class="ngp-btn" data-phase="interval">Interval</button>
         <button class="ngp-btn" data-phase="postshow">Postshow</button>
         ${previewSite ? "" : '<button class="ngp-btn" data-phase="holding">Holding</button>'}
+        <button class="ngp-btn" data-phase="performance">During</button>
+        <button class="ngp-btn" data-phase="performance" data-pip="1">During + picture</button>
       </div>
       <div class="ngp-group">
         <button class="ngp-btn" id="ngp-prev" title="Previous shown slide">\u25C0 Prev</button>
@@ -1126,7 +1196,7 @@
     `;
     document.body.appendChild(bar);
     bar.querySelectorAll("#ngp-phases .ngp-btn").forEach(btn => {
-      btn.addEventListener("click", () => previewSetPhase(btn.dataset.phase));
+      btn.addEventListener("click", () => previewSetPhase(btn.dataset.phase, btn.dataset.pip === "1"));
     });
     document.getElementById("ngp-prev").addEventListener("click", previewPrev);
     document.getElementById("ngp-play").addEventListener("click", previewTogglePlay);

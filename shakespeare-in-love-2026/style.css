@@ -836,6 +836,11 @@ body.announcement-overlay-page {
 body.nextgen-foyer[data-phase="interval"] .ng-ambient { opacity: var(--phase-intensity-interval, 0.9); }
 body.nextgen-foyer[data-phase="postshow"] .ng-ambient { opacity: var(--phase-intensity-postshow, 0.65); }
 body.nextgen-foyer[data-phase="holding"] .ng-ambient { opacity: var(--phase-intensity-holding, 0.4); }
+/* C21: the performance card reads at the postshow intensity - the show is
+   on, the foyer is calm. The design asks for the postshow value outright,
+   so a show that dims its late phases dims this one with it, and there is
+   no new token to default (contract rule 6). */
+body.nextgen-foyer[data-phase="performance"] .ng-ambient { opacity: var(--phase-intensity-postshow, 0.65); }
 .nextgen-foyer .ng-ambient::after {
   content: '';
   position: absolute;
@@ -1927,6 +1932,131 @@ body.nextgen-foyer[data-phase="holding"][data-holding-state="wind-down"] .criter
   color: var(--colour-accent);
 }
 
+/* ---- PERFORMANCE phase (C21, October 2026) -------------------------------
+   The "during the acts" card: design
+   docs/design/2026-10-12-foyer-performance-card-and-pip-design.md. One calm
+   card per state - the wind-down card's text block. Nothing moves: no Ken
+   Burns, no particles, no countdown (the show is on). */
+.nextgen-foyer .perf-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.nextgen-foyer .perf-card .perf-rule {
+  width: 220px;
+  height: 4px;
+  background: var(--colour-primary);
+  margin: 10px 0 0;
+}
+.nextgen-foyer .perf-card .body {
+  margin-top: 28px;
+}
+/* Engine-computed times inside pack copy read italic in the muted tone
+   (the mock-up's "8.45pm") - never the secondary rule colour, and the
+   muted tone clears the 7:1 floor. */
+.nextgen-foyer .perf-card .perf-time {
+  color: var(--cream-2);
+  font-style: italic;
+}
+/* Preview only: a time the engine cannot work out shows as a visibly
+   unfinished chip rather than a missing word or a dropped card (rule 9).
+   Dashed outline, muted, small print - it must never reach the theatre. */
+.nextgen-foyer .perf-card .perf-pending {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--foyer-small-size, 34px);
+  font-style: normal;
+  letter-spacing: 3px;
+  color: var(--cream-2);
+  border: 2px dashed var(--cream-2);
+  border-radius: 10px;
+  padding: 2px 16px;
+  vertical-align: middle;
+}
+
+/* &pip=1 - the card + small live picture (design section 5). The window is
+   FIXED at 720x405, x=1080, y=338 on the 1920x1080 canvas: OBS places the
+   camera there, so the numbers are published in FOYER-PACK-CONTRACT.md and
+   changing them is an engine change and an OBS change together. The frame
+   is a 4px muted border OUTSIDE the window; the caption sits under it,
+   left-aligned to the frame, at the small-print tier. */
+.nextgen-foyer .perf-card.perf-pip {
+  --perf-pip-x: 1080px;
+  --perf-pip-y: 338px;
+  --perf-pip-w: 720px;
+  --perf-pip-h: 405px;
+  --perf-pip-frame: 4px;
+  /* The card itself stays unpositioned so the frame and caption resolve
+     their coordinates against the slide's 1920x1080 box, not the padded
+     content column. */
+  position: static;
+}
+/* The text column must end at least 64px before the frame's outer edge
+   (1080 - 4 = 1076). The slide's 8% left padding + 840px keeps ~102px
+   clear; the mock-up's two-line headline is the expected wrap. */
+.nextgen-foyer .perf-pip .perf-text {
+  max-width: 840px;
+}
+.nextgen-foyer .perf-pip .perf-text .body {
+  max-width: none;
+}
+.nextgen-foyer .perf-pip-frame {
+  position: absolute;
+  left: calc(var(--perf-pip-x) - var(--perf-pip-frame));
+  top: calc(var(--perf-pip-y) - var(--perf-pip-frame));
+  /* content-box: the declared w/h are the window itself; the 4px border adds
+     outside it, so OBS's published rectangle stays exactly 720x405. */
+  box-sizing: content-box;
+  width: var(--perf-pip-w);
+  height: var(--perf-pip-h);
+  padding: 0;
+  border: var(--perf-pip-frame) solid var(--cream-2);
+}
+/* At the theatre the window is plain ground, a shade darker, no words -
+   the camera covers it, and if the camera drops the foyer sees a calm
+   empty frame (design section 5). */
+.nextgen-foyer .perf-pip-window {
+  width: 100%;
+  height: 100%;
+  background: color-mix(in srgb, var(--ink) 78%, #000);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.nextgen-foyer .perf-pip-caption {
+  position: absolute;
+  left: calc(var(--perf-pip-x) - var(--perf-pip-frame));
+  top: calc(var(--perf-pip-y) + var(--perf-pip-h) + var(--perf-pip-frame) + 14px);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--foyer-small-size, 34px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+  margin: 0;
+}
+/* The preview stand-in: a drawn proscenium + parted curtain in muted at
+   low contrast, with its "Live stage picture" label. It exists only when
+   ctx.performancePreview painted it - the DOM in broadcast carries none of
+   this. */
+.nextgen-foyer .perf-standin-art {
+  width: 70%;
+  height: auto;
+  color: var(--cream-2);
+  stroke: currentColor;
+  opacity: 0.35;
+}
+.nextgen-foyer .perf-standin-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--foyer-small-size, 34px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cream-2);
+  margin: 0;
+}
+
 /* The wake-up card: context line and countdown on the left, the "Tonight"
    timeline on the right. Sizes follow the mock-ups (JetBrains Mono small
    print, Anton-scale title and figure, accent for the countdown and the
@@ -2061,6 +2191,20 @@ body.nextgen-foyer[data-phase="postshow"] .slide .headline {
     0 0 4px color-mix(in srgb, var(--white) 40%, transparent),
     0 0 18px color-mix(in srgb, var(--lavender) 20%, transparent);
 }
+/* Same postshow calm for the performance phase (C21): the shell tint and
+   headline glow match postshow so the card sits in the evening's dimmest
+   audience-facing register. */
+body.nextgen-foyer[data-phase="performance"] .ng-shell {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 60%, color-mix(in srgb, var(--colour-accent) calc(var(--phase-intensity-postshow, 0.65) * 8%), transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+body.nextgen-foyer[data-phase="performance"] .slide .headline {
+  text-shadow:
+    0 0 4px color-mix(in srgb, var(--white) 40%, transparent),
+    0 0 18px color-mix(in srgb, var(--lavender) 20%, transparent);
+}
+body.nextgen-foyer[data-phase="performance"] .criterion-mark { opacity: 0.4; }
 
 /* Authentic full-frame video: no ambient, labels, captions, or brand overlay. */
 body.nextgen-foyer.media-active .ng-ambient,

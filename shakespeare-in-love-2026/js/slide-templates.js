@@ -24,7 +24,7 @@
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const ASSET_CACHE = "20261011holding3c1";
+const ASSET_CACHE = "20261012perf1";
 
 function asset(ctx, path) {
   if (!path) {
@@ -1140,6 +1140,282 @@ function wakeUpCountdownParts(remainingMs, leadOverride) {
   return { lead, count: `${Math.ceil(remainingMs / 60000)}<small>MIN</small>` };
 }
 
+/* ---- PERFORMANCE (C21, October 2026) --------------------------------------
+   Design: docs/design/2026-10-12-foyer-performance-card-and-pip-design.md.
+   The performance phase runs while an act is on stage - the foyer card that
+   says where the evening is. Like the holding states (C9) it is derived
+   from the clock and the pack per render, never from when the cue was
+   pressed, so a reload or a hand-fired cue lands right:
+     act-one   before the interval estimate
+     act-two   the act-two estimate until the finish estimate
+     running   everything else: the gap between the two estimates (the
+               interval is late or early and INTERVAL may not be up, so
+               "Act Two" might not be true), the time after the finish
+               estimate, a day with no performance, a performance with no
+               estimates, a one-act show.
+   The fail-safe is the plain "under way" card - never a wrong time, never
+   a wrong act. */
+
+/* The local date "YYYY-MM-DD" a wall-clock moment falls on - the field
+   performances.json keys on. */
+function performanceDayKey(ms) {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/* Today's performance: the entry whose date is today. A double bill takes
+   the show most recently started (still on stage); before the day's first
+   curtain it takes the next to start. */
+function todaysPerformance(ctx, now) {
+  const list = holdingPerformances(ctx);
+  if (!list) {
+    return null;
+  }
+  const dayKey = performanceDayKey(now);
+  const todays = list.filter(entry => entry && entry.date === dayKey);
+  if (!todays.length) {
+    return null;
+  }
+  const byStart = (a, b) => performanceStartKey(a) - performanceStartKey(b);
+  const started = todays.filter(entry => performanceStartKey(entry) <= now).sort(byStart);
+  if (started.length) {
+    return started[started.length - 1];
+  }
+  return [...todays].sort(byStart)[0];
+}
+
+/* The three times the state machine and the card placeholders read
+   (design section 3). Each falls back through its chain - the C9 pattern;
+   showday.json is optional. Times are Date objects or null. */
+function performanceTimes(ctx, perf) {
+  const empty = { curtain: null, interval_at: null, act_two_at: null, finish_at: null };
+  if (!perf) {
+    return empty;
+  }
+  const curtain = performanceMoment(perf.date, perf.curtain);
+  const offset = (id) => curtain == null ? null : showdayStepOffset(ctx?.showday, id);
+  const plusMinutes = (at, minutes) => at == null ? null : new Date(at.getTime() + minutes * 60000);
+  const interval_at = performanceMoment(perf.date, perf.interval_at_estimated)
+    || (offset("interval") != null ? plusMinutes(curtain, offset("interval")) : null);
+  const intervalMinutes = Number(ctx?.show?.interval_minutes);
+  const act_two_at = performanceMoment(perf.date, perf.act_2_at_estimated)
+    || (offset("act-two") != null ? plusMinutes(curtain, offset("act-two")) : null)
+    || (interval_at && Number.isFinite(intervalMinutes) && intervalMinutes > 0
+      ? plusMinutes(interval_at, intervalMinutes)
+      : null);
+  const runningMinutes = Number(ctx?.show?.running_time_minutes);
+  const finish_at = performanceMoment(perf.date, perf.estimated_finish)
+    || (offset("postshow") != null ? plusMinutes(curtain, offset("postshow")) : null)
+    || (curtain && Number.isFinite(runningMinutes) && runningMinutes > 0
+      ? plusMinutes(curtain, runningMinutes + (Number.isFinite(intervalMinutes) ? intervalMinutes : 0))
+      : null);
+  return { curtain, interval_at, act_two_at, finish_at };
+}
+
+/* The one pure state function (design section 3). Returns
+   { state: "act-one" | "act-two" | "running", performance, interval_at,
+   act_two_at, finish_at }. Missing or unreadable performances.json fails
+   safe to running; an explicit one-act show (interval_minutes: 0) is always
+   running, however complete its estimates. */
+export function performanceState(ctx) {
+  const now = ctxNow(ctx);
+  const perf = todaysPerformance(ctx, now);
+  const times = performanceTimes(ctx, perf);
+  const result = { state: "running", performance: perf, ...times };
+  // interval_minutes === 0 marks a declared one-act show; null (unknown) is
+  // not zero - SiL ships null until the running time is confirmed.
+  if (!perf || (ctx?.show?.interval_minutes != null
+    && Number(ctx.show.interval_minutes) === 0)) {
+    return result;
+  }
+  if (times.interval_at && now < times.interval_at.getTime()) {
+    result.state = "act-one";
+    return result;
+  }
+  if (times.act_two_at && now >= times.act_two_at.getTime()
+    && (!times.finish_at || now < times.finish_at.getTime())) {
+    result.state = "act-two";
+  }
+  return result;
+}
+
+/* Item selection by performance_state (design section 4). An item with no
+   performance_state applies in every state. Preview ignores the clock for
+   this phase (ruling 4): every state card renders so the reviewer can step
+   act one -> act two -> running. */
+function performanceItemApplies(item, ctx) {
+  const want = item?.performance_state;
+  if (!want || want === "always") {
+    return true;
+  }
+  if (ctx?.performancePreview === true) {
+    return true;
+  }
+  return performanceState(ctx).state === want;
+}
+
+/* The placeholder vocabulary of the performance cards (design section 4):
+   {show}, {interval_at}, {finish_at}. Resolved times ride through
+   caps()/upper() inside \x03..\x04 sentinels (the holding \x01..\x02
+   pattern) so the markup lands after the case pass; the preview pending
+   chip is a bare \x05\x06 for the same reason - caps() would otherwise
+   mangle the span's attributes. Any key that cannot resolve fails the
+   field, which drops the card rather than paint a literal brace (rule 9);
+   in preview an unworkable TIME is the pending chip instead (rule 9: the
+   pending state is visible). {show} still drops the card in preview - it
+   is a name, not a pending time. */
+const PERFORMANCE_PLACEHOLDERS = /\{(show|interval_at|finish_at)\}/g;
+const PERFORMANCE_MARK = /\x03([^\x04]*)\x04|\x05\x06/g;
+const PERFORMANCE_PENDING = "\x05\x06";
+const PERFORMANCE_PENDING_CHIP = '<span class="perf-pending">time to be confirmed</span>';
+
+function performancePlaceholderValues(ctx, times, pendingChips) {
+  const showTitle = plain(ctx?.show?.title || "");
+  const at = (date) => date
+    ? `\x03${houseTime(hhmm(date))}\x04`
+    : (pendingChips ? PERFORMANCE_PENDING : null);
+  return {
+    show: showTitle || null,
+    interval_at: at(times?.interval_at),
+    finish_at: at(times?.finish_at),
+  };
+}
+
+function fillPerformanceCopy(text, values) {
+  const source = String(text ?? "");
+  let failed = false;
+  const out = source.replace(PERFORMANCE_PLACEHOLDERS, (match, key) => {
+    const value = values[key];
+    if (value == null || value === "") {
+      failed = true;
+      return match;
+    }
+    return value;
+  });
+  return failed ? null : out;
+}
+
+/* Sentinels -> markup, after the case pass: times read in the muted tone
+   with italics (the mock-up's "8.45pm"), the pending marker becomes the
+   dashed chip. */
+function performanceMarks(html) {
+  return String(html ?? "").replace(PERFORMANCE_MARK, (match, time) => (
+    time !== undefined ? `<span class="perf-time">${time}</span>` : PERFORMANCE_PENDING_CHIP
+  ));
+}
+
+/* The built-in default playlist (ruling 5): the design section 4 wording
+   with {show} as the eyebrow and without the bar sentence. A pack writes
+   playlists/performance.json only to change the words. Kept as one
+   constant beside the template, not scattered. */
+export const PERFORMANCE_DEFAULT_ITEMS = [
+  {
+    kind: "anchor",
+    id: "perf-act-one",
+    template: "performance-card",
+    performance_state: "act-one",
+    dwell_seconds: 60,
+    eyebrow: "{show}",
+    headline: "Act One is under way",
+    body: "The interval is at about {interval_at}. Latecomers will be shown in at a suitable moment.",
+  },
+  {
+    kind: "anchor",
+    id: "perf-act-two",
+    template: "performance-card",
+    performance_state: "act-two",
+    dwell_seconds: 60,
+    eyebrow: "{show}",
+    headline: "Act Two is under way",
+    body: "The performance ends at about {finish_at}.",
+  },
+  {
+    kind: "anchor",
+    id: "perf-running",
+    template: "performance-card",
+    performance_state: "running",
+    dwell_seconds: 60,
+    eyebrow: "{show}",
+    headline: "The performance is under way",
+    body: "Latecomers will be shown in at a suitable moment.",
+  },
+];
+
+export function performanceDefaultPlaylist() {
+  return {
+    schema_version: 1,
+    phase: "performance",
+    items: PERFORMANCE_DEFAULT_ITEMS.map(item => ({ ...item })),
+  };
+}
+
+/* Preview times come from the NEXT performance (design section 6): the
+   earliest entry dated today or later, so a review on any afternoon shows
+   tonight's times rather than a stale card. With the whole run past, the
+   last entry stands in. */
+function performancePreviewPerformance(ctx) {
+  const list = (holdingPerformances(ctx) || [])
+    .filter(entry => entry && typeof entry.date === "string")
+    .sort((a, b) => performanceStartKey(a) - performanceStartKey(b));
+  if (!list.length) {
+    return null;
+  }
+  const dayKey = performanceDayKey(ctxNow(ctx));
+  return list.find(entry => entry.date >= dayKey) || list[list.length - 1];
+}
+
+/* The preview stand-in for the picture window (design section 6): a drawn
+   stage - proscenium and parted curtain - in the theme's muted tone at low
+   contrast, labelled so nobody reads it as a dead camera. Inline SVG,
+   nothing fetched (rule 7). Outside preview the window is a shade darker
+   than the ground with nothing in it. */
+function performanceStandIn() {
+  return `<svg class="perf-standin-art" viewBox="0 0 720 405" aria-hidden="true">
+      <rect x="96" y="84" width="528" height="290" fill="none" stroke-width="6" />
+      <rect x="72" y="58" width="576" height="34" fill="none" stroke-width="6" />
+      <path d="M96 84 C 210 148, 236 236, 236 374 L 96 374 Z" fill="none" stroke-width="5" />
+      <path d="M624 84 C 510 148, 484 236, 484 374 L 624 374 Z" fill="none" stroke-width="5" />
+      <line x1="72" y1="388" x2="648" y2="388" stroke-width="4" />
+    </svg>
+    <p class="perf-standin-label">Live stage picture</p>`;
+}
+
+/* The performance card (design sections 4-6). The text block is the
+   wind-down card's shape: eyebrow, headline, rule, body, footline. With
+   ctx.pip the text sits in a left column and the card carries the fixed
+   picture window + caption - OBS fills the window with the stage camera at
+   the published rectangle. */
+function performanceCardTemplate(item, ctx) {
+  if (!performanceItemApplies(item, ctx)) {
+    return null;
+  }
+  const previewMode = ctx?.performancePreview === true;
+  const perf = previewMode
+    ? performancePreviewPerformance(ctx)
+    : performanceState(ctx).performance;
+  const values = performancePlaceholderValues(ctx, performanceTimes(ctx, perf), previewMode);
+  const eyebrow = fillPerformanceCopy(item.eyebrow, values);
+  const headline = fillPerformanceCopy(item.headline, values);
+  const body = fillPerformanceCopy(item.body, values);
+  const footline = fillPerformanceCopy(item.footline, values);
+  if (eyebrow === null || headline === null || body === null || footline === null) {
+    return null;
+  }
+  const textBlock = `${eyebrow ? `<p class="eyebrow">${performanceMarks(caps(eyebrow))}</p>` : ""}
+      ${headline ? `<h2 class="headline small">${performanceMarks(upper(headline))}</h2>` : ""}
+      ${headline ? `<div class="perf-rule"></div>` : ""}
+      ${body ? `<p class="body">${performanceMarks(body)}</p>` : ""}
+      ${footline ? `<p class="footline">${performanceMarks(caps(footline))}</p>` : ""}`;
+  if (ctx?.pip === true) {
+    return `<div class="perf-card perf-pip">
+        <div class="perf-text">${textBlock}</div>
+        <div class="perf-pip-frame"><div class="perf-pip-window">${previewMode ? performanceStandIn() : ""}</div></div>
+        <p class="perf-pip-caption">Live from the stage</p>
+      </div>`;
+  }
+  return `<div class="perf-card">${textBlock}</div>`;
+}
+
 /* photo-set (C18, October 2026 - design note docs/design/2026-10-10-foyer-photo-set-design.md):
    1-4 photos shown at their own recorded aspect ratios - nothing is cropped
    at rest, no landscape template letterboxes a portrait. The layout is
@@ -2139,6 +2415,11 @@ export const slideTemplates = {
       </div>`;
   },
 
+  // The PERFORMANCE phase card (C21): eyebrow/headline/body/footline with
+  // the {show} / {interval_at} / {finish_at} placeholders; performance_state
+  // picks which clock state shows it. See the PERFORMANCE block above.
+  "performance-card": performanceCardTemplate,
+
   // The wake-up state: context line, show title, a live countdown to
   // house_open, and the "Tonight" timeline with the next upcoming row
   // highlighted. data-house-open + per-row data-at feed the one-second
@@ -2204,6 +2485,9 @@ export function canRenderSlide(item, ctx) {
     return false;
   }
   if (!holdingItemApplies(item, ctx)) {
+    return false;
+  }
+  if (!performanceItemApplies(item, ctx)) {
     return false;
   }
   const template = item && item.template ? slideTemplates[item.template] : null;

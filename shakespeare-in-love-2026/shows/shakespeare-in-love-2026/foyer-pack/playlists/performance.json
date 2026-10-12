@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "phase": "performance",
+  "_purpose": "During the acts (R11, C21). Approved by David 12 October 2026 (design docs/design/2026-10-12-foyer-performance-card-and-pip-design.md section 4). Differs from the engine's built-in cards only by the bar sentence on act two - SiL's postshow keeps the bar open.",
+  "_times_note": "Times come from performances.json. Every SiL interval/finish estimate is null until S4, so at the theatre the 'running' card shows; on the preview site the act cards show a 'time to be confirmed' chip.",
+  "_foh_check": "Confirm with FoH (Nicol / Dave C) before the run that 'shown in at a suitable moment' is the latecomer practice.",
+  "items": [
+    {
+      "kind": "anchor",
+      "id": "perf-act-one",
+      "template": "performance-card",
+      "performance_state": "act-one",
+      "dwell_seconds": 60,
+      "eyebrow": "{show}",
+      "headline": "Act One is under way",
+      "body": "The interval is at about {interval_at}. Latecomers will be shown in at a suitable moment."
+    },
+    {
+      "kind": "anchor",
+      "id": "perf-act-two",
+      "template": "performance-card",
+      "performance_state": "act-two",
+      "dwell_seconds": 60,
+      "eyebrow": "{show}",
+      "headline": "Act Two is under way",
+      "body": "The performance ends at about {finish_at}. The bar stays open afterwards."
+    },
+    {
+      "kind": "anchor",
+      "id": "perf-running",
+      "template": "performance-card",
+      "performance_state": "running",
+      "dwell_seconds": 60,
+      "eyebrow": "{show}",
+      "headline": "The performance is under way",
+      "body": "Latecomers will be shown in at a suitable moment."
+    }
+  ]
+}

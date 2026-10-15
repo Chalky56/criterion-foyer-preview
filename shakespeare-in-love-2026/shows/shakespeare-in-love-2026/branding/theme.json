@@ -37,6 +37,11 @@
     "opacity": 0.9
   },
   "_texture_notes": "R4. The ink blot, bottom-left, as on every look-A card of the sheet. Text over it keeps its ratio (see colour notes).",
+  "marks": {
+    "eyebrow": { "image": "sil-heart.svg", "colour": "secondary", "templates": ["welcome", "performance-card"] },
+    "title_end": { "image": "sil-inkdot.svg", "colour": "text", "templates": ["welcome"] }
+  },
+  "_marks_notes": "The look sheet's two motifs (tools/foyer-look-sheet/sil-2026/build_sil_sheet.py): the red heart before the show-identity eyebrow (welcome 'Tonight at the Criterion', and the during-the-acts cards whose eyebrow is the show name), and the ink-blot full stop after the title on welcome. Drawn by Cowork, not traced from the publicity. Heart is secondary (3.49:1) - a mark, never text. Rendered only once the engine supports `marks` (C23); until then the engine ignores this block.",
   "poster_frame": "mat",
   "phase_intensity": {
     "preshow": 1.0,

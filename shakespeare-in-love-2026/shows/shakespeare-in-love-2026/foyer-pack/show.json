@@ -19,8 +19,8 @@
     "last": "2026-12-12"
   },
   "running_time_minutes": null,
-  "interval_minutes": null,
-  "_running_time_status": "Not known on 11 October 2026 (owed: S4). With no running time the show-info card says it is not yet confirmed, which is true. Fill both when Hugh or the theatre confirms them.",
+  "interval_minutes": 20,
+  "_running_time_status": "Running time not known on 11 October 2026 (owed: S4); with no running time the show-info card says it is not yet confirmed, which is true. Interval is 20 minutes - the Criterion always plans a 20-minute interval (David, 12 October 2026).",
   "house_opens_minutes_before_curtain": null,
   "image_local": "assets/posters/shakespeare-in-love-2026.jpg",
   "_image_note": "The public production poster (criteriontheatre.co.uk/poster/550/700, fetched 21 May 2026 for the default pack; content-snapshot.md). It shows on welcome, show-info and about-the-play: David, 11 October 2026, chose the poster on all three cards over R2's 'once'.",

@@ -983,6 +983,41 @@ html[data-headline-case="as_written"] .nextgen-foyer .slide .headline {
   letter-spacing: normal;
 }
 
+/* Show "marks" (theme.json `marks`, C23): a small motif image drawn as a
+   CSS mask over a block of the named theme colour, so the SVG's own fill
+   never matters. The SiL heart is `secondary` - a mark colour that must
+   never carry text (foyer-surfaces.md rule 3), which is what a mark is.
+   A pack without the key emits no .mark element, so these rules are inert
+   for it; a missing image file masks to nothing rather than a
+   broken-image box. */
+.nextgen-foyer .mark {
+  display: inline-block;
+  background-color: var(--mark-colour, var(--colour-primary-text));
+  -webkit-mask: var(--mark-image) no-repeat center / contain;
+  mask: var(--mark-image) no-repeat center / contain;
+}
+/* eyebrow: the look sheet's 44px heart beside 40px capitals - 1.1em of the
+   eyebrow's own size, a ~0.5em gap to the first letter, and the box bottom
+   dropped ~0.2em below the baseline so the mark centres on the capital
+   band (~0.35em above the baseline in the small-caps face). */
+.nextgen-foyer .mark-eyebrow {
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.5em;
+  vertical-align: -0.2em;
+}
+/* title_end: the ink-dot full stop (the sheet's .dot) - 0.6em of the
+   title's own font size, on the baseline, a small gap. The .title-tail
+   span binds it to the last word so it can never wrap onto a line of its
+   own. */
+.nextgen-foyer .mark-title-end {
+  width: 0.6em;
+  height: 0.6em;
+  margin-left: 0.05em;
+  vertical-align: -0.05em;
+}
+.nextgen-foyer .title-tail { white-space: nowrap; }
+
 .nextgen-foyer .subhead {
   font-family: var(--font-headline, 'Bebas Neue'), sans-serif;
   font-size: 3vw;
@@ -1949,6 +1984,11 @@ body.nextgen-foyer[data-phase="holding"][data-holding-state="wind-down"] .criter
   background: var(--colour-primary);
   margin: 10px 0 0;
 }
+/* C23: a two-line headline splits evenly ("Act One is / under way")
+   instead of leaving a lone word on the second line - the wrap the look
+   sheet used, now engine CSS (design 2026-10-12 section 10). Both the
+   plain and pip=1 layouts. */
+.nextgen-foyer .perf-card .headline { text-wrap: balance; }
 .nextgen-foyer .perf-card .body {
   margin-top: 28px;
 }

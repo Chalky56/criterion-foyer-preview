@@ -110,6 +110,55 @@ function upper(value) {
   return headlineAsWritten() ? emphasise(String(value || "")) : caps(value);
 }
 
+/* Theme `marks` (C23, October 2026 - schema: THEME-SCHEMA.md). A show may
+   hang a small motif image off two engine anchor points: `eyebrow` draws
+   before the eyebrow text, `title_end` sits after the title's last word
+   like a full stop. The mark is a CSS mask over a block of the resolved
+   theme colour, so the SVG's own fill never matters - the SiL heart is
+   `secondary`, a mark colour that must never carry text
+   (foyer-surfaces.md rule 3). theme.marks is normalised by
+   theme-loader.js (missing images already dropped there); a theme without
+   the key resolves marks to {} and every call returns "". */
+function themeMark(ctx, markKey, templateKey) {
+  const mark = ctx?.theme?.marks?.[markKey];
+  if (!mark || !mark.url || !(mark.templates || []).includes(templateKey)) {
+    return "";
+  }
+  // Show-authored fields land in a style attribute: strip the characters
+  // that could break out of it. A mark never carries text (foyer rule 3).
+  const url = String(mark.url).replace(/["'\\<>`()]/g, "");
+  const colour = String(mark.colour || "").replace(/["'\\<>`;()]/g, "");
+  const cls = String(markKey).replace(/_/g, "-");
+  return `<span class="mark mark-${cls}" data-mark="${markKey}" style="--mark-image:url('${url}');--mark-colour:${colour}" aria-hidden="true"></span>`;
+}
+
+/* `title_end` is a full stop: it must never wrap onto a line of its own,
+   so it rides inside a nowrap span with the title's last word. The split
+   happens on the RAW title, before upper()/caps() turns it into markup,
+   at the last space outside {braces} emphasis - a title ending in a braced
+   word keeps the whole word inside the tail. */
+function titleWithEndMark(title, markHtml) {
+  const text = String(title || "").replace(/\s+$/, "");
+  let depth = 0;
+  let cut = -1;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (ch === "{") {
+      depth += 1;
+    } else if (ch === "}") {
+      depth = Math.max(0, depth - 1);
+    } else if (ch === " " && depth === 0) {
+      cut = i;
+    }
+  }
+  const lead = cut === -1 ? "" : text.slice(0, cut);
+  const last = cut === -1 ? text : text.slice(cut + 1);
+  if (!last) {
+    return `${upper(text)}${markHtml}`;
+  }
+  return `${lead ? `${upper(lead)} ` : ""}<span class="title-tail">${upper(last)}${markHtml}</span>`;
+}
+
 function parseDate(iso) {
   if (!iso) {
     return null;
@@ -1401,7 +1450,7 @@ function performanceCardTemplate(item, ctx) {
   if (eyebrow === null || headline === null || body === null || footline === null) {
     return null;
   }
-  const textBlock = `${eyebrow ? `<p class="eyebrow">${performanceMarks(caps(eyebrow))}</p>` : ""}
+  const textBlock = `${eyebrow ? `<p class="eyebrow">${themeMark(ctx, "eyebrow", "performance-card")}${performanceMarks(caps(eyebrow))}</p>` : ""}
       ${headline ? `<h2 class="headline small">${performanceMarks(upper(headline))}</h2>` : ""}
       ${headline ? `<div class="perf-rule"></div>` : ""}
       ${body ? `<p class="body">${performanceMarks(body)}</p>` : ""}
@@ -1580,10 +1629,12 @@ export const slideTemplates = {
     const venue = show.venue || "Criterion Theatre";
     const subtitle = show.subtitle || "";
     const runDates = formatRange(show.run_dates && show.run_dates.first, show.run_dates && show.run_dates.last);
+    const titleMark = themeMark(ctx, "title_end", "welcome");
+    const title = titleMark ? titleWithEndMark(show.title, titleMark) : upper(show.title);
     return `<div class="split-layout">
         <div class="split-text">
-          <p class="eyebrow">Tonight at ${venue}</p>
-          <h2 class="headline" style="font-size:11vw;">${upper(show.title)}</h2>
+          <p class="eyebrow">${themeMark(ctx, "eyebrow", "welcome")}Tonight at ${venue}</p>
+          <h2 class="headline" style="font-size:11vw;">${title}</h2>
           ${subtitle ? `<p class="subtitle">${subtitle}</p>` : ""}
           <p class="author">BY ${caps(show.author)}</p>
           ${runDates ? `<p class="footline" style="margin-top:32px;">${runDates}</p>` : ""}
